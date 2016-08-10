@@ -1,0 +1,54 @@
+////single player only
+
+
+dots where tank was hit
+
+ai movement
+
+ai aiming (double check with straight line)
+
+ai reinforcments for player
+
+graphics, pictures
+
+sound effects
+
+
+3 types of AI tanks at least
+1 type of player tank
+
+
+tank improvements / parts :
+
+reload time
+
+accuracy
+
+speed
+
+mines
+
+hp
+
+power of shot
+
+
+
+// advanced
+
+machinegun as secondary weapon, few types
+
+
+smoke // cannot target player tank , and player cannot target enemies as well. no idea yet how
+
+
+damage system:
+-track - short repair
+
+tracks - more solid to improve
+
+ai targeting system
+
+
+
+
