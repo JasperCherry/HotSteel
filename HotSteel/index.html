@@ -27,8 +27,14 @@ var aiBullet;
 var aiReloadTime = 250;
 var aiX="none";
 var aiY="none";
+var aiTargetAngle="none";
 
 var kills = new Array();
+
+var soundShot = new Audio("shot.mp3");
+var soundShotAi = new Audio("shot.mp3");
+var soundHit = new Audio("hit.mp3");
+var soundHitAi = new Audio("hit.mp3");
 
 
 function startGame() {
@@ -290,7 +296,8 @@ function updateGameArea() {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////// ai tank
 
-    if(aiX==aiBody.x&&aiY==aiBody.y){
+    // movement
+    if(Math.abs(aiX-aiBody.x)<1&&Math.abs(aiY-aiBody.y)<1){
       aiX="none";
       aiY="none";
     }
@@ -298,57 +305,20 @@ function updateGameArea() {
     if(aiX=="none"&&aiY=="none"){
       aiX=Math.round(Math.random()*800);
       aiY=Math.round(Math.random()*600);
+      aiTargetAngle=Math.atan2(aiBody.y - aiY, aiBody.x - aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      aiBody.angle=aiTargetAngle;
+      aiBody.speed=1;
     }
 
-    if(aiBody.x>aiX){
-      aiBody.x-=1;
-    }else if(aiBody.x<aiX) {
-      aiBody.x+=1;
-    }
-
-    if(aiBody.y>aiY){
-      aiBody.y-=1;
-    }else if(aiBody.y<aiY) {
-      aiBody.y+=1;
-    }
-
-
-    // 8 directions of movement
-    if(aiBody.y>aiY&&aiBody.x==aiX){
-      aiBody.angle=(0 * Math.PI / 180);
-    }
-    if(aiBody.y>aiY&&aiBody.x<aiX){
-      aiBody.angle=(45 * Math.PI / 180);
-    }
-    if(aiBody.y==aiY&&aiBody.x<aiX){
-      aiBody.angle=(90 * Math.PI / 180);
-    }
-    if(aiBody.y<aiY&&aiBody.x<aiX){
-      aiBody.angle=(135 * Math.PI / 180);
-    }
-    if(aiBody.y<aiY&&aiBody.x==aiX){
-      aiBody.angle=(180 * Math.PI / 180);
-    }
-    if(aiBody.y<aiY&&aiBody.x>aiX){
-      aiBody.angle=(225 * Math.PI / 180);
-    }
-    if(aiBody.y==aiY&&aiBody.x>aiX){
-      aiBody.angle=(270 * Math.PI / 180);
-    }
-    if(aiBody.y>aiY&&aiBody.x>aiX){
-      aiBody.angle=(315 * Math.PI / 180);
-    }
+    //////////////////////////////////////////////////////////////// shooting and hits
 
     // moving the barrel
     aiBarrel.angle=Math.atan2(aiBody.y - body.y, aiBody.x - body.x)+(-90 * Math.PI / 180);
 
-
-    //////////////////////////////////////////////////////////////// shooting and hits
-
-
     // ai shooting
     aiReloadTime--;
     if (aiReloadTime==0){
+      soundShotAi.play();
       aiBullet = new Bullet(2, "red", aiBody.x, aiBody.y);
       aiBullet.angle = aiBarrel.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
       aiReloadTime=250;
@@ -356,6 +326,7 @@ function updateGameArea() {
 
     // player shooting
     if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
+      soundShot.play();
       bullet = new Bullet(2, "red", body.x, body.y);
       bullet.angle = barrel.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
       reloadTime=250;
@@ -367,8 +338,7 @@ function updateGameArea() {
     // ai tank hit
    if(bullet!=null && Math.abs(bullet.x-aiBody.x)<15 && Math.abs(bullet.y-aiBody.y)<15) {
      kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiBarrel.angle));
-
-
+     soundHitAi.play();
      aiBody = new Body(30, 50, "gray", 850, 300);
      aiBarrel = new Barrel(3, 40, "black", 850, 300);
      aiTower = new Tower(11, "black", 850, 300);
@@ -379,6 +349,7 @@ function updateGameArea() {
 
    // player tank hit
    if(aiBullet!=null && Math.abs(aiBullet.x-body.x)<15 && Math.abs(aiBullet.y-body.y)<15) {
+     soundHit.play();
      kills.push(new DeadBody(body.x, body.y, body.angle, barrel.angle));
      body = new Body(30, 50, "green", 100, 300);
      barrel = new Barrel(3, 40, "black", 100, 300);
