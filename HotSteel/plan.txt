@@ -1,9 +1,20 @@
 ////single player only
 
+to do:
 
-dots where tank was hit
 
 ai movement
+
+
+
+///////////////////////////////////////////
+
+
+
+
+
+
+
 
 ai aiming (double check with straight line)
 
@@ -35,6 +46,8 @@ power of shot
 
 
 // advanced
+
+dots where tank was hit
 
 machinegun as secondary weapon, few types
 
