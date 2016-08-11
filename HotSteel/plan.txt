@@ -3,8 +3,11 @@
 to do:
 
 
-ai movement
 
+
+tank as object
+
+bullet is gone after hitting tank
 
 
 ///////////////////////////////////////////
