@@ -5,9 +5,11 @@ to do:
 
 
 
-tank as object
 
-bullet is gone after hitting tank
+
+bullet leaves a mark on a moving tank
+
+ai aiming (double check with straight line)
 
 
 ///////////////////////////////////////////
@@ -19,17 +21,11 @@ bullet is gone after hitting tank
 
 
 
-ai aiming (double check with straight line)
-
-ai reinforcments for player
 
 graphics, pictures
 
 sound effects
 
-
-3 types of AI tanks at least
-1 type of player tank
 
 
 tank improvements / parts :
