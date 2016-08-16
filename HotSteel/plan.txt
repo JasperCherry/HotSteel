@@ -2,15 +2,11 @@
 
 to do:
 
-machinegun
+machinegun for ai
 
-drawing the bullet is wrong
+mines
 
-control of ai movement, goes outside map
-
-
-
-
+smoke
 
 
 ///////////////////////////////////////////
@@ -38,7 +34,7 @@ mines
 
 hp
 
-power of shot
+deadly power of shot
 
 
 
@@ -51,7 +47,6 @@ proper colision detection
 
 ai aiming (double check with straight line)
 
-machinegun as secondary weapon, few types
 
 
 smoke // cannot target player tank , and player cannot target enemies as well. no idea yet how
@@ -63,7 +58,3 @@ damage system:
 tracks - more solid to improve
 
 ai targeting system
-
-
-
-

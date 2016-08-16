@@ -16,19 +16,20 @@ canvas {
 </head>
 <body onload="startGame()">
 
+<script src="objects.js"></script>
+
 <script>
 
 
 // player tank vars
 var body = new Body("green", 100, 300);
 var tower = new Tower(10, 3, 40, "black", 100, 300);
-var bullet;
 var reloadTime = 250;
 var reloadTimeM = 0;
 var previousX;
 var previousY;
+var bullet;
 var mgBullets = new Array();
-
 
 
 // ai tank vars
@@ -45,8 +46,11 @@ var aiPreviousX;
 var aiPreviousY;
 
 
-
+// map vars
 var kills = new Array();
+// area that tanks play at
+fieldMapX=1000;
+fieldMapY=600;
 
 
 //var soundShot = new Audio("shot.mp3");
@@ -62,8 +66,8 @@ function startGame() {
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 1000;
-        this.canvas.height = 600;
+        this.canvas.width = fieldMapX;
+        this.canvas.height = fieldMapY+50;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -86,186 +90,11 @@ var myGameArea = {
 }
 
 
-function DeadBody(x, y, angle1, angle2) {
 
-    this.widthBody = 30;
-    this.heightBody = 50;
-    this.heightTower = 40;
-    this.widthTower = 3;
-
-    this.color = "black";
-
-    this.angleBody = angle1;
-    this.angleTower = angle2;
-
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-        // drawing the body
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angleBody);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.widthBody / -2, this.heightBody / -2, this.widthBody, this.heightBody);
-        ctx.restore();
-
-        // drawing the barrel
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angleTower);
-        ctx.translate(0, -20);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.widthTower / -2, this.heightTower / -2, this.widthTower, this.heightTower);
-        ctx.restore();
-        // drawing the tower
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-    }
-}
-
-
-function Body(color, x, y) {
-
-    this.hp = 100;
-    this.width = 30;
-    this.height = 50;
-    this.speed = 0;
-    this.angle = 0;
-    this.moveAngle = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        ctx.fillStyle = color;
-        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-        // back part
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.width / -2, this.height / 2, 10, -4);
-        ctx.fillRect(this.width / -2 +20, this.height / 2, 10, -4);
-        //machinegun
-        ctx.fillStyle = "blac";
-        ctx.fillRect(this.width / -2+21, this.height / -2 , 2, 12);
-        ctx.restore();
-    }
-    this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
-        this.x += this.speed * Math.sin(this.angle);
-        this.y -= this.speed * Math.cos(this.angle);
-    }
-}
-
-
-
-function Tower(radius, width, height, color, x, y) {
-
-    this.radius = radius;
-    this.width = width;
-    this.height = height;
-    this.speed = 0;
-    this.angle = 0;
-    this.moveAngle = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-
-        // drawing the tower
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.rotate(this.angle);
-        ctx.translate(0, -20);
-        ctx.fillStyle = color;
-        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-        ctx.restore();
-
-    }
-    this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
-    }
-}
-
-
-
-function Bullet(x, y, angle) {
-
-    this.reloadTime=0;
-    this.radius = 2;
-    this.speed = 30;
-    this.angle = angle;
-    this.x = x;
-    this.y = y;
-    this.px = x;
-    this.py = y;
-
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.px, this.py);
-        ctx.rotate(this.angle);
-        ctx.beginPath();
-        ctx.translate(0, 0);
-        ctx.fillStyle = "red";
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-    }
-    this.newPos = function() {
-        this.x += this.speed * Math.sin(this.angle);
-        this.y -= this.speed * Math.cos(this.angle);
-    }
-}
-
-
-function MgBullet(x, y, angle) {
-
-    this.reloadTime=0;
-    this.radius = 1;
-    this.speed = 15;
-    this.angle = angle;
-    this.x = x;
-    this.y = y;
-
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        ctx.beginPath();
-        ctx.translate(0, 0);
-        ctx.fillStyle = "black";
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-    }
-    this.newPos = function() {
-        this.x += this.speed * Math.sin(this.angle);
-        this.y -= this.speed * Math.cos(this.angle);
-    }
-}
 
 ///////////////////////////////////// MAIN FUNCTION
 function updateGameArea() {
 
-    myGameArea.clear();
 
 ///////////////////////////////////////////////////////////////////////////// player tank
     body.moveAngle = 0;
@@ -292,13 +121,13 @@ function updateGameArea() {
     }
 
     // map control
-    if(body.x>=1000){
+    if(body.x>=fieldMapX){
       body.x-=2;
     }
     if(body.x<=0){
       body.x+=2;
     }
-    if(body.y>=600){
+    if(body.y>=fieldMapY){
       body.y-=2;
     }
     if(body.y<=0){
@@ -347,8 +176,9 @@ function updateGameArea() {
     // player shooting and timing
 
     // main gun
-    if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
+    if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0 && body.numBullet>0){
       //soundShot.play();
+      body.numBullet--;
       bullet = new Bullet(
       body.x+(40 * Math.sin(tower.angle)),
       body.y-(40 * Math.cos(tower.angle)),
@@ -369,11 +199,12 @@ function updateGameArea() {
     }
 
     // machinegun
-    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0){
+    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0 && body.numMgBullets>0){
+      body.numMgBullets--;
       mgBullets.push(new MgBullet(
       body.x+(25 * Math.sin(body.angle))+ 7 * (Math.sin(body.angle+90 * Math.PI / 180)),
       body.y-(25 * Math.cos(body.angle))- 7 * (Math.cos(body.angle+90 * Math.PI / 180)),
-      body.angle + ((Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      body.angle + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
       reloadTimeM=8;
     }
     if(reloadTimeM>0){
@@ -428,7 +259,7 @@ function updateGameArea() {
        aiBody.hp=aiBody.hp-5;
      }
    }
-   // detection if player hits dead tank // DO POPRAWKI
+   // detection if player hits dead tank
    for(var j = 0; j < kills.length; j++) {
     for(var i = 0; i < mgBullets.length; i++) {
      if(Math.abs(mgBullets[i].x-kills[j].x)<15 && Math.abs(mgBullets[i].y-kills[j].y)<15){
@@ -444,8 +275,9 @@ function updateGameArea() {
       aiTower = new Tower(10, 3, 40, "black", 1050, 300);
       aiX="none";
       aiY="none";
+      aiReloadTime=250;
     }
-console.log(aiBody.hp);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////// ai tank
 
     // movement
@@ -478,8 +310,8 @@ console.log(aiBody.hp);
     }
 
     if(aiX=="none"&&aiY=="none"){
-      aiX=Math.round(Math.random()*1000);
-      aiY=Math.round(Math.random()*600);
+      aiX=Math.round(Math.random()*fieldMapX);
+      aiY=Math.round(Math.random()*fieldMapY);
       aiDestinationAngle=Math.atan2(aiBody.y - aiY, aiBody.x - aiX)+(-90 * Math.PI / 180)+2*Math.PI;
       aiBody.speed=1;
     }
@@ -531,7 +363,7 @@ console.log(aiBody.hp);
     if (aiReloadTime==0&&shotReady){
       //soundShotAi.play();
       aiBullet = new Bullet(aiBody.x+(40 * Math.sin(aiTower.angle)), aiBody.y-(40 * Math.cos(aiTower.angle)),
-      aiTower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180));
+      aiTower.angle+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180));
       aiReloadTime=250;
     }
 
@@ -583,6 +415,8 @@ console.log(aiBody.hp);
 
 
    ///////////////////////////////////////////////////////////////////////// drawing
+
+   myGameArea.clear();
 
    // previous positions of tanks
    previousX=body.x;
@@ -639,6 +473,34 @@ console.log(aiBody.hp);
    for(var i = 0; i < mgBullets.length; i++) {
      mgBullets[i].update();
    }
+
+
+   // drawing informations about current game
+   ctx = myGameArea.context;
+
+   ctx.fillStyle ="black";
+   ctx.fillRect( 0, 600, 1000, 50);
+   ctx.font = "20px Arial";
+   ctx.fillStyle = "white";
+
+   ctx.fillText("Player HP",10,620);
+   ctx.fillText(body.hp,10,645);
+
+   ctx.fillText("Cannon ammo",110,620);
+   ctx.fillText(body.numBullet,110,645);
+   if(reloadTime==0){
+     ctx.fillText("ready",160,645);
+   }else{
+     ctx.fillText("loading",160,645);
+   }
+
+
+   ctx.fillText("MG ammo",260,620);
+   ctx.fillText(body.numMgBullets,260,645);
+
+   ctx.fillText("Enemy HP",895,620);
+   ctx.fillText(aiBody.hp,895,645);
+
 
 
 }
