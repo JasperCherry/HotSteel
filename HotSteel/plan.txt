@@ -2,23 +2,17 @@
 
 to do:
 
+machinegun
+
+drawing the bullet is wrong
 
 
-check where exactly is the border
-
-hit detection closer
 
 
-ai aiming (double check with straight line)
+
 
 
 ///////////////////////////////////////////
-
-
-
-
-
-
 
 
 
@@ -53,6 +47,8 @@ proper tower following tank
 
 proper colision detection
 
+
+ai aiming (double check with straight line)
 
 machinegun as secondary weapon, few types
 
