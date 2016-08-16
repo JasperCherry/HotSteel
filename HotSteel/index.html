@@ -6,6 +6,11 @@
 canvas {
     border:1px solid #d3d3d3;
     background-color: #f1f1f1;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 </style>
 </head>
@@ -14,16 +19,16 @@ canvas {
 <script>
 
 
-
+// player tank vars
 var body = new Body(30, 50, "green", 100, 300);
 var tower = new Tower(10, 3, 40, "black", 100, 300);
 var bullet;
 var reloadTime = 0;
 var previousX;
 var previousY;
-var marks = new Array();
 
 
+// ai tank vars
 var aiBody = new Body(30, 50, "gray", 500, 300);
 var aiTower = new Tower(10, 3, 40, "black", 500, 300);
 var aiBullet;
@@ -37,10 +42,9 @@ var aiPreviousX;
 var aiPreviousY;
 
 
-var aiMarks = new Array();
 
 var kills = new Array();
-var marks = new Array();
+
 
 //var soundShot = new Audio("shot.mp3");
 //var soundShotAi = new Audio("shot.mp3");
@@ -55,7 +59,7 @@ function startGame() {
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 800;
+        this.canvas.width = 1000;
         this.canvas.height = 600;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -78,52 +82,9 @@ var myGameArea = {
     }
 }
 
-function movingMark(x, y) {
 
-    this.radius = 2;
-    this.x = x;
-    this.y = y;
-    this.bulletAngle=Math.atan2(aiBody.x - this.x, aiBody.y - this.y)+(-90 * Math.PI / 180);
 
-    this.update = function() {
 
-      ctx = myGameArea.context;
-      ctx.save();
-
-      this.bulletAngle=this.bulletAngle + aiBody.moveAngle*Math.PI / 180;
-      ctx.translate(aiBody.x, aiBody.y);
-      ctx.rotate(this.bulletAngle);
-      this.x += aiBody.speed * Math.sin(aiBody.angle);
-      this.y -= aiBody.speed * Math.cos(aiBody.angle);
-      ctx.translate(aiBody.x-this.x, aiBody.y-this.y);
-
-      ctx.beginPath();
-      ctx.fillStyle = "red";
-      ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
-      }
-}
-
-function Mark(x, y) {
-
-    this.radius = 2;
-    this.x = x;
-    this.y = y;
-
-    this.update = function() {
-      ctx = myGameArea.context;
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.beginPath();
-      ctx.fillStyle = "red";
-      ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
-      }
-}
 
 
 function DeadBody(x, y, angle1, angle2) {
@@ -456,6 +417,8 @@ function updateGameArea() {
       //soundShot.play();
       bullet = new Bullet(2, "red", body.x, body.y);
       bullet.angle = tower.angle;
+
+      // normal shooting
       //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
       reloadTime=250;
     }
@@ -463,16 +426,16 @@ function updateGameArea() {
       reloadTime--;
     }
 
+
     // ai tank hit
    if(bullet!=null && Math.abs(bullet.x-aiBody.x)<15 && Math.abs(bullet.y-aiBody.y)<15) {
      //soundHitAi.play();
-    aiBody.hp=aiBody.hp-1;
+    aiBody.hp=aiBody.hp-100;
     if(aiBody.hp<=0){
        kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
-       aiBody = new Body(10, 30, 50, "gray", 500, 300);
+       aiBody = new Body(30, 50, "gray", 500, 300);
        aiTower = new Tower(10, 3, 40, "black", 500, 300);
      }
-     aiMarks.push(new movingMark(bullet.x, bullet.y));
      aiReloadTime = 250;
      aiX="none";
      aiY="none";
@@ -482,34 +445,31 @@ function updateGameArea() {
    // player tank hit
    if(aiBullet!=null && Math.abs(aiBullet.x-body.x)<15 && Math.abs(aiBullet.y-body.y)<15) {
      //soundHit.play();
-     body.hp=body.hp-1;
+     body.hp=body.hp-100;
      if(body.hp<=0){
        kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
        body = new Body(30, 50, "green", 100, 300);
-       tower = new Tower(3, 40, "black", 100, 300);
+       tower = new Tower(10, 3, 40, "black", 100, 300);
      }
 
-     marks.push(new movingMark(aiBullet.x, aiBullet.y));
      reloadTime = 0;
      aiBullet=null;
    }
 
-   // dead tank hit by player
 
+   // dead tank hit by player
    for(var i = 0; i < kills.length; i++) {
      if(bullet!=null && Math.abs(kills[i].x-bullet.x)<15 && Math.abs(kills[i].y-bullet.y)<15) {
        //soundHit.play();
-       marks.push(new Mark(bullet.x, bullet.y));
        bullet=null;
      }
    }
 
-   // dead tank hit by ai tank
 
+   // dead tank hit by ai tank
    for(var i = 0; i < kills.length; i++) {
      if(aiBullet!=null && Math.abs(kills[i].x-aiBullet.x)<15 && Math.abs(kills[i].y-aiBullet.y)<15) {
        //soundHit.play();
-       marks.push(new Mark(aiBullet.x, aiBullet.y));
        aiBullet=null;
      }
    }
@@ -524,20 +484,15 @@ function updateGameArea() {
    aiPreviousX=aiBody.x;
    aiPreviousY=aiBody.y;
 
-   // drawing kills
+   // drawing killed tanks
    for(var i = 0; i < kills.length; i++) {
      kills[i].update();
    }
 
-   // drawing marks for dead tanks
-   for(var i = 0; i < marks.length; i++) {
-     marks[i].update();
-   }
 
    // drawing ai
    aiTower.x=aiBody.x;
    aiTower.y=aiBody.y;
-
 
    aiBody.newPos();
    aiTower.newPos();
@@ -545,12 +500,7 @@ function updateGameArea() {
      aiBullet.newPos();
    }
 
-
    aiBody.update();
-   // drawing marks after bullets for ai tank
-   for(var i = 0; i < aiMarks.length; i++) {
-     aiMarks[i].update();
-   }
    aiTower.update();
 
    if(aiBullet!=null){
@@ -565,10 +515,8 @@ function updateGameArea() {
    if(bullet!=null){
      bullet.newPos();
    }
+
    body.update();
-   for(var i = 0; i < marks.length; i++) {
-     marks[i].update();
-   }
    tower.update();
    if(bullet!=null){
      bullet.update();
