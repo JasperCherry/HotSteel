@@ -27,10 +27,11 @@ var reloadTime = 0;
 var previousX;
 var previousY;
 
+var points = new Array();
 
 // ai tank vars
-var aiBody = new Body(30, 50, "gray", 500, 300);
-var aiTower = new Tower(10, 3, 40, "black", 500, 300);
+var aiBody = new Body(30, 50, "gray", 1050, 300);
+var aiTower = new Tower(10, 3, 40, "black", 1050, 300);
 var aiBullet;
 var aiReloadTime = 250;
 var aiX="none";
@@ -84,7 +85,27 @@ var myGameArea = {
 
 
 
+function Point(x, y) {
 
+    this.color = "red";
+    this.x = x;
+    this.y = y;
+    this.radius = 1;
+    this.update = function() {
+
+
+        // drawing the point
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+}
 
 
 function DeadBody(x, y, angle1, angle2) {
@@ -206,10 +227,13 @@ function Bullet(radius, color, x, y) {
 
     this.reloadTime=0;
     this.radius = radius;
-    this.speed = 15;
+    this.speed = 30;
     this.angle = 0;
     this.x = x;
     this.y = y;
+    this.px = x;
+    this.py = y;
+
     this.update = function() {
         ctx = myGameArea.context;
         ctx.save();
@@ -348,7 +372,7 @@ function updateGameArea() {
     }
 
     if(aiX=="none"&&aiY=="none"){
-      aiX=Math.round(Math.random()*800);
+      aiX=Math.round(Math.random()*1000);
       aiY=Math.round(Math.random()*600);
       aiDestinationAngle=Math.atan2(aiBody.y - aiY, aiBody.x - aiX)+(-90 * Math.PI / 180)+2*Math.PI;
       aiBody.speed=1;
@@ -400,8 +424,8 @@ function updateGameArea() {
     }
 
 
-    // ai shooting
-    if(aiReloadTime>0){
+    // ai shooting and timing
+    if(aiReloadTime>0&&aiBody.x>0&&(aiBody.x<1000&&aiBody.y>0&&aiBody.y<600)){
       aiReloadTime--;
     }
 
@@ -412,15 +436,15 @@ function updateGameArea() {
       aiReloadTime=250;
     }
 
-    // player shooting
+    // player shooting and timing
     if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
       //soundShot.play();
       bullet = new Bullet(2, "red", body.x, body.y);
       bullet.angle = tower.angle;
-
-      // normal shooting
+      // not precision shooting
       //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
       reloadTime=250;
+      points = new Array();
     }
     if(reloadTime>0){
       reloadTime--;
@@ -428,19 +452,55 @@ function updateGameArea() {
 
 
     // ai tank hit
+    if(bullet!=null){
+      var xChecks = new Array();
+      var yChecks = new Array();
+      var xDifference = (bullet.x-bullet.px) / 10;
+      var yDifference = (bullet.y-bullet.py) / 10;
+      for(var i = 0; i < 10; i++) {
+        xChecks.push((i*xDifference)+bullet.px);
+        yChecks.push((i*yDifference)+bullet.py);
+      }
+      for(var i = 0; i < 10; i++) {
+        points.push(new Point(xChecks[i], yChecks[i]));
+        if(Math.abs(xChecks[i]-aiBody.x)<15 && Math.abs(yChecks[i]-aiBody.y)<15){
+          aiBody.hp=aiBody.hp-100;
+          if(aiBody.hp<=0){
+             kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
+             aiBody = new Body(30, 50, "gray", 1050, 300);
+             aiTower = new Tower(10, 3, 40, "black", 1050, 300);
+           }
+        }
+      }
+      // drawing points
+      for(var i = 0; i < points.length; i++) {
+        points[i].update();
+      }
+      bullet.px=bullet.x;
+      bullet.py=bullet.y;
+    }
+
+
+
+/*
    if(bullet!=null && Math.abs(bullet.x-aiBody.x)<15 && Math.abs(bullet.y-aiBody.y)<15) {
      //soundHitAi.play();
     aiBody.hp=aiBody.hp-100;
     if(aiBody.hp<=0){
        kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
-       aiBody = new Body(30, 50, "gray", 500, 300);
-       aiTower = new Tower(10, 3, 40, "black", 500, 300);
+       aiBody = new Body(30, 50, "gray", 1050, 300);
+       aiTower = new Tower(10, 3, 40, "black", 1050, 300);
      }
-     aiReloadTime = 250;
+
+
      aiX="none";
      aiY="none";
      bullet=null;
    }
+*/
+
+
+
 
    // player tank hit
    if(aiBullet!=null && Math.abs(aiBullet.x-body.x)<15 && Math.abs(aiBullet.y-body.y)<15) {
@@ -452,7 +512,6 @@ function updateGameArea() {
        tower = new Tower(10, 3, 40, "black", 100, 300);
      }
 
-     reloadTime = 0;
      aiBullet=null;
    }
 
@@ -488,6 +547,8 @@ function updateGameArea() {
    for(var i = 0; i < kills.length; i++) {
      kills[i].update();
    }
+
+
 
 
    // drawing ai
