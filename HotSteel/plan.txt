@@ -6,7 +6,7 @@ to do:
 
 
 
-
+hit detection closer
 
 
 ai aiming (double check with straight line)

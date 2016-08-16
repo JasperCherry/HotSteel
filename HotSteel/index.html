@@ -21,6 +21,7 @@ var bullet;
 var reloadTime = 0;
 var previousX;
 var previousY;
+var marks = new Array();
 
 
 var aiBody = new Body(30, 50, "gray", 500, 300);
@@ -35,9 +36,11 @@ var shotReady=false;
 var aiPreviousX;
 var aiPreviousY;
 
+
+var aiMarks = new Array();
+
 var kills = new Array();
 var marks = new Array();
-var aiMarks = new Array();
 
 //var soundShot = new Audio("shot.mp3");
 //var soundShotAi = new Audio("shot.mp3");
@@ -78,29 +81,18 @@ var myGameArea = {
 function movingMark(x, y) {
 
     this.radius = 2;
-
-
     this.x = x;
     this.y = y;
     this.bulletAngle=Math.atan2(aiBody.x - this.x, aiBody.y - this.y)+(-90 * Math.PI / 180);
 
-
-
-
     this.update = function() {
-
-
 
       ctx = myGameArea.context;
       ctx.save();
 
-
-
       this.bulletAngle=this.bulletAngle + aiBody.moveAngle*Math.PI / 180;
-
       ctx.translate(aiBody.x, aiBody.y);
       ctx.rotate(this.bulletAngle);
-
       this.x += aiBody.speed * Math.sin(aiBody.angle);
       this.y -= aiBody.speed * Math.cos(aiBody.angle);
       ctx.translate(aiBody.x-this.x, aiBody.y-this.y);
@@ -109,7 +101,6 @@ function movingMark(x, y) {
       ctx.fillStyle = "red";
       ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
       ctx.closePath();
-
       ctx.fill();
       ctx.restore();
       }
@@ -230,12 +221,12 @@ function Tower(radius, width, height, color, x, y) {
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
-        ctx.restore();
+        //ctx.restore();
 
         // drawing the barrel
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
+        //ctx = myGameArea.context;
+        //ctx.save();
+        //ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.translate(0, -20);
         ctx.fillStyle = color;
@@ -248,29 +239,6 @@ function Tower(radius, width, height, color, x, y) {
     }
 }
 
-/*
-function Tower(radius, color, x, y) {
-
-    this.radius = radius;
-    this.speed = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-    }
-    this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
-    }
-}
-*/
 
 
 function Bullet(radius, color, x, y) {
@@ -521,11 +489,13 @@ function updateGameArea() {
        tower = new Tower(3, 40, "black", 100, 300);
      }
 
+     marks.push(new movingMark(aiBullet.x, aiBullet.y));
      reloadTime = 0;
      aiBullet=null;
    }
 
    // dead tank hit by player
+
    for(var i = 0; i < kills.length; i++) {
      if(bullet!=null && Math.abs(kills[i].x-bullet.x)<15 && Math.abs(kills[i].y-bullet.y)<15) {
        //soundHit.play();
@@ -577,16 +547,17 @@ function updateGameArea() {
 
 
    aiBody.update();
+   // drawing marks after bullets for ai tank
+   for(var i = 0; i < aiMarks.length; i++) {
+     aiMarks[i].update();
+   }
    aiTower.update();
 
    if(aiBullet!=null){
      aiBullet.update();
    }
 
-   // drawing marks after bullets for ai tank
-   for(var i = 0; i < aiMarks.length; i++) {
-     aiMarks[i].update();
-   }
+
 
    // drawing player
    body.newPos();
@@ -595,6 +566,9 @@ function updateGameArea() {
      bullet.newPos();
    }
    body.update();
+   for(var i = 0; i < marks.length; i++) {
+     marks[i].update();
+   }
    tower.update();
    if(bullet!=null){
      bullet.update();
