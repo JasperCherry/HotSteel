@@ -23,7 +23,7 @@ canvas {
 var body = new Body("green", 100, 300);
 var tower = new Tower(10, 3, 40, "black", 100, 300);
 var bullet;
-var reloadTime = 0;
+var reloadTime = 250;
 var reloadTimeM = 0;
 var previousX;
 var previousY;
@@ -242,8 +242,6 @@ function MgBullet(x, y, angle) {
     this.angle = angle;
     this.x = x;
     this.y = y;
-    this.px = x;
-    this.py = y;
 
     this.update = function() {
         ctx = myGameArea.context;
@@ -269,7 +267,7 @@ function updateGameArea() {
 
     myGameArea.clear();
 
-    ///////////////////////////////////////////////////////////////////////////// player tank
+///////////////////////////////////////////////////////////////////////////// player tank
     body.moveAngle = 0;
     body.speed = 0;
     tower.moveAngle = 0;
@@ -346,16 +344,115 @@ function updateGameArea() {
       tower.moveAngle = 0;
     }
 
+    // player shooting and timing
+
+    // main gun
+    if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
+      //soundShot.play();
+      bullet = new Bullet(
+      body.x+(40 * Math.sin(tower.angle)),
+      body.y-(40 * Math.cos(tower.angle)),
+      tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180));
+      // not precision shooting
+      //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
+      reloadTime=250;
+    }
+    if(reloadTime>0){
+      reloadTime--;
+    }
+
+    // player main gun bullet deleting
+    if(bullet!=null){
+      if(Math.abs(bullet.x-body.x)>2000 || Math.abs(bullet.y-body.y)>2000){
+        bullet=null;
+      }
+    }
+
+    // machinegun
+    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0){
+      mgBullets.push(new MgBullet(
+      body.x+(25 * Math.sin(body.angle))+ 7 * (Math.sin(body.angle+90 * Math.PI / 180)),
+      body.y-(25 * Math.cos(body.angle))- 7 * (Math.cos(body.angle+90 * Math.PI / 180)),
+      body.angle + ((Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      reloadTimeM=8;
+    }
+    if(reloadTimeM>0){
+      reloadTimeM--;
+    }
+
+    // player machinegun bullet deleting
+    for(var i = 0; i < mgBullets.length; i++) {
+      if(Math.abs(mgBullets[i].x-body.x)>2000 || Math.abs(mgBullets[i].y-body.y)>2000){
+        mgBullets.splice(i,i+1);
+      }
+    }
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////// ai tank
+    // gun
+    // detection if player hits  ai tank
+    if(bullet!=null){
+      var xChecks = new Array();
+      var yChecks = new Array();
+      var xDifference = (bullet.x-bullet.px) / 10;
+      var yDifference = (bullet.y-bullet.py) / 10;
+      for(var i = 0; i < 10; i++) {
+        xChecks.push((i*xDifference)+bullet.px);
+        yChecks.push((i*yDifference)+bullet.py);
+      }
+      for(var i = 0; i < 10; i++) {
+        if(Math.abs(xChecks[i]-aiBody.x)<15 && Math.abs(yChecks[i]-aiBody.y)<15){
+          aiBody.hp=aiBody.hp-50;
+          bullet=null;
+          break;
+        }
+      }
+      if(bullet!=null){
+        bullet.px=bullet.x;
+        bullet.py=bullet.y;
+      }
+    }
+
+   // dead tank hit by player
+   for(var i = 0; i < kills.length; i++) {
+     if(bullet!=null && Math.abs(kills[i].x-bullet.x)<15 && Math.abs(kills[i].y-bullet.y)<15) {
+       //soundHit.play();
+       bullet=null;
+     }
+   }
+
+   // machinegun
+   // detection if player hits  ai tank
+   for(var i = 0; i < mgBullets.length; i++) {
+     if(Math.abs(mgBullets[i].x-aiBody.x)<15 && Math.abs(mgBullets[i].y-aiBody.y)<15){
+       mgBullets.splice(i,1);
+       aiBody.hp=aiBody.hp-5;
+     }
+   }
+   // detection if player hits dead tank // DO POPRAWKI
+   for(var j = 0; j < kills.length; j++) {
+    for(var i = 0; i < mgBullets.length; i++) {
+     if(Math.abs(mgBullets[i].x-kills[j].x)<15 && Math.abs(mgBullets[i].y-kills[j].y)<15){
+        mgBullets.splice(i,1);
+     }
+    }
+   }
+
+   // kill detection
+   if(aiBody.hp<=0){
+      kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
+      aiBody = new Body("gray", 1050, 300);
+      aiTower = new Tower(10, 3, 40, "black", 1050, 300);
+      aiX="none";
+      aiY="none";
+    }
+console.log(aiBody.hp);
+///////////////////////////////////////////////////////////////////////////////////////////////// ai tank
 
     // movement
     aiBody.moveAngle = 0;
     aiBody.speed = 0;
     aiTower.moveAngle = 0;
     aiTower.speed = 0;
-
 
     // touching dead tanks by ai tank
      for(var i = 0; i < kills.length; i++) {
@@ -409,16 +506,9 @@ function updateGameArea() {
     ctx.fillRect(20 / -2, 20 / -2, 20, 20);
     ctx.restore();
 */
-//console.log(Math.abs(aiDestinationAngle));
-
-
-
-
-    //////////////////////////////////////////////////////////////// shooting and hits
 
     // ai moving the tower
     aiTargetAngle=Math.atan2(aiBody.y - body.y, aiBody.x - body.x)+(-90 * Math.PI / 180);
-
 
     if(Math.abs(aiTower.angle-aiTargetAngle)<0.03){
       aiTower.angle=aiTargetAngle;
@@ -432,7 +522,6 @@ function updateGameArea() {
       }
     }
 
-
     // ai shooting and timing
 
     // main gun
@@ -445,6 +534,7 @@ function updateGameArea() {
       aiTower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180));
       aiReloadTime=250;
     }
+
     // ai main gun bullet deleting
     if(aiBullet!=null){
       if(Math.abs(aiBullet.x-aiBody.x)>2000 || Math.abs(aiBullet.y-aiBody.y)>2000){
@@ -452,69 +542,7 @@ function updateGameArea() {
       }
     }
 
-
-    // player shooting and timing
-
-    // main gun
-    if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
-      //soundShot.play();
-      bullet = new Bullet(body.x+(40 * Math.sin(tower.angle)), body.y-(40 * Math.cos(tower.angle)), tower.angle);
-      // not precision shooting
-      //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
-      reloadTime=250;
-    }
-    if(reloadTime>0){
-      reloadTime--;
-    }
-    // player main gun bullet deleting
-    if(bullet!=null){
-      if(Math.abs(bullet.x-body.x)>2000 || Math.abs(bullet.y-body.y)>2000){
-        bullet=null;
-      }
-    }
-
-    // machinegun
-    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0){
-      mgBullets.push(new MgBullet(
-      body.x+(25 * Math.sin(body.angle))+ 7 * (Math.sin(body.angle+90 * Math.PI / 180)),
-      body.y-(25 * Math.cos(body.angle))- 7 * (Math.cos(body.angle+90 * Math.PI / 180)),
-      body.angle + ((Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
-      reloadTimeM=10;
-    }
-    if(reloadTimeM>0){
-      reloadTimeM--;
-    }
-
-
-
-
-
-    // ai tank hit
-    if(bullet!=null){
-      var xChecks = new Array();
-      var yChecks = new Array();
-      var xDifference = (bullet.x-bullet.px) / 10;
-      var yDifference = (bullet.y-bullet.py) / 10;
-      for(var i = 0; i < 10; i++) {
-        xChecks.push((i*xDifference)+bullet.px);
-        yChecks.push((i*yDifference)+bullet.py);
-      }
-      for(var i = 0; i < 10; i++) {
-        if(Math.abs(xChecks[i]-aiBody.x)<15 && Math.abs(yChecks[i]-aiBody.y)<15){
-          aiBody.hp=aiBody.hp-100;
-          bullet=null;
-          if(aiBody.hp<=0){
-             kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
-             aiBody = new Body("gray", 1050, 300);
-             aiTower = new Tower(10, 3, 40, "black", 1050, 300);
-           }
-        }
-      }
-      bullet.px=bullet.x;
-      bullet.py=bullet.y;
-    }
-
-    // player tank hit
+    // detection if ai hits player tank
     if(aiBullet!=null){
       var xChecks = new Array();
       var yChecks = new Array();
@@ -526,28 +554,16 @@ function updateGameArea() {
       }
       for(var i = 0; i < 10; i++) {
         if(Math.abs(xChecks[i]-body.x)<15 && Math.abs(yChecks[i]-body.y)<15){
-          body.hp=body.hp-100;
+          body.hp=body.hp-50;
           aiBullet=null;
-          if(body.hp<=0){
-             kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
-             body = new Body("green", 100, 300);
-             tower = new Tower(10, 3, 40, "black", 100, 300);
-           }
+          break;
         }
       }
-      aiBullet.px=aiBullet.x;
-      aiBullet.py=aiBullet.y;
+      if(aiBullet!=null){
+        aiBullet.px=aiBullet.x;
+        aiBullet.py=aiBullet.y;
+      }
     }
-
-
-
-   // dead tank hit by player
-   for(var i = 0; i < kills.length; i++) {
-     if(bullet!=null && Math.abs(kills[i].x-bullet.x)<15 && Math.abs(kills[i].y-bullet.y)<15) {
-       //soundHit.play();
-       bullet=null;
-     }
-   }
 
    // dead tank hit by ai tank
    for(var i = 0; i < kills.length; i++) {
@@ -557,6 +573,13 @@ function updateGameArea() {
      }
    }
 
+   // player kill detection
+   if(body.hp<=0){
+      kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
+      body = new Body("green", 100, 300);
+      tower = new Tower(10, 3, 40, "black", 100, 300);
+      reloadTime = 250;
+    }
 
 
    ///////////////////////////////////////////////////////////////////////// drawing

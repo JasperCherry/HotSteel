@@ -6,6 +6,7 @@ machinegun
 
 drawing the bullet is wrong
 
+control of ai movement, goes outside map
 
 
 
