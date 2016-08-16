@@ -24,8 +24,11 @@ var body = new Body("green", 100, 300);
 var tower = new Tower(10, 3, 40, "black", 100, 300);
 var bullet;
 var reloadTime = 0;
+var reloadTimeM = 0;
 var previousX;
 var previousY;
+var mgBullets = new Array();
+
 
 
 // ai tank vars
@@ -200,12 +203,12 @@ function Tower(radius, width, height, color, x, y) {
 
 
 
-function Bullet(x, y) {
+function Bullet(x, y, angle) {
 
     this.reloadTime=0;
     this.radius = 2;
     this.speed = 30;
-    this.angle = 0;
+    this.angle = angle;
     this.x = x;
     this.y = y;
     this.px = x;
@@ -219,6 +222,37 @@ function Bullet(x, y) {
         ctx.beginPath();
         ctx.translate(0, 0);
         ctx.fillStyle = "red";
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+    this.newPos = function() {
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
+
+
+function MgBullet(x, y, angle) {
+
+    this.reloadTime=0;
+    this.radius = 1;
+    this.speed = 15;
+    this.angle = angle;
+    this.x = x;
+    this.y = y;
+    this.px = x;
+    this.py = y;
+
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.translate(0, 0);
+        ctx.fillStyle = "black";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
@@ -400,22 +434,31 @@ function updateGameArea() {
 
 
     // ai shooting and timing
+
+    // main gun
     if(aiReloadTime>0&&aiBody.x>0&&(aiBody.x<1000&&aiBody.y>0&&aiBody.y<600)){
       aiReloadTime--;
     }
     if (aiReloadTime==0&&shotReady){
       //soundShotAi.play();
-      aiBullet = new Bullet(aiBody.x+(40 * Math.sin(aiTower.angle)), aiBody.y-(40 * Math.cos(aiTower.angle)));
-      aiBullet.angle = aiTower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
+      aiBullet = new Bullet(aiBody.x+(40 * Math.sin(aiTower.angle)), aiBody.y-(40 * Math.cos(aiTower.angle)),
+      aiTower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180));
       aiReloadTime=250;
+    }
+    // ai main gun bullet deleting
+    if(aiBullet!=null){
+      if(Math.abs(aiBullet.x-aiBody.x)>2000 || Math.abs(aiBullet.y-aiBody.y)>2000){
+        aiBullet=null;
+      }
     }
 
 
     // player shooting and timing
+
+    // main gun
     if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0){
       //soundShot.play();
-      bullet = new Bullet(body.x+(40 * Math.sin(tower.angle)), body.y-(40 * Math.cos(tower.angle)));
-      bullet.angle = tower.angle;
+      bullet = new Bullet(body.x+(40 * Math.sin(tower.angle)), body.y-(40 * Math.cos(tower.angle)), tower.angle);
       // not precision shooting
       //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
       reloadTime=250;
@@ -423,7 +466,6 @@ function updateGameArea() {
     if(reloadTime>0){
       reloadTime--;
     }
-
     // player main gun bullet deleting
     if(bullet!=null){
       if(Math.abs(bullet.x-body.x)>2000 || Math.abs(bullet.y-body.y)>2000){
@@ -431,12 +473,21 @@ function updateGameArea() {
       }
     }
 
-    // ai main gun bullet deleting
-    if(aiBullet!=null){
-      if(Math.abs(aiBullet.x-aiBody.x)>2000 || Math.abs(aiBullet.y-aiBody.y)>2000){
-        aiBullet=null;
-      }
+    // machinegun
+    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0){
+      mgBullets.push(new MgBullet(
+      body.x+(25 * Math.sin(body.angle))+ 7 * (Math.sin(body.angle+90 * Math.PI / 180)),
+      body.y-(25 * Math.cos(body.angle))- 7 * (Math.cos(body.angle+90 * Math.PI / 180)),
+      body.angle + ((Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      reloadTimeM=10;
     }
+    if(reloadTimeM>0){
+      reloadTimeM--;
+    }
+
+
+
+
 
     // ai tank hit
     if(bullet!=null){
@@ -451,6 +502,7 @@ function updateGameArea() {
       for(var i = 0; i < 10; i++) {
         if(Math.abs(xChecks[i]-aiBody.x)<15 && Math.abs(yChecks[i]-aiBody.y)<15){
           aiBody.hp=aiBody.hp-100;
+          bullet=null;
           if(aiBody.hp<=0){
              kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
              aiBody = new Body("gray", 1050, 300);
@@ -475,6 +527,7 @@ function updateGameArea() {
       for(var i = 0; i < 10; i++) {
         if(Math.abs(xChecks[i]-body.x)<15 && Math.abs(yChecks[i]-body.y)<15){
           body.hp=body.hp-100;
+          aiBullet=null;
           if(body.hp<=0){
              kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
              body = new Body("green", 100, 300);
@@ -485,21 +538,6 @@ function updateGameArea() {
       aiBullet.px=aiBullet.x;
       aiBullet.py=aiBullet.y;
     }
-
-
-/*
-   // player tank hit
-   if(aiBullet!=null && Math.abs(aiBullet.x-body.x)<15 && Math.abs(aiBullet.y-body.y)<15) {
-     //soundHit.play();
-     body.hp=body.hp-100;
-     if(body.hp<=0){
-       kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
-       body = new Body("green", 100, 300);
-       tower = new Tower(10, 3, 40, "black", 100, 300);
-     }
-     aiBullet=null;
-   }
-*/
 
 
 
@@ -553,19 +591,30 @@ function updateGameArea() {
 
 
    // drawing player
+   // new positions
    body.newPos();
    tower.newPos();
    if(bullet!=null){
      bullet.newPos();
    }
 
+   for(var i = 0; i < mgBullets.length; i++) {
+     mgBullets[i].newPos();
+   }
+
    tower.x=body.x;
    tower.y=body.y;
 
+   // drawing
    body.update();
    tower.update();
+   // drawing main gun bullets
    if(bullet!=null){
      bullet.update();
+   }
+   // drawing machinegun bullets
+   for(var i = 0; i < mgBullets.length; i++) {
+     mgBullets[i].update();
    }
 
 
