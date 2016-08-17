@@ -45,8 +45,10 @@ function DeadBody(x, y, angle1, angle2) {
 }
 
 
-function Body(color, x, y) {
+function Body(color, x, y, image) {
 
+
+    this.img=document.getElementById(image);
 
     this.numMines = 10;
     this.numBullet = 20;
@@ -66,6 +68,9 @@ function Body(color, x, y) {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
+
+        // model body
+        /*
         ctx.fillStyle = color;
         ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
         // back part
@@ -73,8 +78,11 @@ function Body(color, x, y) {
         ctx.fillRect(this.width / -2, this.height / 2, 10, -4);
         ctx.fillRect(this.width / -2 +20, this.height / 2, 10, -4);
         //machinegun
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "blac";
         ctx.fillRect(this.width / -2+21, this.height / -2 , 2, 12);
+        */
+
+        ctx.drawImage(this.img, -20, -30);
         ctx.restore();
     }
     this.newPos = function() {
@@ -86,7 +94,9 @@ function Body(color, x, y) {
 
 
 
-function Tower(radius, width, height, color, x, y) {
+function Tower(radius, width, height, color, x, y, image) {
+
+    this.img=document.getElementById(image);
 
     this.radius = radius;
     this.width = width;
@@ -102,15 +112,21 @@ function Tower(radius, width, height, color, x, y) {
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+
+        // model tower
+        /*
         ctx.beginPath();
         ctx.fillStyle = color;
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
-        ctx.rotate(this.angle);
         ctx.translate(0, -20);
         ctx.fillStyle = color;
         ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+        */
+        ctx.drawImage(this.img, -20, -30);
+
         ctx.restore();
 
     }
@@ -138,7 +154,7 @@ function Bullet(x, y, angle) {
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "yellow";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
@@ -166,7 +182,7 @@ function MgBullet(x, y, angle) {
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "yellow";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();

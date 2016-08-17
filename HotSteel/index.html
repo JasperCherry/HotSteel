@@ -16,14 +16,20 @@ canvas {
 </head>
 <body onload="startGame()">
 
+<img src="rusa.png" id="rusa" style="display: none;">
+<img src="rusb.png" id="rusb" style="display: none;">
+<img src="gera.png" id="gera" style="display: none;">
+<img src="gerb.png" id="gerb" style="display: none;">
+<img src="map1.jpg" id="map1" style="display: none;">
+
 <script src="objects.js"></script>
 
 <script>
 
 
 // player tank vars
-var body = new Body("green", 100, 300);
-var tower = new Tower(10, 3, 40, "black", 100, 300);
+var body = new Body("green", 100, 300, "rusa");
+var tower = new Tower(10, 3, 40, "black", 100, 300, "rusb");
 var reloadTime = 250;
 var reloadTimeM = 0;
 var reloadTimeMine = 50;
@@ -34,8 +40,8 @@ var mgBullets = new Array();
 
 
 // ai tank vars
-var aiBody = new Body("gray", 1050, 300);
-var aiTower = new Tower(10, 3, 40, "black", 1050, 300);
+var aiBody = new Body("gray", 1050, 300, "gera");
+var aiTower = new Tower(10, 3, 40, "black", 1050, 300, "gerb");
 var aiBullet;
 var aiReloadTime = 250;
 var aiReloadTimeM = 0;
@@ -58,6 +64,10 @@ var mines = new Array();
 // area that tanks play at
 fieldMapX=1000;
 fieldMapY=600;
+
+
+
+
 
 
 //var soundShot = new Audio("shot.mp3");
@@ -101,7 +111,6 @@ var myGameArea = {
 
 ///////////////////////////////////// MAIN FUNCTION
 function updateGameArea() {
-
 
 ///////////////////////////////////////////////////////////////////////////// player tank
     body.moveAngle = 0;
@@ -300,8 +309,8 @@ function updateGameArea() {
    // ai kill detection
    if(aiBody.hp<=0){
       kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
-      aiBody = new Body("gray", 1050, 300);
-      aiTower = new Tower(10, 3, 40, "black", 1050, 300);
+      aiBody = new Body("gray", 1050, 300, "gera");
+      aiTower = new Tower(10, 3, 40, "black", 1050, 300, "gerb");
       aiX="none";
       aiY="none";
       aiReloadTime=250;
@@ -519,8 +528,8 @@ function updateGameArea() {
    // player kill detection
    if(body.hp<=0){
       kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
-      body = new Body("green", 100, 300);
-      tower = new Tower(10, 3, 40, "black", 100, 300);
+      body = new Body("green", 100, 300, "rusa");
+      tower = new Tower(10, 3, 40, "black", 100, 300, "rusb");
       reloadTime = 250;
     }
 
@@ -528,6 +537,11 @@ function updateGameArea() {
    ///////////////////////////////////////////////////////////////////////// drawing
 
    myGameArea.clear();
+
+   // drawing the map
+   var ctx = myGameArea.context;
+   var map1=document.getElementById("map1");
+   ctx.drawImage(map1, 0, 0);
 
    // previous positions of tanks
    previousX=body.x;
