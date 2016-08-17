@@ -369,6 +369,11 @@ function updateGameArea() {
     // ai moving the tower
     aiTargetAngle=Math.atan2(aiBody.y - body.y, aiBody.x - body.x)+(-90 * Math.PI / 180);
 
+    // detecting if there is no obstacles on the firing line
+    
+
+
+    // detecting if player tank is aimed
     if(Math.abs(aiTower.angle-aiTargetAngle)<0.03){
       aiTower.angle=aiTargetAngle;
       shotReady=true;
