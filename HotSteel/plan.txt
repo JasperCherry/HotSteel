@@ -2,7 +2,6 @@
 
 to do:
 
-machinegun for ai
 
 mines
 
@@ -58,3 +57,5 @@ damage system:
 tracks - more solid to improve
 
 ai targeting system
+
+advanced kill moments

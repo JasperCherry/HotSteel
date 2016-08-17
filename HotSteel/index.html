@@ -37,13 +37,16 @@ var aiBody = new Body("gray", 1050, 300);
 var aiTower = new Tower(10, 3, 40, "black", 1050, 300);
 var aiBullet;
 var aiReloadTime = 250;
+var aiReloadTimeM = 0;
 var aiX="none";
 var aiY="none";
 var aiDestinationAngle="none";
 var aiTargetAngle;
 var shotReady=false;
+var mgShotReady=false;
 var aiPreviousX;
 var aiPreviousY;
+var aiMgBullets = new Array();
 
 
 // map vars
@@ -268,7 +271,7 @@ function updateGameArea() {
     }
    }
 
-   // kill detection
+   // ai kill detection
    if(aiBody.hp<=0){
       kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
       aiBody = new Body("gray", 1050, 300);
@@ -374,6 +377,36 @@ function updateGameArea() {
       }
     }
 
+    // ai tank machinegun
+    // targeting player tank for mg
+    if( (Math.abs(body.x-aiBody.x)<400 && Math.abs(body.y-aiBody.y)<400)
+    && ( (Math.round((aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(aiBody.angle * 3) / 3) )
+    ){
+      mgShotReady=true;
+    }else{
+      mgShotReady=false;
+    }
+    // firing mg
+    if (aiReloadTimeM==0 && aiBody.numMgBullets>0 && mgShotReady){
+      aiBody.numMgBullets--;
+      aiMgBullets.push(new MgBullet(
+      aiBody.x+(25 * Math.sin(aiBody.angle))+ 7 * (Math.sin(aiBody.angle+90 * Math.PI / 180)),
+      aiBody.y-(25 * Math.cos(aiBody.angle))- 7 * (Math.cos(aiBody.angle+90 * Math.PI / 180)),
+      aiBody.angle + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      aiReloadTimeM=8;
+    }
+    if(aiReloadTimeM>0){
+      aiReloadTimeM--;
+    }
+
+    // ai machinegun bullet deleting
+    for(var i = 0; i < aiMgBullets.length; i++) {
+      if(Math.abs(aiMgBullets[i].x-aiBody.x)>2000 || Math.abs(aiMgBullets[i].y-aiBody.y)>2000){
+        aiMgBullets.splice(i,i+1);
+      }
+    }
+
+    // main gun
     // detection if ai hits player tank
     if(aiBullet!=null){
       var xChecks = new Array();
@@ -396,13 +429,29 @@ function updateGameArea() {
         aiBullet.py=aiBullet.y;
       }
     }
-
    // dead tank hit by ai tank
    for(var i = 0; i < kills.length; i++) {
      if(aiBullet!=null && Math.abs(kills[i].x-aiBullet.x)<15 && Math.abs(kills[i].y-aiBullet.y)<15) {
        //soundHit.play();
        aiBullet=null;
      }
+   }
+
+   // machinegun
+   // detection if ai hits  dead tank
+   for(var i = 0; i < aiMgBullets.length; i++) {
+     if(Math.abs(aiMgBullets[i].x-body.x)<15 && Math.abs(aiMgBullets[i].y-body.y)<15){
+       aiMgBullets.splice(i,1);
+       body.hp=body.hp-5;
+     }
+   }
+   // detection if ai hits dead tank
+   for(var j = 0; j < kills.length; j++) {
+    for(var i = 0; i < aiMgBullets.length; i++) {
+     if(Math.abs(aiMgBullets[i].x-kills[j].x)<15 && Math.abs(aiMgBullets[i].y-kills[j].y)<15){
+        aiMgBullets.splice(i,1);
+     }
+    }
    }
 
    // player kill detection
@@ -430,11 +479,14 @@ function updateGameArea() {
    }
 
 
-   // drawing ai
+   ///////////////////////////////////////////// drawing ai
    aiBody.newPos();
    aiTower.newPos();
    if(aiBullet!=null){
      aiBullet.newPos();
+   }
+   for(var i = 0; i < aiMgBullets.length; i++) {
+     aiMgBullets[i].newPos();
    }
 
    aiTower.x=aiBody.x;
@@ -445,16 +497,18 @@ function updateGameArea() {
    if(aiBullet!=null){
      aiBullet.update();
    }
+   for(var i = 0; i < aiMgBullets.length; i++) {
+     aiMgBullets[i].update();
+   }
 
 
-   // drawing player
+   ///////////////////////////////// drawing player
    // new positions
    body.newPos();
    tower.newPos();
    if(bullet!=null){
      bullet.newPos();
    }
-
    for(var i = 0; i < mgBullets.length; i++) {
      mgBullets[i].newPos();
    }
@@ -489,18 +543,19 @@ function updateGameArea() {
    ctx.fillText("Cannon ammo",110,620);
    ctx.fillText(body.numBullet,110,645);
    if(reloadTime==0){
+     ctx.fillStyle = "red";
      ctx.fillText("ready",160,645);
    }else{
+     ctx.fillStyle = "white";
      ctx.fillText("loading",160,645);
    }
 
-
+   ctx.fillStyle = "white";
    ctx.fillText("MG ammo",260,620);
    ctx.fillText(body.numMgBullets,260,645);
 
    ctx.fillText("Enemy HP",895,620);
    ctx.fillText(aiBody.hp,895,645);
-
 
 
 }
