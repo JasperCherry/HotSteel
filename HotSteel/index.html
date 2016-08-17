@@ -44,6 +44,8 @@ var aiY="none";
 var aiDestinationAngle="none";
 var aiTargetAngle;
 var shotReady=false;
+var shotReady2=false;
+var shotReadyTimer=10;
 var mgShotReady=false;
 var aiPreviousX;
 var aiPreviousY;
@@ -366,12 +368,11 @@ function updateGameArea() {
     ctx.restore();
 */
 
+
+    // ai shooting and timing
+
     // ai moving the tower
     aiTargetAngle=Math.atan2(aiBody.y - body.y, aiBody.x - body.x)+(-90 * Math.PI / 180);
-
-    // detecting if there is no obstacles on the firing line
-    
-
 
     // detecting if player tank is aimed
     if(Math.abs(aiTower.angle-aiTargetAngle)<0.03){
@@ -386,7 +387,30 @@ function updateGameArea() {
       }
     }
 
-    // ai shooting and timing
+    // detecting if there is no obstacles on the firing line
+    var xChecksPath = new Array();
+    var yChecksPath = new Array();
+    var xDifferencePath = (aiBody.x-body.x)/200;
+    var yDifferencePath = (aiBody.y-body.y)/200;
+    for(var i=0; i < 200 ; i++){
+      xChecksPath.push((i*xDifferencePath)+body.x);
+      yChecksPath.push((i*yDifferencePath)+body.y);
+    }
+    for(var j=0 ; j < kills.length ; j++){
+      for(var i=0 ; i < 200 ; i++){
+        if(Math.abs(xChecksPath[i]-kills[j].x)<15 && Math.abs(yChecksPath[i]-kills[j].y)<15){
+          shotReady=false;
+        }
+      }
+    }
+    // if line of fire was ok 1/5 sec ago and now still is -> fire
+    if(shotReadyTimer==0){
+      shotReady2=shotReady;
+      shotReadyTimer=25;
+    }else{
+      shotReadyTimer--;
+    }
+
 
     // mines
     // detection if ai tank is on the mine and trigering it
@@ -401,7 +425,7 @@ function updateGameArea() {
     if(aiReloadTime>0&&aiBody.x>0&&(aiBody.x<1000&&aiBody.y>0&&aiBody.y<600)){
       aiReloadTime--;
     }
-    if (aiReloadTime==0&&shotReady){
+    if (aiReloadTime==0&&shotReady&&shotReady2){
       //soundShotAi.play();
       aiBullet = new Bullet(aiBody.x+(40 * Math.sin(aiTower.angle)), aiBody.y-(40 * Math.cos(aiTower.angle)),
       aiTower.angle+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180));
@@ -573,7 +597,6 @@ function updateGameArea() {
 
 
    // drawing informations about current game
-   ctx = myGameArea.context;
 
    ctx.fillStyle ="black";
    ctx.fillRect( 0, 600, 1000, 50);

@@ -5,10 +5,11 @@ to do:
 
 
 
-smoke
+
+smoke // cannot target player tank , and player cannot target enemies as well. no idea yet how
 
 
-ai aiming (double check with straight line)
+
 
 ///////////////////////////////////////////
 
@@ -39,23 +40,12 @@ deadly power of shot
 
 
 
-// advanced
+// advanced // extra option
 
 proper tower following tank
 
 proper colision detection
 
 
-
-
-smoke // cannot target player tank , and player cannot target enemies as well. no idea yet how
-
-
-damage system:
--track - short repair
-
-tracks - more solid to improve
-
-ai targeting system
 
 advanced kill moments

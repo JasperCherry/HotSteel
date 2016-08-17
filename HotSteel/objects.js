@@ -73,7 +73,7 @@ function Body(color, x, y) {
         ctx.fillRect(this.width / -2, this.height / 2, 10, -4);
         ctx.fillRect(this.width / -2 +20, this.height / 2, 10, -4);
         //machinegun
-        ctx.fillStyle = "blac";
+        ctx.fillStyle = "black";
         ctx.fillRect(this.width / -2+21, this.height / -2 , 2, 12);
         ctx.restore();
     }
