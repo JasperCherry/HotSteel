@@ -47,9 +47,13 @@ function DeadBody(x, y, angle1, angle2) {
 
 function Body(color, x, y) {
 
+
+    this.numMines = 10;
     this.numBullet = 20;
     this.numMgBullets = 200;
+
     this.hp = 100;
+
     this.width = 30;
     this.height = 50;
     this.speed = 0;
@@ -119,7 +123,6 @@ function Tower(radius, width, height, color, x, y) {
 
 function Bullet(x, y, angle) {
 
-    this.reloadTime=0;
     this.radius = 2;
     this.speed = 30;
     this.angle = angle;
@@ -150,7 +153,6 @@ function Bullet(x, y, angle) {
 
 function MgBullet(x, y, angle) {
 
-    this.reloadTime=0;
     this.radius = 1;
     this.speed = 15;
     this.angle = angle;
@@ -174,4 +176,26 @@ function MgBullet(x, y, angle) {
         this.x += this.speed * Math.sin(this.angle);
         this.y -= this.speed * Math.cos(this.angle);
     }
+}
+
+function Mine(x, y) {
+
+    this.radius = 6;
+    this.x = x;
+    this.y = y;
+
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.translate(0, 0);
+        ctx.fillStyle = "black";
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+
 }

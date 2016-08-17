@@ -26,6 +26,7 @@ var body = new Body("green", 100, 300);
 var tower = new Tower(10, 3, 40, "black", 100, 300);
 var reloadTime = 250;
 var reloadTimeM = 0;
+var reloadTimeMine = 50;
 var previousX;
 var previousY;
 var bullet;
@@ -51,6 +52,7 @@ var aiMgBullets = new Array();
 
 // map vars
 var kills = new Array();
+var mines = new Array();
 // area that tanks play at
 fieldMapX=1000;
 fieldMapY=600;
@@ -177,6 +179,28 @@ function updateGameArea() {
     }
 
     // player shooting and timing
+
+    // setting up mines
+    if(reloadTimeMine>0){
+      reloadTimeMine--;
+    }
+    if (myGameArea.keys && myGameArea.keys[71] && body.numMines>0 && reloadTimeMine==0){
+      mines.push(new Mine(
+      body.x-(35 * Math.sin(body.angle)),
+      body.y+(35 * Math.cos(body.angle))
+      ));
+      body.numMines--;
+      reloadTimeMine=50;
+    }
+
+    // mines
+    // detection if player tank is on the mine and trigering it
+    for(var i = 0; i < mines.length; i++) {
+      if(Math.abs(mines[i].x-body.x)<15 && Math.abs(mines[i].y-body.y)<15){
+        body.hp=body.hp-100;
+        mines.splice(i,1);
+      }
+    }
 
     // main gun
     if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0 && body.numBullet>0){
@@ -359,6 +383,15 @@ function updateGameArea() {
 
     // ai shooting and timing
 
+    // mines
+    // detection if ai tank is on the mine and trigering it
+    for(var i = 0; i < mines.length; i++) {
+      if(Math.abs(mines[i].x-aiBody.x)<15 && Math.abs(mines[i].y-aiBody.y)<15){
+        aiBody.hp=aiBody.hp-100;
+        mines.splice(i,1);
+      }
+    }
+
     // main gun
     if(aiReloadTime>0&&aiBody.x>0&&(aiBody.x<1000&&aiBody.y>0&&aiBody.y<600)){
       aiReloadTime--;
@@ -473,6 +506,11 @@ function updateGameArea() {
    aiPreviousX=aiBody.x;
    aiPreviousY=aiBody.y;
 
+   // mines
+   for(var i = 0; i < mines.length; i++) {
+     mines[i].update();
+   }
+
    // drawing killed tanks
    for(var i = 0; i < kills.length; i++) {
      kills[i].update();
@@ -553,6 +591,9 @@ function updateGameArea() {
    ctx.fillStyle = "white";
    ctx.fillText("MG ammo",260,620);
    ctx.fillText(body.numMgBullets,260,645);
+
+   ctx.fillText("Mines",370,620);
+   ctx.fillText(body.numMines,370,645);
 
    ctx.fillText("Enemy HP",895,620);
    ctx.fillText(aiBody.hp,895,645);

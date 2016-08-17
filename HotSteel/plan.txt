@@ -3,10 +3,12 @@
 to do:
 
 
-mines
+
 
 smoke
 
+
+ai aiming (double check with straight line)
 
 ///////////////////////////////////////////
 
@@ -43,8 +45,6 @@ proper tower following tank
 
 proper colision detection
 
-
-ai aiming (double check with straight line)
 
 
 
