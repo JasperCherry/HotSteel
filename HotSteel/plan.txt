@@ -5,9 +5,14 @@ to do:
 
 
 
+smoke cover // cannot target player tank , and player cannot target enemies as well. no idea yet how
 
-smoke // cannot target player tank , and player cannot target enemies as well. no idea yet how
 
+mine graphics and explosion
+
+sounds:
+-shot mg and cannon
+-hit
 
 
 
@@ -15,13 +20,7 @@ smoke // cannot target player tank , and player cannot target enemies as well. n
 
 
 
-graphics, pictures
-
-sound effects
-
-
-
-
+Menu
 
 
 tank improvements / parts :
@@ -45,7 +44,5 @@ deadly power of shot
 proper tower following tank
 
 proper colision detection
-
-
 
 advanced kill moments

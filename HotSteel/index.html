@@ -16,11 +16,49 @@ canvas {
 </head>
 <body onload="startGame()">
 
-<img src="rusa.png" id="rusa" style="display: none;">
-<img src="rusb.png" id="rusb" style="display: none;">
-<img src="gera.png" id="gera" style="display: none;">
-<img src="gerb.png" id="gerb" style="display: none;">
-<img src="map1.jpg" id="map1" style="display: none;">
+<img src="tanks/rusa.png" id="rusa" style="display: none;">
+<img src="tanks/rusb.png" id="rusb" style="display: none;">
+<img src="tanks/gera.png" id="gera" style="display: none;">
+<img src="tanks/gerb.png" id="gerb" style="display: none;">
+
+
+<img src="wrecks/rusaw.png" id="rusaw" style="display: none;">
+<img src="wrecks/rusbw.png" id="rusbw" style="display: none;">
+<img src="wrecks/geraw.png" id="geraw" style="display: none;">
+<img src="wrecks/gerbw.png" id="gerbw" style="display: none;">
+
+
+<img src="fire/loop/l0.png" id="l0" style="display: none;">
+<img src="fire/loop/l1.png" id="l1" style="display: none;">
+<img src="fire/loop/l2.png" id="l2" style="display: none;">
+<img src="fire/loop/l3.png" id="l3" style="display: none;">
+<img src="fire/loop/l4.png" id="l4" style="display: none;">
+<img src="fire/loop/l5.png" id="l5" style="display: none;">
+<img src="fire/loop/l6.png" id="l6" style="display: none;">
+<img src="fire/loop/l7.png" id="l7" style="display: none;">
+<img src="fire/loop/l8.png" id="l8" style="display: none;">
+<img src="fire/loop/l9.png" id="l9" style="display: none;">
+
+
+<img src="fire/start/s0.png" id="s0" style="display: none;">
+<img src="fire/start/s1.png" id="s1" style="display: none;">
+<img src="fire/start/s2.png" id="s2" style="display: none;">
+<img src="fire/start/s3.png" id="s3" style="display: none;">
+<img src="fire/start/s4.png" id="s4" style="display: none;">
+<img src="fire/start/s5.png" id="s5" style="display: none;">
+<img src="fire/start/s6.png" id="s6" style="display: none;">
+<img src="fire/start/s7.png" id="s7" style="display: none;">
+
+<img src="fire/end/e0.png" id="e0" style="display: none;">
+<img src="fire/end/e1.png" id="e1" style="display: none;">
+<img src="fire/end/e2.png" id="e2" style="display: none;">
+<img src="fire/end/e3.png" id="e3" style="display: none;">
+<img src="fire/end/e4.png" id="e4" style="display: none;">
+<img src="fire/end/e5.png" id="e5" style="display: none;">
+
+
+<img src="maps/map1.jpg" id="map1" style="display: none;">
+
 
 <script src="objects.js"></script>
 
@@ -28,8 +66,8 @@ canvas {
 
 
 // player tank vars
-var body = new Body("green", 100, 300, "rusa");
-var tower = new Tower(10, 3, 40, "black", 100, 300, "rusb");
+var body = new Body("green", 100, 300, rusa);
+var tower = new Tower(10, 3, 40, "black", 100, 300, rusb);
 var reloadTime = 250;
 var reloadTimeM = 0;
 var reloadTimeMine = 50;
@@ -40,8 +78,8 @@ var mgBullets = new Array();
 
 
 // ai tank vars
-var aiBody = new Body("gray", 1050, 300, "gera");
-var aiTower = new Tower(10, 3, 40, "black", 1050, 300, "gerb");
+var aiBody = new Body("gray", 1050, 300, gera);
+var aiTower = new Tower(10, 3, 40, "black", 1050, 300, gerb);
 var aiBullet;
 var aiReloadTime = 250;
 var aiReloadTimeM = 0;
@@ -60,11 +98,11 @@ var aiMgBullets = new Array();
 
 // map vars
 var kills = new Array();
+var killsFire = new Array();
 var mines = new Array();
 // area that tanks play at
 fieldMapX=1000;
 fieldMapY=600;
-
 
 
 
@@ -308,9 +346,10 @@ function updateGameArea() {
 
    // ai kill detection
    if(aiBody.hp<=0){
-      kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle));
-      aiBody = new Body("gray", 1050, 300, "gera");
-      aiTower = new Tower(10, 3, 40, "black", 1050, 300, "gerb");
+      kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle, geraw, gerbw));
+      killsFire.push(new DeadBodyFire(aiBody.x, aiBody.y));
+      aiBody = new Body("gray", 1050, 300, gera);
+      aiTower = new Tower(10, 3, 40, "black", 1050, 300, gerb);
       aiX="none";
       aiY="none";
       aiReloadTime=250;
@@ -527,9 +566,10 @@ function updateGameArea() {
 
    // player kill detection
    if(body.hp<=0){
-      kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle));
-      body = new Body("green", 100, 300, "rusa");
-      tower = new Tower(10, 3, 40, "black", 100, 300, "rusb");
+      kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle, rusaw, rusbw));
+      killsFire.push(new DeadBodyFire(body.x, body.y));
+      body = new Body("green", 100, 300, rusa);
+      tower = new Tower(10, 3, 40, "black", 100, 300, rusb);
       reloadTime = 250;
     }
 
@@ -609,6 +649,13 @@ function updateGameArea() {
      mgBullets[i].update();
    }
 
+
+   ////////////////////////////////////// drawing smoke and fire effects
+
+   // fire at dead tanks
+   for(var i = 0; i < killsFire.length; i++) {
+     killsFire[i].update();
+   }
 
    // drawing informations about current game
 
