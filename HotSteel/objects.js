@@ -47,7 +47,6 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTimeMine = 0;
 
   this.newPos = function() {
-      // contol
 
       // start position zeroing
       this.moveAngleB = 0;
@@ -90,6 +89,20 @@ function PTank(x,y,imgB,imgT) {
       }
       if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
         this.moveAngleT = 0;
+      }
+
+      // map control
+      if(this.x>=fieldMapX){
+        this.x-=2;
+      }
+      if(this.x<=0){
+        this.x+=2;
+      }
+      if(this.y>=fieldMapY){
+        this.y-=2;
+      }
+      if(this.y<=0){
+        this.y+=2;
       }
 
       // touching dead tanks by player
@@ -139,13 +152,6 @@ function PTank(x,y,imgB,imgT) {
         this.reloadTime--;
       }
 
-      // player main gun bullet deleting
-      if(bulletP!=null){
-        if(Math.abs(bulletP.x-this.x)>2000 || Math.abs(bulletP.y-this.y)>2000){
-          bulletP=null;
-        }
-      }
-
       // machinegun
       if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeM==0 && this.numMgBullets>0){
         this.numMgBullets--;
@@ -157,13 +163,6 @@ function PTank(x,y,imgB,imgT) {
       }
       if(this.reloadTimeM>0){
         this.reloadTimeM--;
-      }
-
-      // player machinegun bullet deleting
-      for(var i = 0; i < mgBulletsP.length; i++) {
-        if(Math.abs(mgBulletsP[i].x-this.x)>2000 || Math.abs(mgBulletsP[i].y-this.y)>2000){
-          mgBulletsP.splice(i,i+1);
-        }
       }
 
       // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
@@ -362,13 +361,6 @@ function AiTank(x,y,imgB,imgT) {
       this.reloadTime=250;
     }
 
-    // ai main gun bullet deleting
-    for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-this.x)>2000 || Math.abs(bulletsAi[i].y-this.y)>2000){
-        bulletsAi.splice(i,i+1);
-      }
-    }
-
     // mg
     if (this.reloadTimeM==0 && this.numMgBullets>0 && this.mgShotReady){
       this.numMgBullets--;
@@ -380,13 +372,6 @@ function AiTank(x,y,imgB,imgT) {
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
-    }
-
-    // ai machinegun bullet deleting
-    for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-this.x)>2000 || Math.abs(mgBulletsAi[i].y-this.y)>2000){
-        mgBulletsAi.splice(i,i+1);
-      }
     }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
@@ -452,7 +437,7 @@ function AiTank(x,y,imgB,imgT) {
     for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
         bulletsAi.splice(i,1);
-        pTank.hp=pTank.hp-50;
+        pTank.hp=pTank.hp-20;
       }
     }
     // detection if ai hits dead tank

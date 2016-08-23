@@ -2,9 +2,7 @@
 
 to do:
 
-
-reprogram in objects tank, enemy tanks
-
+sth wrong with shooting
 
 
 ///////////////////////////////////////////
