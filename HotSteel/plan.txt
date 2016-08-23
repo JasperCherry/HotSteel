@@ -3,20 +3,20 @@
 to do:
 
 
-
-
-smoke cover // cannot target player tank , and player cannot target enemies as well. no idea yet how
-
-
-mine graphics and explosion
-
-sounds:
--shot mg and cannon
--hit
+reprogram in objects tank, enemy tanks
 
 
 
 ///////////////////////////////////////////
+
+improve positioning, bullets, obstacles etc
+
+smoke cover // cannot target player tank , and player cannot target enemies as well. no idea yet how
+
+
+dead tanks explode after loosing 100 life nad you can remove them from map that way
+
+small explosion when tank hits mine
 
 
 
@@ -37,9 +37,18 @@ hp
 
 deadly power of shot
 
+sounds:
+-shot mg and cannon
+-hit
+
+
 
 
 // advanced // extra option
+
+
+
+mine graphics
 
 proper tower following tank
 

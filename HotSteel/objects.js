@@ -1,3 +1,381 @@
+/*
+// ai tank vars
+var aiBody = new Body("gray", 1050, 300, gera);
+var aiTower = new Tower(10, 3, 40, "black", 1050, 300, gerb);
+var aiBullet;
+var aiReloadTime = 250;
+var aiReloadTimeM = 0;
+var aiX="none";
+var aiY="none";
+var aiDestinationAngle="none";
+var aiTargetAngle;
+var shotReady=false;
+var shotReady2=false;
+var shotReadyTimer=10;
+var mgShotReady=false;
+var aiPreviousX;
+var aiPreviousY;
+var aiMgBullets = new Array();
+
+
+*/
+
+
+function PTank(x,y,imgB,imgT) {
+
+  this.x=x;
+  this.y=y;
+  this.imgB=imgB;
+  this.imgT=imgT;
+
+  this.numMines = 10;
+  this.numBullet = 20;
+  this.numMgBullets = 200;
+  this.hp = 100;
+
+  this.speed = 0;
+  this.angleB = 0;
+  this.moveAngleB = 0;
+  this.angleT = 0;
+  this.moveAngleT = 0;
+
+  this.previousX=this.x;
+  this.previousY=this.y;
+
+  this.reloadTime = 250;
+  this.reloadTimeM = 0;
+  this.reloadTimeMine = 0;
+
+  this.newPos = function() {
+      // contol
+
+      // start position zeroing
+      this.moveAngleB = 0;
+      this.moveAngleT = 0;
+      this.speed = 0;
+
+      // body rotation, turrent static
+      if (myGameArea.keys && myGameArea.keys[37]){
+        this.moveAngleB = -1;
+        this.moveAngleT = -1;
+      }
+      if (myGameArea.keys && myGameArea.keys[39]){
+        this.moveAngleB = 1;
+        this.moveAngleT = 1;
+      }
+      if (myGameArea.keys && myGameArea.keys[38]){
+        this.speed=1;
+      }
+      if (myGameArea.keys && myGameArea.keys[40]){
+        this.speed=-1;
+      }
+
+      // turrent rotation
+      if (myGameArea.keys && myGameArea.keys[65]){
+        this.moveAngleT = -1;
+      }
+      if (myGameArea.keys && myGameArea.keys[68]){
+        this.moveAngleT = 1;
+      }
+
+      // turrent + body rotation
+      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[37]){
+        this.moveAngleT = -2;
+      }
+      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[39]){
+        this.moveAngleT = 2;
+      }
+      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[39]){
+        this.moveAngleT = 0;
+      }
+      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
+        this.moveAngleT = 0;
+      }
+
+      // touching dead tanks by player
+      for(var i = 0; i < kills.length; i++) {
+            if((Math.abs(kills[i].x-this.x)<30)&&(Math.abs(kills[i].y-this.y)<30)){
+              this.x=this.previousX;
+              this.y=this.previousY;
+            }
+      }
+
+      // weapons
+
+      // setting up mines
+      if(this.reloadTimeMine>0){
+        this.reloadTimeMine--;
+      }
+      if (myGameArea.keys && myGameArea.keys[71] && this.numMines>0 && this.reloadTimeMine==0){
+        mines.push(new Mine(
+        this.x-(35 * Math.sin(this.angleB)),
+        this.y+(35 * Math.cos(this.angleB))
+        ));
+        this.numMines--;
+        this.reloadTimeMine=50;
+      }
+
+      // detection if player tank is on the mine and trigering it
+      for(var i = 0; i < mines.length; i++) {
+        if(Math.abs(mines[i].x-pTank.x)<15 && Math.abs(mines[i].y-pTank.y)<15){
+          pTank.hp=pTank.hp-100;
+          mines.splice(i,1);
+        }
+      }
+
+      // main gun
+      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTime==0 && this.numBullet>0){
+        //soundShot.play();
+        this.numBullet--;
+        bulletP = new Bullet(
+        this.x+(40 * Math.sin(this.angleT)),
+        this.y-(40 * Math.cos(this.angleT)),
+        this.angleT);
+        // not precision shooting
+        //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
+        this.reloadTime=250;
+      }
+      if(this.reloadTime>0){
+        this.reloadTime--;
+      }
+
+      // player main gun bullet deleting
+      if(bulletP!=null){
+        if(Math.abs(bulletP.x-this.x)>2000 || Math.abs(bulletP.y-this.y)>2000){
+          bulletP=null;
+        }
+      }
+
+      // machinegun
+      if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeM==0 && this.numMgBullets>0){
+        this.numMgBullets--;
+        mgBulletsP.push(new MgBullet(
+        this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+        this.reloadTimeM=8;
+      }
+      if(this.reloadTimeM>0){
+        this.reloadTimeM--;
+      }
+
+      // player machinegun bullet deleting
+      for(var i = 0; i < mgBulletsP.length; i++) {
+        if(Math.abs(mgBulletsP[i].x-this.x)>2000 || Math.abs(mgBulletsP[i].y-this.y)>2000){
+          mgBulletsP.splice(i,i+1);
+        }
+      }
+
+      // body and tower new position
+      // body
+      this.previousX=this.x;
+      this.previousY=this.y;
+      this.angleB += this.moveAngleB * Math.PI / 180;
+      this.x += this.speed * Math.sin(this.angleB);
+      this.y -= this.speed * Math.cos(this.angleB);
+      // tower
+      this.angleT += this.moveAngleT * Math.PI / 180;
+
+  }
+
+
+  this.update = function() {
+      // drawing the body
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleB);
+      ctx.drawImage(this.imgB, -20, -30);
+      ctx.restore();
+      // drawing the tower
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.drawImage(this.imgT, -20, -30);
+      ctx.restore();
+
+  }
+
+
+}
+
+
+
+
+function AiTank(x,y,imgB,imgT) {
+
+  this.aiX="none";
+  this.aiY="none";
+  this.aiDestinationAngle="none";
+
+  this.aiTargetAngle;
+  this.shotReady=false;
+  this.mgShotReady=false;
+  this.reloadTime = 250;
+  this.reloadTimeM = 0;
+
+  this.numBullet = 20;
+  this.numMgBullets = 200;
+  this.hp = 100;
+
+  this.x=x;
+  this.y=y;
+  this.imgB=imgB;
+  this.imgT=imgT;
+
+  this.speed = 0;
+  this.angleB = 0;
+  this.moveAngleB = 0;
+  this.angleT = 0;
+  this.moveAngleT = 0;
+
+  this.previousX=this.x;
+  this.previousY=this.y;
+
+  this.newPos = function() {
+
+    // start position zeroing
+    this.moveAngleB = 0;
+    this.speed = 0;
+
+    // if destination was reached
+    if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
+      this.aiX="none";
+      this.aiY="none";
+    }
+
+    // touching dead tanks by ai tank
+    for(var i = 0; i < kills.length; i++) {
+        if((Math.abs(kills[i].x-this.x)<30)&&(Math.abs(kills[i].y-this.y)<30)){
+          this.x=this.previousX;
+          this.y=this.previousY;
+          this.aiX="none";
+          this.aiY="none";
+        }
+    }
+
+    // moving around the map
+    // pick up destination
+    if(this.aiX=="none"&&this.aiY=="none"){
+      this.aiX=Math.round(Math.random()*fieldMapX);
+      this.aiY=Math.round(Math.random()*fieldMapY);
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      this.speed=1;
+    }
+    // change angle of body and move
+    if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
+      this.speed=1;
+      this.angleB=this.aiDestinationAngle;
+      this.moveAngleB=0;
+    }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
+      this.speed=0;
+      if(this.angleB<this.aiDestinationAngle){
+        this.moveAngleB=1;
+      }else if(this.angleB>this.aiDestinationAngle){
+        this.moveAngleB=-1;
+      }
+    }
+
+    // destination target
+    /*
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(this.aiX, this.aiY);
+    ctx.fillStyle ="red";
+    ctx.fillRect(20 / -2, 20 / -2, 20, 20);
+    ctx.restore();
+    */
+
+    // weapons
+
+    // mines
+    // detection if ai tank is on the mine and trigering it
+    for(var i = 0; i < mines.length; i++) {
+      if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
+        this.hp=this.hp-100;
+        mines.splice(i,1);
+      }
+    }
+
+    // shooting
+    // main gun
+    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+      this.reloadTime--;
+    }
+    if (this.reloadTime==0&&this.shotReady){
+      bulletAi = new Bullet(this.x+(40 * Math.sin(this.angleT)), this.y-(40 * Math.cos(this.angleT)),
+      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180));
+      this.reloadTime=250;
+    }
+
+    // ai main gun bullet deleting
+    if(bulletAi!=null){
+      if(Math.abs(bulletAi.x-this.x)>2000 || Math.abs(bulletAi.y-this.y)>2000){
+        bulletAi=null;
+      }
+    }
+
+    // mg
+    if (this.reloadTimeM==0 && this.numMgBullets>0 && this.mgShotReady){
+      this.numMgBullets--;
+      mgBulletsAi.push(new MgBullet(
+      this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+      this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+      this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      this.reloadTimeM=8;
+    }
+    if(this.reloadTimeM>0){
+      this.reloadTimeM--;
+    }
+
+    // ai machinegun bullet deleting
+    for(var i = 0; i < mgBulletsAi.length; i++) {
+      if(Math.abs(mgBulletsAi[i].x-this.x)>2000 || Math.abs(mgBulletsAi[i].y-this.y)>2000){
+        mgBulletsAi.splice(i,i+1);
+      }
+    }
+
+
+
+
+      // body and tower new position
+      // body
+      this.previousX=this.x;
+      this.previousY=this.y;
+      this.angleB += this.moveAngleB * Math.PI / 180;
+      this.x += this.speed * Math.sin(this.angleB);
+      this.y -= this.speed * Math.cos(this.angleB);
+      // tower
+      this.angleT += this.moveAngleT * Math.PI / 180;
+      this.moveAngleT=0;
+  }
+
+  this.update = function() {
+      // drawing the body
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleB);
+      ctx.drawImage(this.imgB, -20, -30);
+      ctx.restore();
+      // drawing the tower
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.translate(0, -3);
+      ctx.drawImage(this.imgT, -20, -30);
+      ctx.restore();
+
+  }
+
+}
+
+
+
+//////////////////////// end of enemy
+
 function DeadBodyFire(x,y){
 
     this.phase=1;
@@ -13,7 +391,7 @@ function DeadBodyFire(x,y){
       ctx.save();
       ctx.translate(this.x-64, this.y-110);
 
-      console.log(this.phaseTimer);
+//      console.log(this.phaseTimer);
 
       if(this.phase==1){
         ctx.drawImage(document.getElementById("s"+this.fireLoop), 0, 0);
@@ -101,122 +479,8 @@ function DeadBody(x, y, angle1, angle2, img1, img2) {
         }else{
           ctx.drawImage(this.img2, -20, -30);
         }
-
-        //ctx.translate(0, -20);
-        //ctx.fillStyle = this.color;
-        //ctx.fillRect(this.widthTower / -2, this.heightTower / -2, this.widthTower, this.heightTower);
         ctx.restore();
 
-        // drawing the tower round part
-        /*
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-        */
-    }
-}
-
-
-function Body(color, x, y, image) {
-
-
-    this.img=image;
-
-    this.numMines = 10;
-    this.numBullet = 20;
-    this.numMgBullets = 200;
-
-    this.hp = 100;
-
-    this.width = 30;
-    this.height = 50;
-    this.speed = 0;
-    this.angle = 0;
-    this.moveAngle = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        // model body
-        /*
-        ctx.fillStyle = color;
-        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-        // back part
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.width / -2, this.height / 2, 10, -4);
-        ctx.fillRect(this.width / -2 +20, this.height / 2, 10, -4);
-        //machinegun
-        ctx.fillStyle = "blac";
-        ctx.fillRect(this.width / -2+21, this.height / -2 , 2, 12);
-        */
-
-        ctx.drawImage(this.img, -20, -30);
-        ctx.restore();
-    }
-    this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
-        this.x += this.speed * Math.sin(this.angle);
-        this.y -= this.speed * Math.cos(this.angle);
-    }
-}
-
-
-
-function Tower(radius, width, height, color, x, y, image) {
-
-    this.img=image;
-
-    this.radius = radius;
-    this.width = width;
-    this.height = height;
-    this.speed = 0;
-    this.angle = 0;
-    this.moveAngle = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function() {
-
-        // drawing the tower
-        ctx = myGameArea.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        // model tower
-        /*
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.translate(0, -20);
-        ctx.fillStyle = color;
-        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-        */
-
-        // tower in a grey tank should be in different position
-        if(this.img==gerb){
-          ctx.translate(0, -3);
-          ctx.drawImage(this.img, -20, -30);
-        }else{
-          ctx.drawImage(this.img, -20, -30);
-        }
-
-        ctx.restore();
-
-    }
-    this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
     }
 }
 
@@ -225,17 +489,15 @@ function Tower(radius, width, height, color, x, y, image) {
 function Bullet(x, y, angle) {
 
     this.radius = 2;
-    this.speed = 30;
+    this.speed = 15;
     this.angle = angle;
     this.x = x;
     this.y = y;
-    this.px = x;
-    this.py = y;
 
     this.update = function() {
         ctx = myGameArea.context;
         ctx.save();
-        ctx.translate(this.px, this.py);
+        ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);

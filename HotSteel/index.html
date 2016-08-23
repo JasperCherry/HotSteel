@@ -64,56 +64,6 @@ canvas {
 
 <script>
 
-
-// player tank vars
-var body = new Body("green", 100, 300, rusa);
-var tower = new Tower(10, 3, 40, "black", 100, 300, rusb);
-var reloadTime = 250;
-var reloadTimeM = 0;
-var reloadTimeMine = 50;
-var previousX;
-var previousY;
-var bullet;
-var mgBullets = new Array();
-
-
-// ai tank vars
-var aiBody = new Body("gray", 1050, 300, gera);
-var aiTower = new Tower(10, 3, 40, "black", 1050, 300, gerb);
-var aiBullet;
-var aiReloadTime = 250;
-var aiReloadTimeM = 0;
-var aiX="none";
-var aiY="none";
-var aiDestinationAngle="none";
-var aiTargetAngle;
-var shotReady=false;
-var shotReady2=false;
-var shotReadyTimer=10;
-var mgShotReady=false;
-var aiPreviousX;
-var aiPreviousY;
-var aiMgBullets = new Array();
-
-
-// map vars
-var kills = new Array();
-var killsFire = new Array();
-var mines = new Array();
-// area that tanks play at
-fieldMapX=1000;
-fieldMapY=600;
-
-
-
-
-
-//var soundShot = new Audio("shot.mp3");
-//var soundShotAi = new Audio("shot.mp3");
-//var soundHit = new Audio("hit.mp3");
-//var soundHitAi = new Audio("hit.mp3");
-
-
 function startGame() {
     myGameArea.start();
 }
@@ -147,548 +97,266 @@ var myGameArea = {
 
 
 
+//////////////////////////////////////////////////////////////////////////////////
+// player tank vars
+var pTank = new PTank(100,300,rusa,rusb);
+var bulletP;
+var mgBulletsP = new Array();
+
+var aiTank = new AiTank(900,300,gera,gerb);
+var bulletAi;
+var mgBulletsAi = new Array();
+
+
+// map variables
+var kills = new Array();
+var killsFire = new Array();
+var mines = new Array();
+// area that tanks play at
+var fieldMapX=1000;
+var fieldMapY=600;
+
+
+
+
+
+
+
+
+
 ///////////////////////////////////// MAIN FUNCTION
 function updateGameArea() {
 
+
+// Player tank ////////////////////////////////////////
+
+
 ///////////////////////////////////////////////////////////////////////////// player tank
-    body.moveAngle = 0;
-    body.speed = 0;
-    tower.moveAngle = 0;
-    tower.speed = 0;
-
-
-
-    // body rotation, turrent static
-    if (myGameArea.keys && myGameArea.keys[37]){
-      body.moveAngle = -1;
-      tower.moveAngle = -1;
-    }
-    if (myGameArea.keys && myGameArea.keys[39]){
-      body.moveAngle = 1;
-      tower.moveAngle = 1;
-    }
-    if (myGameArea.keys && myGameArea.keys[38]){
-      body.speed=1;
-    }
-    if (myGameArea.keys && myGameArea.keys[40]){
-      body.speed=-1;
-    }
-
-    // map control
-    if(body.x>=fieldMapX){
-      body.x-=2;
-    }
-    if(body.x<=0){
-      body.x+=2;
-    }
-    if(body.y>=fieldMapY){
-      body.y-=2;
-    }
-    if(body.y<=0){
-      body.y+=2;
-    }
-
-    // touching dead tanks by player
-    for(var i = 0; i < kills.length; i++) {
-          if((Math.abs(kills[i].x-body.x)<30)&&(Math.abs(kills[i].y-body.y)<30)){
-            body.x=previousX;
-            body.y=previousY;
-          }
-    }
 
 
     // touching enemy tank
-    if((Math.abs(aiBody.x-body.x)<30)&&(Math.abs(aiBody.y-body.y)<30)){
-      body.x=previousX;
-      body.y=previousY;
+    if((Math.abs(aiTank.x-pTank.x)<30)&&(Math.abs(aiTank.y-pTank.y)<30)){
+      pTank.x=pTank.previousX;
+      pTank.y=pTank.previousY;
     }
 
-
-
-    // turrent rotation
-    if (myGameArea.keys && myGameArea.keys[65]){
-      tower.moveAngle = -1;
-    }
-    if (myGameArea.keys && myGameArea.keys[68]){
-      tower.moveAngle = 1;
-    }
-
-    // turrent + body rotation
-    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[37]){
-      tower.moveAngle = -2;
-    }
-    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[39]){
-      tower.moveAngle = 2;
-    }
-    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[39]){
-      tower.moveAngle = 0;
-    }
-    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
-      tower.moveAngle = 0;
-    }
-
-    // player shooting and timing
-
-    // setting up mines
-    if(reloadTimeMine>0){
-      reloadTimeMine--;
-    }
-    if (myGameArea.keys && myGameArea.keys[71] && body.numMines>0 && reloadTimeMine==0){
-      mines.push(new Mine(
-      body.x-(35 * Math.sin(body.angle)),
-      body.y+(35 * Math.cos(body.angle))
-      ));
-      body.numMines--;
-      reloadTimeMine=50;
-    }
-
-    // mines
-    // detection if player tank is on the mine and trigering it
-    for(var i = 0; i < mines.length; i++) {
-      if(Math.abs(mines[i].x-body.x)<15 && Math.abs(mines[i].y-body.y)<15){
-        body.hp=body.hp-100;
-        mines.splice(i,1);
+    // gun
+    // detection if player hits  ai tank
+    if(bulletP!=null){
+      if(Math.abs(bulletP.x-aiTank.x)<15 && Math.abs(bulletP.y-aiTank.y)<15){
+          aiTank.hp=aiTank.hp-50;
+          bulletP=null;
       }
     }
 
-    // main gun
-    if (myGameArea.keys && myGameArea.keys[83] && reloadTime==0 && body.numBullet>0){
-      //soundShot.play();
-      body.numBullet--;
-      bullet = new Bullet(
-      body.x+(40 * Math.sin(tower.angle)),
-      body.y-(40 * Math.cos(tower.angle)),
-      tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180));
-      // not precision shooting
-      //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
-      reloadTime=250;
-    }
-    if(reloadTime>0){
-      reloadTime--;
-    }
-
-    // player main gun bullet deleting
-    if(bullet!=null){
-      if(Math.abs(bullet.x-body.x)>2000 || Math.abs(bullet.y-body.y)>2000){
-        bullet=null;
+    // dead tank hit by player
+    for(var i = 0; i < kills.length; i++) {
+      if(bulletP!=null && Math.abs(kills[i].x-bulletP.x)<15 && Math.abs(kills[i].y-bulletP.y)<15) {
+        bulletP=null;
       }
     }
 
     // machinegun
-    if (myGameArea.keys && myGameArea.keys[87] && reloadTimeM==0 && body.numMgBullets>0){
-      body.numMgBullets--;
-      mgBullets.push(new MgBullet(
-      body.x+(25 * Math.sin(body.angle))+ 7 * (Math.sin(body.angle+90 * Math.PI / 180)),
-      body.y-(25 * Math.cos(body.angle))- 7 * (Math.cos(body.angle+90 * Math.PI / 180)),
-      body.angle + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      reloadTimeM=8;
-    }
-    if(reloadTimeM>0){
-      reloadTimeM--;
-    }
-
-    // player machinegun bullet deleting
-    for(var i = 0; i < mgBullets.length; i++) {
-      if(Math.abs(mgBullets[i].x-body.x)>2000 || Math.abs(mgBullets[i].y-body.y)>2000){
-        mgBullets.splice(i,i+1);
-      }
-    }
-
-
-    // gun
     // detection if player hits  ai tank
-    if(bullet!=null){
-      var xChecks = new Array();
-      var yChecks = new Array();
-      var xDifference = (bullet.x-bullet.px) / 10;
-      var yDifference = (bullet.y-bullet.py) / 10;
-      for(var i = 0; i < 10; i++) {
-        xChecks.push((i*xDifference)+bullet.px);
-        yChecks.push((i*yDifference)+bullet.py);
-      }
-      for(var i = 0; i < 10; i++) {
-        if(Math.abs(xChecks[i]-aiBody.x)<15 && Math.abs(yChecks[i]-aiBody.y)<15){
-          aiBody.hp=aiBody.hp-50;
-          bullet=null;
-          break;
-        }
-      }
-      if(bullet!=null){
-        bullet.px=bullet.x;
-        bullet.py=bullet.y;
+    for(var i = 0; i < mgBulletsP.length; i++) {
+      if(Math.abs(mgBulletsP[i].x-aiTank.x)<15 && Math.abs(mgBulletsP[i].y-aiTank.y)<15){
+        mgBulletsP.splice(i,1);
+        aiTank.hp=aiTank.hp-5;
       }
     }
-
-   // dead tank hit by player
-   for(var i = 0; i < kills.length; i++) {
-     if(bullet!=null && Math.abs(kills[i].x-bullet.x)<15 && Math.abs(kills[i].y-bullet.y)<15) {
-       //soundHit.play();
-       bullet=null;
-     }
-   }
-
-   // machinegun
-   // detection if player hits  ai tank
-   for(var i = 0; i < mgBullets.length; i++) {
-     if(Math.abs(mgBullets[i].x-aiBody.x)<15 && Math.abs(mgBullets[i].y-aiBody.y)<15){
-       mgBullets.splice(i,1);
-       aiBody.hp=aiBody.hp-5;
-     }
-   }
-   // detection if player hits dead tank
-   for(var j = 0; j < kills.length; j++) {
-    for(var i = 0; i < mgBullets.length; i++) {
-     if(Math.abs(mgBullets[i].x-kills[j].x)<15 && Math.abs(mgBullets[i].y-kills[j].y)<15){
-        mgBullets.splice(i,1);
-     }
-    }
-   }
-
-   // ai kill detection
-   if(aiBody.hp<=0){
-      kills.push(new DeadBody(aiBody.x, aiBody.y, aiBody.angle, aiTower.angle, geraw, gerbw));
-      killsFire.push(new DeadBodyFire(aiBody.x, aiBody.y));
-      aiBody = new Body("gray", 1050, 300, gera);
-      aiTower = new Tower(10, 3, 40, "black", 1050, 300, gerb);
-      aiX="none";
-      aiY="none";
-      aiReloadTime=250;
-    }
-
-///////////////////////////////////////////////////////////////////////////////////////////////// ai tank
-
-    // movement
-    aiBody.moveAngle = 0;
-    aiBody.speed = 0;
-    aiTower.moveAngle = 0;
-    aiTower.speed = 0;
-
-    // touching dead tanks by ai tank
-     for(var i = 0; i < kills.length; i++) {
-          if((Math.abs(kills[i].x-aiBody.x)<30)&&(Math.abs(kills[i].y-aiBody.y)<30)){
-            aiBody.x=aiPreviousX;
-            aiBody.y=aiPreviousY;
-            aiX="none";
-            aiY="none";
-          }
+    // detection if player hits dead tank
+    for(var j = 0; j < kills.length; j++) {
+     for(var i = 0; i < mgBulletsP.length; i++) {
+      if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
+         mgBulletsP.splice(i,1);
       }
+     }
+    }
+
+    // ai kill detection
+    if(aiTank.hp<=0){
+       kills.push(new DeadBody(aiTank.x, aiTank.y, aiTank.angleB, aiTank.angleT, geraw, gerbw));
+       killsFire.push(new DeadBodyFire(aiTank.x, aiTank.y));
+       aiTank = new AiTank(900,300,gera,gerb);
+     }
+
+
+
+///////////////////////////////////////////////////////////////////////////// ai tank
 
     // touching player tank
-    if((Math.abs(body.x-aiBody.x)<30)&&(Math.abs(body.y-aiBody.y)<30)){
-      aiBody.x=aiPreviousX;
-      aiBody.y=aiPreviousY;
-      aiX="none";
-      aiY="none";
+    if((Math.abs(pTank.x-aiTank.x)<30)&&(Math.abs(pTank.y-aiTank.y)<30)){
+      aiTank.x=aiTank.previousX;
+      aiTank.y=aiTank.previousY;
+      aiTank.aiX="none";
+      aiTank.aiY="none";
     }
-
-    if(Math.abs(aiX-aiBody.x)<15&&Math.abs(aiY-aiBody.y)<15){
-      aiX="none";
-      aiY="none";
-    }
-
-    if(aiX=="none"&&aiY=="none"){
-      aiX=Math.round(Math.random()*fieldMapX);
-      aiY=Math.round(Math.random()*fieldMapY);
-      aiDestinationAngle=Math.atan2(aiBody.y - aiY, aiBody.x - aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      aiBody.speed=1;
-    }
-
-    if(Math.abs(aiBody.angle-aiDestinationAngle)<0.03){
-      aiBody.speed=1;
-      aiBody.angle=aiDestinationAngle;
-      aiBody.moveAngle=0;
-    }else if(Math.abs(aiBody.angle-aiDestinationAngle)>0.03){
-      aiBody.speed=0;
-      if(aiBody.angle<aiDestinationAngle){
-        aiBody.moveAngle=1;
-      }else if(aiBody.angle>aiDestinationAngle){
-        aiBody.moveAngle=-1;
-      }
-    }
-
-// destination target of ai tank to go to
-/*
-    ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(aiX, aiY);
-    ctx.fillStyle ="red";
-    ctx.fillRect(20 / -2, 20 / -2, 20, 20);
-    ctx.restore();
-*/
-
 
     // ai shooting and timing
 
     // ai moving the tower
-    aiTargetAngle=Math.atan2(aiBody.y - body.y, aiBody.x - body.x)+(-90 * Math.PI / 180);
+    aiTank.aiTargetAngle=Math.atan2(aiTank.y - pTank.y, aiTank.x - pTank.x)+(-90 * Math.PI / 180);
 
-    // detecting if player tank is aimed
-    if(Math.abs(aiTower.angle-aiTargetAngle)<0.03){
-      aiTower.angle=aiTargetAngle;
-      shotReady=true;
-    }else if(Math.abs(aiTower.angle-aiTargetAngle)>0.03){
-      shotReady=false;
-      if(aiTower.angle<aiTargetAngle){
-        aiTower.moveAngle=1;
-      }else if(aiTower.angle>aiTargetAngle){
-        aiTower.moveAngle=-1;
+    // detecting if player tank is aimed by cannon
+    if(Math.abs(aiTank.angleT-aiTank.aiTargetAngle)<0.03){
+      aiTank.angleT=aiTank.aiTargetAngle;
+      aiTank.shotReady=true;
+    }else if(Math.abs(aiTank.angleT-aiTank.aiTargetAngle)>0.03){
+      aiTank.shotReady=false;
+      if(aiTank.angleT<aiTank.aiTargetAngle){
+        aiTank.moveAngleT=1;
+      }else if(aiTank.angleT>aiTank.aiTargetAngle){
+        aiTank.moveAngleT=-1;
       }
     }
 
-    // detecting if there is no obstacles on the firing line
-    var xChecksPath = new Array();
-    var yChecksPath = new Array();
-    var xDifferencePath = (aiBody.x-body.x)/200;
-    var yDifferencePath = (aiBody.y-body.y)/200;
-    for(var i=0; i < 200 ; i++){
-      xChecksPath.push((i*xDifferencePath)+body.x);
-      yChecksPath.push((i*yDifferencePath)+body.y);
-    }
-    for(var j=0 ; j < kills.length ; j++){
-      for(var i=0 ; i < 200 ; i++){
-        if(Math.abs(xChecksPath[i]-kills[j].x)<15 && Math.abs(yChecksPath[i]-kills[j].y)<15){
-          shotReady=false;
-        }
-      }
-    }
-    // if line of fire was ok 1/5 sec ago and now still is -> fire
-    if(shotReadyTimer==0){
-      shotReady2=shotReady;
-      shotReadyTimer=25;
-    }else{
-      shotReadyTimer--;
-    }
-
-
-    // mines
-    // detection if ai tank is on the mine and trigering it
-    for(var i = 0; i < mines.length; i++) {
-      if(Math.abs(mines[i].x-aiBody.x)<15 && Math.abs(mines[i].y-aiBody.y)<15){
-        aiBody.hp=aiBody.hp-100;
-        mines.splice(i,1);
-      }
-    }
-
-    // main gun
-    if(aiReloadTime>0&&aiBody.x>0&&(aiBody.x<1000&&aiBody.y>0&&aiBody.y<600)){
-      aiReloadTime--;
-    }
-    if (aiReloadTime==0&&shotReady&&shotReady2){
-      //soundShotAi.play();
-      aiBullet = new Bullet(aiBody.x+(40 * Math.sin(aiTower.angle)), aiBody.y-(40 * Math.cos(aiTower.angle)),
-      aiTower.angle+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180));
-      aiReloadTime=250;
-    }
-
-    // ai main gun bullet deleting
-    if(aiBullet!=null){
-      if(Math.abs(aiBullet.x-aiBody.x)>2000 || Math.abs(aiBullet.y-aiBody.y)>2000){
-        aiBullet=null;
-      }
-    }
-
-    // ai tank machinegun
     // targeting player tank for mg
-    if( (Math.abs(body.x-aiBody.x)<400 && Math.abs(body.y-aiBody.y)<400)
-    && ( (Math.round((aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(aiBody.angle * 3) / 3) )
+    if( (Math.abs(pTank.x-aiTank.x)<400 && Math.abs(pTank.y-aiTank.y)<400)
+    && ( (Math.round((aiTank.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(aiTank.angleB * 3) / 3) )
     ){
-      mgShotReady=true;
+      aiTank.mgShotReady=true;
     }else{
-      mgShotReady=false;
-    }
-    // firing mg
-    if (aiReloadTimeM==0 && aiBody.numMgBullets>0 && mgShotReady){
-      aiBody.numMgBullets--;
-      aiMgBullets.push(new MgBullet(
-      aiBody.x+(25 * Math.sin(aiBody.angle))+ 7 * (Math.sin(aiBody.angle+90 * Math.PI / 180)),
-      aiBody.y-(25 * Math.cos(aiBody.angle))- 7 * (Math.cos(aiBody.angle+90 * Math.PI / 180)),
-      aiBody.angle + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      aiReloadTimeM=8;
-    }
-    if(aiReloadTimeM>0){
-      aiReloadTimeM--;
+      aiTank.mgShotReady=false;
     }
 
-    // ai machinegun bullet deleting
-    for(var i = 0; i < aiMgBullets.length; i++) {
-      if(Math.abs(aiMgBullets[i].x-aiBody.x)>2000 || Math.abs(aiMgBullets[i].y-aiBody.y)>2000){
-        aiMgBullets.splice(i,i+1);
-      }
-    }
 
-    // main gun
+    // gun
     // detection if ai hits player tank
-    if(aiBullet!=null){
-      var xChecks = new Array();
-      var yChecks = new Array();
-      var xDifference = (aiBullet.x-aiBullet.px) / 10;
-      var yDifference = (aiBullet.y-aiBullet.py) / 10;
-      for(var i = 0; i < 10; i++) {
-        xChecks.push((i*xDifference)+aiBullet.px);
-        yChecks.push((i*yDifference)+aiBullet.py);
-      }
-      for(var i = 0; i < 10; i++) {
-        if(Math.abs(xChecks[i]-body.x)<15 && Math.abs(yChecks[i]-body.y)<15){
-          body.hp=body.hp-50;
-          aiBullet=null;
-          break;
-        }
-      }
-      if(aiBullet!=null){
-        aiBullet.px=aiBullet.x;
-        aiBullet.py=aiBullet.y;
+    if(bulletAi!=null){
+      if(Math.abs(bulletAi.x-pTank.x)<15 && Math.abs(bulletAi.y-pTank.y)<15){
+          pTank.hp=pTank.hp-50;
+          bulletAi=null;
       }
     }
-   // dead tank hit by ai tank
-   for(var i = 0; i < kills.length; i++) {
-     if(aiBullet!=null && Math.abs(kills[i].x-aiBullet.x)<15 && Math.abs(kills[i].y-aiBullet.y)<15) {
-       //soundHit.play();
-       aiBullet=null;
-     }
-   }
 
-   // machinegun
-   // detection if ai hits  dead tank
-   for(var i = 0; i < aiMgBullets.length; i++) {
-     if(Math.abs(aiMgBullets[i].x-body.x)<15 && Math.abs(aiMgBullets[i].y-body.y)<15){
-       aiMgBullets.splice(i,1);
-       body.hp=body.hp-5;
-     }
-   }
-   // detection if ai hits dead tank
-   for(var j = 0; j < kills.length; j++) {
-    for(var i = 0; i < aiMgBullets.length; i++) {
-     if(Math.abs(aiMgBullets[i].x-kills[j].x)<15 && Math.abs(aiMgBullets[i].y-kills[j].y)<15){
-        aiMgBullets.splice(i,1);
-     }
-    }
-   }
-
-   // player kill detection
-   if(body.hp<=0){
-      kills.push(new DeadBody(body.x, body.y, body.angle, tower.angle, rusaw, rusbw));
-      killsFire.push(new DeadBodyFire(body.x, body.y));
-      body = new Body("green", 100, 300, rusa);
-      tower = new Tower(10, 3, 40, "black", 100, 300, rusb);
-      reloadTime = 250;
+    // dead tank hit by ai tank
+    for(var i = 0; i < kills.length; i++) {
+      if(bulletAi!=null && Math.abs(kills[i].x-bulletAi.x)<15 && Math.abs(kills[i].y-bulletAi.y)<15) {
+        bulletAi=null;
+      }
     }
 
+    // machinegun
+    // detection if ai hits player
+    for(var i = 0; i < mgBulletsAi.length; i++) {
+      if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
+        mgBulletsAi.splice(i,1);
+        pTank.hp=pTank.hp-5;
+      }
+    }
+    // detection if ai hits dead tank
+    for(var j = 0; j < kills.length; j++) {
+     for(var i = 0; i < mgBulletsAi.length; i++) {
+      if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
+         mgBulletsAi.splice(i,1);
+      }
+     }
+    }
 
-   ///////////////////////////////////////////////////////////////////////// drawing
-
-   myGameArea.clear();
-
-   // drawing the map
-   var ctx = myGameArea.context;
-   var map1=document.getElementById("map1");
-   ctx.drawImage(map1, 0, 0);
-
-   // previous positions of tanks
-   previousX=body.x;
-   previousY=body.y;
-   aiPreviousX=aiBody.x;
-   aiPreviousY=aiBody.y;
-
-   // mines
-   for(var i = 0; i < mines.length; i++) {
-     mines[i].update();
-   }
-
-   // drawing killed tanks
-   for(var i = 0; i < kills.length; i++) {
-     kills[i].update();
-   }
+    // player kill detection
+    if(pTank.hp<=0){
+       kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, rusaw, rusbw));
+       killsFire.push(new DeadBodyFire(pTank.x, pTank.y));
+       pTank = new PTank(100,300,rusa,rusb);
+     }
 
 
-   ///////////////////////////////////////////// drawing ai
-   aiBody.newPos();
-   aiTower.newPos();
-   if(aiBullet!=null){
-     aiBullet.newPos();
-   }
-   for(var i = 0; i < aiMgBullets.length; i++) {
-     aiMgBullets[i].newPos();
-   }
+///////////////////////////////////// drawing objects
 
-   aiTower.x=aiBody.x;
-   aiTower.y=aiBody.y;
+// drawing the map
+var ctx = myGameArea.context;
+var map1=document.getElementById("map1");
+ctx.drawImage(map1, 0, 0);
 
-   aiBody.update();
-   aiTower.update();
-   if(aiBullet!=null){
-     aiBullet.update();
-   }
-   for(var i = 0; i < aiMgBullets.length; i++) {
-     aiMgBullets[i].update();
-   }
-
-
-   ///////////////////////////////// drawing player
-   // new positions
-   body.newPos();
-   tower.newPos();
-   if(bullet!=null){
-     bullet.newPos();
-   }
-   for(var i = 0; i < mgBullets.length; i++) {
-     mgBullets[i].newPos();
-   }
-
-   tower.x=body.x;
-   tower.y=body.y;
-
-   // drawing
-   body.update();
-   tower.update();
-   // drawing main gun bullets
-   if(bullet!=null){
-     bullet.update();
-   }
-   // drawing machinegun bullets
-   for(var i = 0; i < mgBullets.length; i++) {
-     mgBullets[i].update();
-   }
-
-
-   ////////////////////////////////////// drawing smoke and fire effects
-
-   // fire at dead tanks
-   for(var i = 0; i < killsFire.length; i++) {
-     killsFire[i].update();
-   }
-
-   // drawing informations about current game
-
-   ctx.fillStyle ="black";
-   ctx.fillRect( 0, 600, 1000, 50);
-   ctx.font = "20px Arial";
-   ctx.fillStyle = "white";
-
-   ctx.fillText("Player HP",10,620);
-   ctx.fillText(body.hp,10,645);
-
-   ctx.fillText("Cannon ammo",110,620);
-   ctx.fillText(body.numBullet,110,645);
-   if(reloadTime==0){
-     ctx.fillStyle = "red";
-     ctx.fillText("ready",160,645);
-   }else{
-     ctx.fillStyle = "white";
-     ctx.fillText("loading",160,645);
-   }
-
-   ctx.fillStyle = "white";
-   ctx.fillText("MG ammo",260,620);
-   ctx.fillText(body.numMgBullets,260,645);
-
-   ctx.fillText("Mines",370,620);
-   ctx.fillText(body.numMines,370,645);
-
-   ctx.fillText("Enemy HP",895,620);
-   ctx.fillText(aiBody.hp,895,645);
-
-
+// mines
+for(var i = 0; i < mines.length; i++) {
+  mines[i].update();
 }
+
+// drawing killed tanks
+for(var i = 0; i < kills.length; i++) {
+  kills[i].update();
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+///////////////////////////////// drawing ai
+// new positions
+aiTank.newPos();
+if(bulletAi!=null){
+  bulletAi.newPos();
+}
+for(var i = 0; i < mgBulletsAi.length; i++) {
+  mgBulletsAi[i].newPos();
+}
+// drawing
+aiTank.update();
+if(bulletAi!=null){
+  bulletAi.update();
+}
+for(var i = 0; i < mgBulletsAi.length; i++) {
+  mgBulletsAi[i].update();
+}
+
+
+///////////////////////////////// drawing player
+// new positions
+pTank.newPos();
+if(bulletP!=null){
+  bulletP.newPos();
+}
+for(var i = 0; i < mgBulletsP.length; i++) {
+  mgBulletsP[i].newPos();
+}
+// drawing
+pTank.update();
+if(bulletP!=null){
+  bulletP.update();
+}
+for(var i = 0; i < mgBulletsP.length; i++) {
+  mgBulletsP[i].update();
+}
+//////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////// drawing smoke and fire effects
+
+// fire at dead tanks
+for(var i = 0; i < killsFire.length; i++) {
+  killsFire[i].update();
+}
+
+// drawing informations about current game
+
+ctx.fillStyle ="black";
+ctx.fillRect( 0, 600, 1000, 50);
+ctx.font = "20px Arial";
+ctx.fillStyle = "white";
+
+ctx.fillText("Player HP",10,620);
+ctx.fillText(pTank.hp,10,645);
+
+ctx.fillText("Cannon ammo",110,620);
+ctx.fillText(pTank.numBullet,110,645);
+if(pTank.reloadTime==0){
+  ctx.fillStyle = "red";
+  ctx.fillText("ready",160,645);
+}else{
+  ctx.fillStyle = "white";
+  ctx.fillText("loading",160,645);
+}
+
+ctx.fillStyle = "white";
+ctx.fillText("MG ammo",260,620);
+ctx.fillText(pTank.numMgBullets,260,645);
+
+ctx.fillText("Mines",370,620);
+ctx.fillText(pTank.numMines,370,645);
+
+ctx.fillText("Enemy HP",895,620);
+ctx.fillText(aiTank.hp,895,645);
+
+}// end of a game update function
 </script>
 
 
