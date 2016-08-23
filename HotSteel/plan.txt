@@ -2,10 +2,15 @@
 
 to do:
 
-sth wrong with shooting
+
+
 
 
 ///////////////////////////////////////////
+
+sth with plane, sound
+
+
 
 improve positioning, bullets, obstacles etc
 
@@ -16,8 +21,18 @@ dead tanks explode after loosing 100 life nad you can remove them from map that 
 
 small explosion when tank hits mine
 
+deleting bullets after some time, gun and mg
+
+second machinegun
+
+sounds:
+-shot mg and cannon
+-hit
+
+mine graphics
 
 
+/---/---/---/
 Menu
 
 
@@ -35,21 +50,14 @@ hp
 
 deadly power of shot
 
-sounds:
--shot mg and cannon
--hit
-
-
 
 
 // advanced // extra option
 
 
-
-mine graphics
+infrantry
 
 proper tower following tank
 
 proper colision detection
 
-advanced kill moments

@@ -20,12 +20,16 @@ canvas {
 <img src="tanks/rusb.png" id="rusb" style="display: none;">
 <img src="tanks/gera.png" id="gera" style="display: none;">
 <img src="tanks/gerb.png" id="gerb" style="display: none;">
+<img src="tanks/gera2.png" id="gera2" style="display: none;">
+<img src="tanks/gerb2.png" id="gerb2" style="display: none;">
 
 
 <img src="wrecks/rusaw.png" id="rusaw" style="display: none;">
 <img src="wrecks/rusbw.png" id="rusbw" style="display: none;">
 <img src="wrecks/geraw.png" id="geraw" style="display: none;">
 <img src="wrecks/gerbw.png" id="gerbw" style="display: none;">
+<img src="wrecks/geraw2.png" id="geraw2" style="display: none;">
+<img src="wrecks/gerbw2.png" id="gerbw2" style="display: none;">
 
 
 <img src="fire/loop/l0.png" id="l0" style="display: none;">
@@ -105,14 +109,10 @@ var mgBulletsP = new Array();
 
 var aiTanks = new Array();
 
-aiTanks[0] = new AiTank(1100,300,gera,gerb);
-aiTanks[1] = new AiTank(1300,400,gera,gerb);
+aiTanks[0] = new AiTank(1200,300);
+aiTanks[1] = new AiTank2(1300,400);
 
-aiTanks[2] = new AiTank(2700,500,gera,gerb);
-aiTanks[3] = new AiTank(2800,300,gera,gerb);
 
-aiTanks[4] = new AiTank(4300,400,gera,gerb);
-aiTanks[5] = new AiTank(5300,500,gera,gerb);
 
 
 var bulletsAi = new Array();
