@@ -166,6 +166,58 @@ function PTank(x,y,imgB,imgT) {
         }
       }
 
+      // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+      for(var t = 0; t < aiTanks.length; t++) {
+          // touching enemy tank
+          if((Math.abs(aiTanks[t].x-pTank.x)<30)&&(Math.abs(aiTanks[t].y-pTank.y)<30)){
+            pTank.x=pTank.previousX;
+            pTank.y=pTank.previousY;
+          }
+
+          // gun
+          // detection if player hits  ai tank
+          if(bulletP!=null){
+            if(Math.abs(bulletP.x-aiTanks[t].x)<15 && Math.abs(bulletP.y-aiTanks[t].y)<15){
+                aiTanks[t].hp=aiTanks[t].hp-50;
+                bulletP=null;
+            }
+          }
+
+          // dead tank hit by player
+          for(var i = 0; i < kills.length; i++) {
+            if(bulletP!=null && Math.abs(kills[i].x-bulletP.x)<15 && Math.abs(kills[i].y-bulletP.y)<15) {
+              bulletP=null;
+            }
+          }
+
+          // machinegun
+          // detection if player hits  ai tank
+          for(var i = 0; i < mgBulletsP.length; i++) {
+            if(Math.abs(mgBulletsP[i].x-aiTanks[t].x)<15 && Math.abs(mgBulletsP[i].y-aiTanks[t].y)<15){
+              mgBulletsP.splice(i,1);
+              aiTanks[t].hp=aiTanks[t].hp-5;
+            }
+          }
+          // detection if player hits dead tank
+          for(var j = 0; j < kills.length; j++) {
+           for(var i = 0; i < mgBulletsP.length; i++) {
+            if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
+               mgBulletsP.splice(i,1);
+            }
+           }
+          }
+
+          // ai kill detection
+          if(aiTanks[t].hp<=0){
+             kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT, geraw, gerbw));
+             killsFire.push(new DeadBodyFire(aiTanks[t].x, aiTanks[t].y));
+
+             aiTanks.splice(t,1);
+           }
+
+      }
+
       // body and tower new position
       // body
       this.previousX=this.x;
@@ -304,15 +356,16 @@ function AiTank(x,y,imgB,imgT) {
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady){
-      bulletAi = new Bullet(this.x+(40 * Math.sin(this.angleT)), this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180));
+      bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
+      this.y-(40 * Math.cos(this.angleT)),
+      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
       this.reloadTime=250;
     }
 
     // ai main gun bullet deleting
-    if(bulletAi!=null){
-      if(Math.abs(bulletAi.x-this.x)>2000 || Math.abs(bulletAi.y-this.y)>2000){
-        bulletAi=null;
+    for(var i = 0; i < bulletsAi.length; i++) {
+      if(Math.abs(bulletsAi[i].x-this.x)>2000 || Math.abs(bulletsAi[i].y-this.y)>2000){
+        bulletsAi.splice(i,i+1);
       }
     }
 
@@ -335,6 +388,107 @@ function AiTank(x,y,imgB,imgT) {
         mgBulletsAi.splice(i,i+1);
       }
     }
+
+    // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // touching other ai tanks
+    for(var t=0; t<aiTanks.length; t++){
+      if(aiTanks[t].x!=this.x){
+        if((Math.abs(aiTanks[t].x-this.x)<30)&&(Math.abs(aiTanks[t].y-this.y)<30)){
+          this.x=this.previousX;
+          this.y=this.previousY;
+          this.aiX="none";
+          this.aiY="none";
+        }
+      }
+    }
+
+    // interactions with players tank /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // touching player tank
+    if((Math.abs(pTank.x-this.x)<30)&&(Math.abs(pTank.y-this.y)<30)){
+      this.x=this.previousX;
+      this.y=this.previousY;
+      this.aiX="none";
+      this.aiY="none";
+    }
+
+    // ai shooting and timing
+
+    // ai moving the tower
+    this.aiTargetAngle=Math.atan2(this.y - pTank.y, this.x - pTank.x)+(-90 * Math.PI / 180);
+
+    // detecting if player tank is aimed by cannon
+    if(Math.abs(this.angleT-this.aiTargetAngle)<0.03){
+      this.angleT=this.aiTargetAngle;
+      this.shotReady=true;
+    }else if(Math.abs(this.angleT-this.aiTargetAngle)>0.03){
+      this.shotReady=false;
+      if(this.angleT<this.aiTargetAngle){
+        this.moveAngleT=1;
+      }else if(this.angleT>this.aiTargetAngle){
+        this.moveAngleT=-1;
+      }
+    }
+
+
+
+    // targeting player tank for mg
+    if( (Math.abs(pTank.x-this.x)<400 && Math.abs(pTank.y-this.y)<400)
+    && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
+    ){
+      this.mgShotReady=true;
+    }else{
+      this.mgShotReady=false;
+    }
+
+
+    // gun
+    // detection if ai hits player tank
+
+    // detection if ai hits player
+    for(var i = 0; i < bulletsAi.length; i++) {
+      if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
+        bulletsAi.splice(i,1);
+        pTank.hp=pTank.hp-50;
+      }
+    }
+    // detection if ai hits dead tank
+    for(var j = 0; j < kills.length; j++) {
+     for(var i = 0; i < bulletsAi.length; i++) {
+      if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
+         bulletsAi.splice(i,1);
+      }
+     }
+    }
+
+    // machinegun
+    // detection if ai hits player
+    for(var i = 0; i < mgBulletsAi.length; i++) {
+      if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
+        mgBulletsAi.splice(i,1);
+        pTank.hp=pTank.hp-5;
+      }
+    }
+    // detection if ai hits dead tank
+    for(var j = 0; j < kills.length; j++) {
+     for(var i = 0; i < mgBulletsAi.length; i++) {
+      if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
+         mgBulletsAi.splice(i,1);
+      }
+     }
+    }
+
+    // player kill detection
+    if(pTank.hp<=0){
+       kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, rusaw, rusbw));
+       killsFire.push(new DeadBodyFire(pTank.x, pTank.y));
+       pTank = new PTank(100,300,rusa,rusb);
+     }
+
+
 
 
 
@@ -379,7 +533,7 @@ function AiTank(x,y,imgB,imgT) {
 function DeadBodyFire(x,y){
 
     this.phase=1;
-    this.phaseTimer=1000;
+    this.phaseTimer=250;
     this.fireLoop=0;
     this.delayTime=0;
     this.x=x;
