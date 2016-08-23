@@ -436,7 +436,7 @@ function AiTank(x,y) {
 
 
     // targeting player tank for mg
-    if( (Math.abs(pTank.x-this.x)<400 && Math.abs(pTank.y-this.y)<400)
+    if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
     && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
     ){
       this.mgShotReady=true;
@@ -685,7 +685,7 @@ function AiTank2(x,y) {
 
 
     // targeting player tank for mg
-    if( (Math.abs(pTank.x-this.x)<400 && Math.abs(pTank.y-this.y)<400)
+    if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
     && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
     ){
       this.mgShotReady=true;
@@ -833,7 +833,6 @@ function DeadBodyFire(x,y){
 
 function DeadBody(x, y, angle1, angle2, img1, img2) {
 
-
     this.img1=img1;
     this.img2=img2;
 
@@ -881,10 +880,11 @@ function DeadBody(x, y, angle1, angle2, img1, img2) {
 function Bullet(x, y, angle) {
 
     this.radius = 2;
-    this.speed = 15;
+    this.speed = 20;
     this.angle = angle;
     this.x = x;
     this.y = y;
+    this.img = b;
 
     this.update = function() {
         ctx = myGameArea.context;
@@ -893,10 +893,13 @@ function Bullet(x, y, angle) {
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.fillStyle = "yellow";
+        ctx.drawImage(this.img, -34, -47);
+        /*
+        ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
+        */
         ctx.restore();
     }
     this.newPos = function() {
@@ -913,6 +916,7 @@ function MgBullet(x, y, angle) {
     this.angle = angle;
     this.x = x;
     this.y = y;
+    this.img = mgb;
 
     this.update = function() {
         ctx = myGameArea.context;
@@ -921,10 +925,13 @@ function MgBullet(x, y, angle) {
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.fillStyle = "yellow";
+        ctx.drawImage(this.img, -19, -19);
+        /*
+        ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
+        */
         ctx.restore();
     }
     this.newPos = function() {
