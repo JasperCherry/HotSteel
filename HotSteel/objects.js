@@ -31,8 +31,9 @@ function PTank(x,y,imgB,imgT) {
   this.numMines = 10;
   this.numBullet = 20;
   this.numMgBullets = 200;
+  this.numMgBullets2 = 200;
   this.numSmoke = 3;
-  this.hp = 100;
+  this.hp = 200;
 
   this.speed = 0;
   this.angleB = 0;
@@ -45,6 +46,7 @@ function PTank(x,y,imgB,imgT) {
 
   this.reloadTime = 250;
   this.reloadTimeM = 0;
+  this.reloadTimeM2 = 0;
   this.reloadTimeMine = 0;
   this.reloadTimeSmoke = 0;
 
@@ -121,7 +123,7 @@ function PTank(x,y,imgB,imgT) {
       if(this.reloadTimeSmoke>0){
         this.reloadTimeSmoke--;
       }
-      if (myGameArea.keys && myGameArea.keys[81] && this.numSmoke>0 && this.reloadTimeSmoke==0){
+      if (myGameArea.keys && myGameArea.keys[69] && this.numSmoke>0 && this.reloadTimeSmoke==0){
         smoke.push(new Smoke(this.x,this.y));
         this.numSmoke--;
         this.reloadTimeSmoke=50;
@@ -175,6 +177,18 @@ function PTank(x,y,imgB,imgT) {
       }
       if(this.reloadTimeM>0){
         this.reloadTimeM--;
+      }
+
+      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets2>0){
+        this.numMgBullets2--;
+        mgBulletsP.push(new MgBullet(
+        this.x+(15 * Math.sin(this.angleT))+ 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
+        this.y-(15 * Math.cos(this.angleT))- 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
+        this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+        this.reloadTimeM2=8;
+      }
+      if(this.reloadTimeM2>0){
+        this.reloadTimeM2--;
       }
 
       // dead tank hit by player by gun

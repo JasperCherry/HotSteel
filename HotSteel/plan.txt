@@ -12,15 +12,16 @@ to do:
 
 improve positioning, bullets, obstacles etc
 
-smoke cover // cannot target player tank , and player cannot target enemies as well. no idea yet how
 
 
 dead tanks explode after loosing 100 life nad you can remove them from map that way
 
 
-deleting bullets after some time, gun and mg
+deleting bullets after some time, gun and mg // ricochetes?
+
 
 second machinegun
+
 
 sounds:
 -shot mg and cannon
