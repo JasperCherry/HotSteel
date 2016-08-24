@@ -8,8 +8,6 @@ to do:
 
 ///////////////////////////////////////////
 
-sth with plane, sound
-
 
 
 improve positioning, bullets, obstacles etc
@@ -19,7 +17,6 @@ smoke cover // cannot target player tank , and player cannot target enemies as w
 
 dead tanks explode after loosing 100 life nad you can remove them from map that way
 
-small explosion when tank hits mine
 
 deleting bullets after some time, gun and mg
 

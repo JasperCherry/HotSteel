@@ -62,6 +62,49 @@ canvas {
 <img src="fire/end/e4.png" id="e4" style="display: none;">
 <img src="fire/end/e5.png" id="e5" style="display: none;">
 
+<img src="explosion/ex0.png" id="ex0" style="display: none;">
+<img src="explosion/ex1.png" id="ex1" style="display: none;">
+<img src="explosion/ex2.png" id="ex2" style="display: none;">
+<img src="explosion/ex3.png" id="ex3" style="display: none;">
+<img src="explosion/ex4.png" id="ex4" style="display: none;">
+<img src="explosion/ex5.png" id="ex5" style="display: none;">
+<img src="explosion/ex6.png" id="ex6" style="display: none;">
+<img src="explosion/ex7.png" id="ex7" style="display: none;">
+<img src="explosion/ex8.png" id="ex8" style="display: none;">
+<img src="explosion/ex9.png" id="ex9" style="display: none;">
+<img src="explosion/ex10.png" id="ex10" style="display: none;">
+
+<img src="smoke/sm0.png" id="sm0" style="display: none;">
+<img src="smoke/sm1.png" id="sm1" style="display: none;">
+<img src="smoke/sm2.png" id="sm2" style="display: none;">
+<img src="smoke/sm3.png" id="sm3" style="display: none;">
+<img src="smoke/sm4.png" id="sm4" style="display: none;">
+<img src="smoke/sm5.png" id="sm5" style="display: none;">
+<img src="smoke/sm6.png" id="sm6" style="display: none;">
+<img src="smoke/sm7.png" id="sm7" style="display: none;">
+<img src="smoke/sm8.png" id="sm8" style="display: none;">
+<img src="smoke/sm9.png" id="sm9" style="display: none;">
+<img src="smoke/sm10.png" id="sm10" style="display: none;">
+<img src="smoke/sm11.png" id="sm11" style="display: none;">
+<img src="smoke/sm12.png" id="sm12" style="display: none;">
+<img src="smoke/sm13.png" id="sm13" style="display: none;">
+<img src="smoke/sm14.png" id="sm14" style="display: none;">
+<img src="smoke/sm15.png" id="sm15" style="display: none;">
+<img src="smoke/sm16.png" id="sm16" style="display: none;">
+<img src="smoke/sm17.png" id="sm17" style="display: none;">
+<img src="smoke/sm18.png" id="sm18" style="display: none;">
+<img src="smoke/sm19.png" id="sm19" style="display: none;">
+<img src="smoke/sm20.png" id="sm20" style="display: none;">
+<img src="smoke/sm21.png" id="sm21" style="display: none;">
+<img src="smoke/sm22.png" id="sm22" style="display: none;">
+<img src="smoke/sm23.png" id="sm23" style="display: none;">
+<img src="smoke/sm24.png" id="sm24" style="display: none;">
+<img src="smoke/sm25.png" id="sm25" style="display: none;">
+<img src="smoke/sm26.png" id="sm26" style="display: none;">
+<img src="smoke/sm27.png" id="sm27" style="display: none;">
+<img src="smoke/sm28.png" id="sm28" style="display: none;">
+<img src="smoke/sm29.png" id="sm29" style="display: none;">
+
 
 <img src="maps/map1.jpg" id="map1" style="display: none;">
 
@@ -105,14 +148,27 @@ var myGameArea = {
 
 //////////////////////////////////////////////////////////////////////////////////
 // player tank vars
-var pTank = new PTank(100,300,rusa,rusb);
+var pTank = new PTank(500,300,rusa,rusb);
 var bulletP;
 var mgBulletsP = new Array();
 
 var aiTanks = new Array();
 
-aiTanks[0] = new AiTank(1200,300);
-aiTanks[1] = new AiTank2(1300,400);
+aiTanks[0] = new AiTank(1200,250);
+aiTanks[1] = new AiTank(1200,300);
+aiTanks[2] = new AiTank(1200,350);
+
+aiTanks[3] = new AiTank(2500,250);
+aiTanks[4] = new AiTank2(2500,300);
+
+aiTanks[5] = new AiTank2(4000,250);
+aiTanks[6] = new AiTank2(4000,300);
+
+aiTanks[7] = new AiTank(5000,250);
+aiTanks[8] = new AiTank(5000,300);
+
+
+
 
 
 
@@ -124,14 +180,12 @@ var mgBulletsAi = new Array();
 var kills = new Array();
 var killsFire = new Array();
 var mines = new Array();
+var explosionsM = new Array();
+var smoke = new Array();
+
 // area that tanks play at
 var fieldMapX=1000;
 var fieldMapY=600;
-
-
-
-
-
 
 
 
@@ -150,6 +204,14 @@ ctx.drawImage(map1, 0, 0);
 // mines
 for(var i = 0; i < mines.length; i++) {
   mines[i].update();
+}
+
+// mines explosions
+for(var i = 0; i < explosionsM.length; i++) {
+  explosionsM[i].update();
+  if(explosionsM[i].exLoop==11){
+    explosionsM.splice(i,1);
+  }
 }
 
 // drawing killed tanks
@@ -216,6 +278,14 @@ for(var i = 0; i < killsFire.length; i++) {
   killsFire[i].update();
 }
 
+// smoke covers
+for(var i = 0; i < smoke.length; i++) {
+  smoke[i].update();
+  if(smoke[i].totalTime==0){
+    smoke.splice(i,1);
+  }
+}
+
 // drawing informations about current game
 
 ctx.fillStyle ="black";
@@ -242,6 +312,10 @@ ctx.fillText(pTank.numMgBullets,260,645);
 
 ctx.fillText("Mines",370,620);
 ctx.fillText(pTank.numMines,370,645);
+
+ctx.fillText("Smoke",440,620);
+ctx.fillText(pTank.numSmoke,440,645);
+
 
 }// end of a game update function
 </script>

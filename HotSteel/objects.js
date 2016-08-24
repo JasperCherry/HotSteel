@@ -31,6 +31,7 @@ function PTank(x,y,imgB,imgT) {
   this.numMines = 10;
   this.numBullet = 20;
   this.numMgBullets = 200;
+  this.numSmoke = 3;
   this.hp = 100;
 
   this.speed = 0;
@@ -45,6 +46,7 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTime = 250;
   this.reloadTimeM = 0;
   this.reloadTimeMine = 0;
+  this.reloadTimeSmoke = 0;
 
   this.newPos = function() {
 
@@ -115,6 +117,16 @@ function PTank(x,y,imgB,imgT) {
 
       // weapons
 
+      // setting up smoke
+      if(this.reloadTimeSmoke>0){
+        this.reloadTimeSmoke--;
+      }
+      if (myGameArea.keys && myGameArea.keys[81] && this.numSmoke>0 && this.reloadTimeSmoke==0){
+        smoke.push(new Smoke(this.x,this.y));
+        this.numSmoke--;
+        this.reloadTimeSmoke=50;
+      }
+
       // setting up mines
       if(this.reloadTimeMine>0){
         this.reloadTimeMine--;
@@ -132,6 +144,7 @@ function PTank(x,y,imgB,imgT) {
       for(var i = 0; i < mines.length; i++) {
         if(Math.abs(mines[i].x-pTank.x)<15 && Math.abs(mines[i].y-pTank.y)<15){
           pTank.hp=pTank.hp-100;
+          explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
           mines.splice(i,1);
         }
       }
@@ -360,6 +373,7 @@ function AiTank(x,y) {
     for(var i = 0; i < mines.length; i++) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
+        explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
         mines.splice(i,1);
       }
     }
@@ -372,7 +386,7 @@ function AiTank(x,y) {
     if (this.reloadTime==0&&this.shotReady){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
       this.reloadTime=250;
     }
 
@@ -436,14 +450,23 @@ function AiTank(x,y) {
 
 
     // targeting player tank for mg
-    if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
-    && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
-    ){
-      this.mgShotReady=true;
-    }else{
-      this.mgShotReady=false;
+    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+      if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
+      && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
+      ){
+        this.mgShotReady=true;
+      }else{
+        this.mgShotReady=false;
+      }
     }
 
+    // detecting smoke cover
+    for(var i = 0; i < smoke.length; i++) {
+      if(Math.abs(pTank.x-smoke[i].x)<70 && Math.abs(pTank.y-smoke[i].y)<70){
+        this.shotReady=false;
+        this.mgShotReady=false;
+      }
+    }
 
     // gun
     // detection if ai hits player tank
@@ -609,6 +632,7 @@ function AiTank2(x,y) {
     for(var i = 0; i < mines.length; i++) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
+        explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
         mines.splice(i,1);
       }
     }
@@ -685,14 +709,23 @@ function AiTank2(x,y) {
 
 
     // targeting player tank for mg
-    if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
-    && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
-    ){
-      this.mgShotReady=true;
-    }else{
-      this.mgShotReady=false;
+    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+      if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
+      && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
+      ){
+        this.mgShotReady=true;
+      }else{
+        this.mgShotReady=false;
+      }
     }
 
+    // detecting smoke cover
+    for(var i = 0; i < smoke.length; i++) {
+      if(Math.abs(pTank.x-smoke[i].x)<35 && Math.abs(pTank.y-smoke[i].y)<35){
+        this.shotReady=false;
+        this.mgShotReady=false;
+      }
+    }
 
     // gun
     // detection if ai hits player tank
@@ -959,5 +992,83 @@ function Mine(x, y) {
         ctx.fill();
         ctx.restore();
     }
+
+}
+
+function ExplosionM(x, y) {
+
+    this.x = x;
+    this.y = y;
+    this.exLoop=0;
+    this.delayTime=0;
+
+        this.update = function() {
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          this.delayTime++;
+          if(this.exLoop!=11){
+            ctx.drawImage(document.getElementById("ex"+this.exLoop), -64*0.8, -64*0.8, 128*0.8, 128*0.8);
+            if(this.delayTime==2){
+              this.exLoop++;
+              this.delayTime=0;
+            }
+          }
+          ctx.restore();
+        }
+
+}
+
+function Smoke(x, y) {
+
+    this.radius = 70;
+    this.x = x;
+    this.y = y;
+    this.width=0;
+    this.height=0;
+    this.exLoop=1;
+    this.delayTime=0;
+    this.totalTime=1000;
+
+        this.update = function() {
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          this.delayTime++;
+          if(this.totalTime>0){
+
+            ctx.drawImage(document.getElementById("sm"+this.exLoop),
+            -128*this.width, -128*this.height, 256*this.width, 255*this.height);
+            ctx.drawImage(document.getElementById("sm"+this.exLoop),
+            -128*this.width, -128*this.height, 256*this.width, 255*this.height);
+
+            /*
+            ctx.fillStyle = "red";
+            ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+            ctx.closePath();
+            ctx.fill();
+            */
+
+            if(this.delayTime==2){
+              this.exLoop++;
+              this.delayTime=0;
+              if(this.exLoop==30){
+                this.exLoop=1;
+              }
+            }
+            // showing up
+            if(this.width<2&&this.totalTime>960){
+              this.width+=0.05;
+              this.height+=0.05;
+            }
+            // hiding
+            if(this.totalTime<42&&this.width>0){
+              this.width-=0.05;
+              this.height-=0.05;
+            }
+            this.totalTime--;
+          }
+          ctx.restore();
+        }
 
 }
