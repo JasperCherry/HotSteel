@@ -755,6 +755,7 @@ function AiTank2(x,y) {
     // detection if ai hits player
     for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
+        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
         bulletsAi.splice(i,1);
         pTank.hp=pTank.hp-20;
       }
@@ -763,6 +764,7 @@ function AiTank2(x,y) {
     for(var j = 0; j < kills.length; j++) {
      for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
+         explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
          bulletsAi.splice(i,1);
          kills[j].hp=kills[j].hp-50;
       }

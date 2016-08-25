@@ -3,7 +3,15 @@
 to do:
 
 
-sound of  smoke
+bug // mg is silent shen shooting from small distance , move to constructor function with other sounds
+
+
+
+
+deleting bullets after some time, gun and mg
+
+ricochetes
+
 
 
 
@@ -16,13 +24,8 @@ improve positioning, bullets, obstacles etc
 
 
 
-deleting bullets after some time, gun and mg // ricochetes?
-
-
-
 sounds:
--shot mg and cannon
--hit
+movement of tank and engine sound, sound rises up
 
 mine graphics
 
