@@ -191,10 +191,12 @@ function PTank(x,y,imgB,imgT) {
         this.reloadTimeM2--;
       }
 
-      // dead tank hit by player by gun
+      // detection if player hits dead tank hit by player by gun
       for(var i = 0; i < kills.length; i++) {
         if(bulletP!=null && Math.abs(kills[i].x-bulletP.x)<15 && Math.abs(kills[i].y-bulletP.y)<15) {
+          explosionsH.push(new ExplosionH(bulletP.x, bulletP.y));
           bulletP=null;
+          kills[i].hp=kills[i].hp-50;
         }
       }
 
@@ -203,6 +205,7 @@ function PTank(x,y,imgB,imgT) {
        for(var i = 0; i < mgBulletsP.length; i++) {
         if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
            mgBulletsP.splice(i,1);
+           kills[j].hp=kills[j].hp-5;
         }
        }
       }
@@ -221,6 +224,7 @@ function PTank(x,y,imgB,imgT) {
           if(bulletP!=null){
             if(Math.abs(bulletP.x-aiTanks[t].x)<15 && Math.abs(bulletP.y-aiTanks[t].y)<15){
                 aiTanks[t].hp=aiTanks[t].hp-50;
+                explosionsH.push(new ExplosionH(bulletP.x, bulletP.y));
                 bulletP=null;
             }
           }
@@ -400,7 +404,7 @@ function AiTank(x,y) {
     if (this.reloadTime==0&&this.shotReady){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (40)) - 20) * Math.PI / 180)));
       this.reloadTime=250;
     }
 
@@ -488,6 +492,7 @@ function AiTank(x,y) {
     // detection if ai hits player
     for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
+        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
         bulletsAi.splice(i,1);
         pTank.hp=pTank.hp-20;
       }
@@ -496,7 +501,9 @@ function AiTank(x,y) {
     for(var j = 0; j < kills.length; j++) {
      for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
+         explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
          bulletsAi.splice(i,1);
+         kills[j].hp=kills[j].hp-50;
       }
      }
     }
@@ -514,6 +521,7 @@ function AiTank(x,y) {
      for(var i = 0; i < mgBulletsAi.length; i++) {
       if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
          mgBulletsAi.splice(i,1);
+         kills[j].hp=kills[j].hp-5;
       }
      }
     }
@@ -569,7 +577,7 @@ function AiTank2(x,y) {
 
   this.numBullet = 20;
   this.numMgBullets = 200;
-  this.hp = 100;
+  this.hp = 150;
 
   this.x=x;
   this.y=y;
@@ -756,6 +764,7 @@ function AiTank2(x,y) {
      for(var i = 0; i < bulletsAi.length; i++) {
       if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
          bulletsAi.splice(i,1);
+         kills[j].hp=kills[j].hp-50;
       }
      }
     }
@@ -773,6 +782,7 @@ function AiTank2(x,y) {
      for(var i = 0; i < mgBulletsAi.length; i++) {
       if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
          mgBulletsAi.splice(i,1);
+         kills[j].hp=kills[j].hp-5;
       }
      }
     }
@@ -880,6 +890,7 @@ function DeadBodyFire(x,y){
 
 function DeadBody(x, y, angle1, angle2, img1, img2) {
 
+    this.hp = 100;
     this.img1=img1;
     this.img2=img2;
 
@@ -926,6 +937,9 @@ function DeadBody(x, y, angle1, angle2, img1, img2) {
 
 function Bullet(x, y, angle) {
 
+    this.gun = new Audio('sounds/gun.mp3');
+    this.playSound=true;
+
     this.radius = 2;
     this.speed = 20;
     this.angle = angle;
@@ -934,6 +948,10 @@ function Bullet(x, y, angle) {
     this.img = b;
 
     this.update = function() {
+        if(this.playSound){
+          this.gun.play();
+          this.playSound=false;
+        }
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -958,6 +976,9 @@ function Bullet(x, y, angle) {
 
 function MgBullet(x, y, angle) {
 
+    this.mg = new Audio('sounds/mg.mp3');
+
+    this.playSound=true;
     this.radius = 1;
     this.speed = 15;
     this.angle = angle;
@@ -966,6 +987,10 @@ function MgBullet(x, y, angle) {
     this.img = mgb;
 
     this.update = function() {
+        if(this.playSound){
+          this.mg.play();
+          this.playSound=false;
+        }
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -1016,14 +1041,76 @@ function ExplosionM(x, y) {
     this.exLoop=0;
     this.delayTime=0;
 
+    this.exmd = new Audio('sounds/exmd.mp3');
+    this.playSound=true;
+
         this.update = function() {
+          if(this.playSound){
+            this.exmd.play();
+            this.playSound=false;
+          }
           ctx = myGameArea.context;
           ctx.save();
           ctx.translate(this.x, this.y);
           this.delayTime++;
           if(this.exLoop!=11){
             ctx.drawImage(document.getElementById("ex"+this.exLoop), -64*0.8, -64*0.8, 128*0.8, 128*0.8);
-            if(this.delayTime==2){
+            if(this.delayTime==1){
+              this.exLoop++;
+              this.delayTime=0;
+            }
+          }
+          ctx.restore();
+        }
+
+}
+
+function ExplosionH(x, y) {
+
+    this.x = x;
+    this.y = y;
+    this.exLoop=0;
+    this.delayTime=0;
+
+        this.update = function() {
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          this.delayTime++;
+          if(this.exLoop!=11){
+            ctx.drawImage(document.getElementById("ex"+this.exLoop), -64*0.4, -64*0.4, 128*0.4, 128*0.4);
+            if(this.delayTime==1){
+              this.exLoop++;
+              this.delayTime=0;
+            }
+          }
+          ctx.restore();
+        }
+
+}
+
+function ExplosionDead(x, y) {
+
+    this.x = x;
+    this.y = y;
+    this.exLoop=0;
+    this.delayTime=0;
+
+    this.exmd = new Audio('sounds/exmd.mp3');
+    this.playSound=true;
+
+        this.update = function() {
+          if(this.playSound){
+            this.exmd.play();
+            this.playSound=false;
+          }
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          this.delayTime++;
+          if(this.exLoop!=11){
+            ctx.drawImage(document.getElementById("ex"+this.exLoop), -64*1, -64*1, 128*1, 128*1);
+            if(this.delayTime==1){
               this.exLoop++;
               this.delayTime=0;
             }
@@ -1044,7 +1131,14 @@ function Smoke(x, y) {
     this.delayTime=0;
     this.totalTime=1000;
 
+    this.smoke = new Audio('sounds/smoke.mp3');
+    this.playSound=true;
+
         this.update = function() {
+          if(this.playSound){
+            this.smoke.play();
+            this.playSound=false;
+          }
           ctx = myGameArea.context;
           ctx.save();
           ctx.translate(this.x, this.y);

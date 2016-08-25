@@ -154,22 +154,27 @@ var mgBulletsP = new Array();
 
 var aiTanks = new Array();
 
-aiTanks[0] = new AiTank(1200,250);
+
+aiTanks[0] = new AiTank2(1200,250);
 aiTanks[1] = new AiTank(1200,300);
-aiTanks[2] = new AiTank(1200,350);
 
-aiTanks[3] = new AiTank(2500,250);
-aiTanks[4] = new AiTank2(2500,300);
+aiTanks[2] = new AiTank(1900,350);
+aiTanks[3] = new AiTank(1900,400);
 
-aiTanks[5] = new AiTank2(4000,250);
-aiTanks[6] = new AiTank2(4000,300);
+aiTanks[4] = new AiTank(3000,350);
+aiTanks[5] = new AiTank(3000,400);
+aiTanks[6] = new AiTank2(3000,250);
+aiTanks[7] = new AiTank2(3000,100);
 
-aiTanks[7] = new AiTank(5000,250);
-aiTanks[8] = new AiTank(5000,300);
+aiTanks[8] = new AiTank(4200,350);
+aiTanks[9] = new AiTank2(4200,400);
+aiTanks[10] = new AiTank(4200,250);
 
+aiTanks[9] = new AiTank2(5200,400);
+aiTanks[10] = new AiTank(5200,250);
 
-
-
+aiTanks[9] = new AiTank2(6200,400);
+aiTanks[10] = new AiTank(6200,250);
 
 
 
@@ -181,12 +186,13 @@ var kills = new Array();
 var killsFire = new Array();
 var mines = new Array();
 var explosionsM = new Array();
+var explosionsH = new Array();
+var explosionsDead = new Array();
 var smoke = new Array();
 
-// area that tanks play at
+// area that tanks fight at
 var fieldMapX=1000;
 var fieldMapY=600;
-
 
 
 
@@ -221,20 +227,14 @@ for(var i = 0; i < kills.length; i++) {
 
 
 /////////////////////////////////////////////////////////////////////////
-///////////////////////////////// drawing ai
+
+///////////////////////////////// drawing ai tanks
 // new positions
 for(var t = 0; t < aiTanks.length; t++) {
   aiTanks[t].newPos();
 }
 
-  for(var i = 0; i < bulletsAi.length; i++) {
-    bulletsAi[i].newPos();
-  }
-  for(var i = 0; i < mgBulletsAi.length; i++) {
-    mgBulletsAi[i].newPos();
-  }
-
-// drawing
+// drawing ai tank and hp info
 for(var t = 0; t < aiTanks.length; t++) {
   aiTanks[t].update();
   ctx.fillStyle = "white";
@@ -243,39 +243,79 @@ for(var t = 0; t < aiTanks.length; t++) {
   ctx.fillText(aiTanks[t].hp,aiTanks[t].x-10,aiTanks[t].y+20);
 }
 
-  for(var i = 0; i < bulletsAi.length; i++) {
-    bulletsAi[i].update();
-  }
-  for(var i = 0; i < mgBulletsAi.length; i++) {
-    mgBulletsAi[i].update();
-  }
-
-
-///////////////////////////////// drawing player
+///////////////////////////////// drawing player tank
 // new positions
 pTank.newPos();
+// drawing
+pTank.update();
+
+////////////////////////////////////// drawing bullets
+
+// player
 if(bulletP!=null){
   bulletP.newPos();
 }
 for(var i = 0; i < mgBulletsP.length; i++) {
   mgBulletsP[i].newPos();
 }
-// drawing
-pTank.update();
+
 if(bulletP!=null){
   bulletP.update();
 }
 for(var i = 0; i < mgBulletsP.length; i++) {
   mgBulletsP[i].update();
 }
-//////////////////////////////////////////////////////////////////////////
 
+// ai
+for(var i = 0; i < bulletsAi.length; i++) {
+  bulletsAi[i].newPos();
+}
+for(var i = 0; i < mgBulletsAi.length; i++) {
+  mgBulletsAi[i].newPos();
+}
+
+for(var i = 0; i < bulletsAi.length; i++) {
+  bulletsAi[i].update();
+}
+for(var i = 0; i < mgBulletsAi.length; i++) {
+  mgBulletsAi[i].update();
+}
 
 ////////////////////////////////////// drawing smoke and fire effects
 
 // fire at dead tanks
 for(var i = 0; i < killsFire.length; i++) {
   killsFire[i].update();
+}
+
+// hit explosions
+for(var i = 0; i < explosionsH.length; i++) {
+  explosionsH[i].update();
+  if(explosionsH[i].exLoop==11){
+    explosionsH.splice(i,1);
+  }
+}
+
+// dead tank kill detection and switching off fire
+for(var i = 0; i < kills.length; i++) {
+  // deleting dead tank
+  if(kills[i].hp<=0){
+    // deleting fire object
+    for(var j = 0; j < killsFire.length; j++){
+      if(kills[i].x==killsFire[j].x&&kills[i].y==killsFire[j].y){
+        killsFire.splice(j,1);
+      }
+    }
+    explosionsDead.push(new ExplosionDead(kills[i].x, kills[i].y));
+    kills.splice(i,1);
+  }
+}
+// drawing explosions
+for(var i = 0; i < explosionsDead.length; i++) {
+  explosionsDead[i].update();
+  if(explosionsDead[i].exLoop==11){
+    explosionsDead.splice(i,1);
+  }
 }
 
 // smoke covers

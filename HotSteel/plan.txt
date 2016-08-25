@@ -3,6 +3,7 @@
 to do:
 
 
+sound of  smoke
 
 
 
@@ -14,13 +15,9 @@ improve positioning, bullets, obstacles etc
 
 
 
-dead tanks explode after loosing 100 life nad you can remove them from map that way
-
 
 deleting bullets after some time, gun and mg // ricochetes?
 
-
-second machinegun
 
 
 sounds:
