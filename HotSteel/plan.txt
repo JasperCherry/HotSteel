@@ -3,31 +3,29 @@
 to do:
 
 
-bug // mg is silent shen shooting from small distance , move to constructor function with other sounds
-
-
-
-
-deleting bullets after some time, gun and mg
-
-ricochetes
-
 
 
 
 ///////////////////////////////////////////
 
+flamethrower
 
+mouse pointer
 
-improve positioning, bullets, obstacles etc
+pointing through obstacles detection system
 
+obstacles on map
 
+third type of tank
 
-
-sounds:
-movement of tank and engine sound, sound rises up
+names of the tanks
 
 mine graphics
+
+sabot rounds, red, penetrating tanks and obstacles
+
+
+
 
 
 /---/---/---/
@@ -47,15 +45,4 @@ mines
 hp
 
 deadly power of shot
-
-
-
-// advanced // extra option
-
-
-infrantry
-
-proper tower following tank
-
-proper colision detection
 

@@ -110,6 +110,9 @@ canvas {
 
 
 <script src="objects.js"></script>
+<script src="enemyTanks.js"></script>
+<script src="player.js"></script>
+
 
 <script>
 
@@ -149,37 +152,20 @@ var myGameArea = {
 //////////////////////////////////////////////////////////////////////////////////
 // player tank vars
 var pTank = new PTank(500,300,rusa,rusb);
-var bulletP;
+var bulletsP = new Array;
 var mgBulletsP = new Array();
 
 var aiTanks = new Array();
-
-
-aiTanks[0] = new AiTank2(1200,250);
-aiTanks[1] = new AiTank(1200,300);
-
-aiTanks[2] = new AiTank(1900,350);
-aiTanks[3] = new AiTank(1900,400);
-
-aiTanks[4] = new AiTank(3000,350);
-aiTanks[5] = new AiTank(3000,400);
-aiTanks[6] = new AiTank2(3000,250);
-aiTanks[7] = new AiTank2(3000,100);
-
-aiTanks[8] = new AiTank(4200,350);
-aiTanks[9] = new AiTank2(4200,400);
-aiTanks[10] = new AiTank(4200,250);
-
-aiTanks[9] = new AiTank2(5200,400);
-aiTanks[10] = new AiTank(5200,250);
-
-aiTanks[9] = new AiTank2(6200,400);
-aiTanks[10] = new AiTank(6200,250);
-
-
-
 var bulletsAi = new Array();
 var mgBulletsAi = new Array();
+
+
+
+
+aiTanks[0] = new AiTank(1100,300);
+aiTanks[1] = new AiTank(1100,200);
+
+
 
 // map variables
 var kills = new Array();
@@ -249,37 +235,44 @@ pTank.newPos();
 // drawing
 pTank.update();
 
-////////////////////////////////////// drawing bullets
+//////////////////////////////////////////////////////////////// drawing bullets
 
-// player
-if(bulletP!=null){
-  bulletP.newPos();
-}
-for(var i = 0; i < mgBulletsP.length; i++) {
-  mgBulletsP[i].newPos();
-}
+//////////////////////////// ai
 
-if(bulletP!=null){
-  bulletP.update();
-}
-for(var i = 0; i < mgBulletsP.length; i++) {
-  mgBulletsP[i].update();
-}
-
-// ai
 for(var i = 0; i < bulletsAi.length; i++) {
   bulletsAi[i].newPos();
-}
-for(var i = 0; i < mgBulletsAi.length; i++) {
-  mgBulletsAi[i].newPos();
+  bulletsAi[i].update();
+  if(bulletsAi[i].liveTime==0){
+    bulletsAi.splice(i,1);
+  }
 }
 
-for(var i = 0; i < bulletsAi.length; i++) {
-  bulletsAi[i].update();
-}
 for(var i = 0; i < mgBulletsAi.length; i++) {
+  mgBulletsAi[i].newPos();
   mgBulletsAi[i].update();
+  if(mgBulletsAi[i].liveTime==0){
+    mgBulletsAi.splice(i,1);
+  }
 }
+
+///////////////////////// player
+
+for(var i = 0; i < bulletsP.length; i++) {
+  bulletsP[i].newPos();
+  bulletsP[i].update();
+  if(bulletsP[i].liveTime==0){
+    bulletsP.splice(i,1);
+  }
+}
+
+for(var i = 0; i < mgBulletsP.length; i++) {
+  mgBulletsP[i].newPos();
+  mgBulletsP[i].update();
+  if(mgBulletsP[i].liveTime==0){
+    mgBulletsP.splice(i,1);
+  }
+}
+
 
 ////////////////////////////////////// drawing smoke and fire effects
 
