@@ -33,6 +33,7 @@ canvas {
 
 <img src="bullets/mgb.png" id="mgb" style="display: none;">
 <img src="bullets/b.png" id="b" style="display: none;">
+<img src="bullets/b2.png" id="b2" style="display: none;">
 
 <img src="fire/loop/l0.png" id="l0" style="display: none;">
 <img src="fire/loop/l1.png" id="l1" style="display: none;">
@@ -159,13 +160,10 @@ var aiTanks = new Array();
 var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
-
-
-
-aiTanks[0] = new AiTank(1100,300);
-aiTanks[1] = new AiTank(1100,200);
-
-
+aiTanks[0]= new AiTank(2100,100);
+aiTanks[1]= new AiTank(2100,150);
+aiTanks[2]= new AiTank(2100,200);
+aiTanks[3]= new AiTank(2100,250);
 
 // map variables
 var kills = new Array();
@@ -180,6 +178,11 @@ var smoke = new Array();
 var fieldMapX=1000;
 var fieldMapY=600;
 
+
+kills.push(new DeadBody(300, 300, 0, 0, rusaw, rusbw));
+kills.push(new DeadBody(350, 300, 0, 0, rusaw, rusbw));
+kills.push(new DeadBody(400, 300, 0, 0, rusaw, rusbw));
+kills.push(new DeadBody(450, 300, 0, 0, rusaw, rusbw));
 
 
 
@@ -329,30 +332,44 @@ ctx.fillStyle = "white";
 ctx.fillText("Player HP",10,620);
 ctx.fillText(pTank.hp,10,645);
 
-ctx.fillText("Cannon ammo",110,620);
-ctx.fillText(pTank.numBullet,110,645);
+
+//////////////// cannon
+ctx.fillText("Cannon",130,620);
+// loading
 if(pTank.reloadTime==0){
   ctx.fillStyle = "red";
-  ctx.fillText("ready",160,645);
+  ctx.fillText("ready",130,645);
 }else{
   ctx.fillStyle = "white";
-  ctx.fillText("loading",160,645);
+  ctx.fillText("loading",130,645);
 }
+// ammo info
+if(pTank.ammoType==1){
+  ctx.fillStyle = "red";
+  ctx.fillText("HEAT",240,620);
+  ctx.fillStyle = "white";
+  ctx.fillText("SABOT",320,620);
+}else if(pTank.ammoType==2){
+  ctx.fillStyle = "white";
+  ctx.fillText("HEAT",240,620);
+  ctx.fillStyle = "red";
+  ctx.fillText("SABOT",320,620);
+}
+ctx.fillStyle = "white";
+ctx.fillText(pTank.numBullet,240,645);
+ctx.fillText(pTank.numBullet2,320,645);
+
 
 ctx.fillStyle = "white";
-ctx.fillText("MG ammo",260,620);
-ctx.fillText(pTank.numMgBullets,260,645);
+ctx.fillText("MG ammo",430,620);
+ctx.fillText(pTank.numMgBullets,430,645);
+ctx.fillText("/  "+pTank.numMgBullets2,480,645);
 
-ctx.fillText("Mines",370,620);
-ctx.fillText(pTank.numMines,370,645);
+ctx.fillText("Mines",570,620);
+ctx.fillText(pTank.numMines,570,645);
 
-ctx.fillText("Smoke",440,620);
-ctx.fillText(pTank.numSmoke,440,645);
-
-
-ctx.fillText("Turrent MG ammo",515,620);
-ctx.fillText(pTank.numMgBullets2,515,645);
-
+ctx.fillText("Smoke",640,620);
+ctx.fillText(pTank.numSmoke,640,645);
 
 }// end of a game update function
 </script>

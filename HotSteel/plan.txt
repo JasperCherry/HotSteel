@@ -4,6 +4,8 @@ to do:
 
 
 
+sabot rounds, red, penetrating tanks and obstacles
+
 
 
 ///////////////////////////////////////////
@@ -22,8 +24,9 @@ names of the tanks
 
 mine graphics
 
-sabot rounds, red, penetrating tanks and obstacles
 
+
+tracks and dead bodies sign
 
 
 

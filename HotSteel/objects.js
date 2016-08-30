@@ -118,6 +118,7 @@ function Bullet(x, y, angle) {
     this.gun = new Audio('sounds/gun.mp3');
     this.playSound=true;
 
+    this.type=1;
     this.liveTime=100;
     this.radius = 2;
     this.speed = 20;
@@ -125,6 +126,53 @@ function Bullet(x, y, angle) {
     this.x = x;
     this.y = y;
     this.img = b;
+
+    if(this.playSound){
+      this.gun.play();
+      this.playSound=false;
+    }
+
+    this.update = function() {
+
+        this.liveTime--;
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.translate(0, 0);
+        ctx.drawImage(this.img, -34, -47);
+        /*
+        ctx.fillStyle = "red";
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        */
+        ctx.restore();
+    }
+    this.newPos = function() {
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
+
+function Bullet2(x, y, angle) {
+
+    this.gun = new Audio('sounds/gun.mp3');
+    this.playSound=true;
+
+    this.hits=new Array();
+    this.hitsDead=new Array();
+    
+    this.type=2;
+    this.active=true;
+    this.liveTime=100;
+    this.radius = 2;
+    this.speed = 20;
+    this.angle = angle;
+    this.x = x;
+    this.y = y;
+    this.img = b2;
 
     if(this.playSound){
       this.gun.play();

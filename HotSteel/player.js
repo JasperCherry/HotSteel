@@ -6,12 +6,15 @@ function PTank(x,y,imgB,imgT) {
   this.imgB=imgB;
   this.imgT=imgT;
 
-  this.numMines = 10;
+
+  this.ammoType = 1;
   this.numBullet = 20;
+  this.numBullet2 = 20;
   this.numMgBullets = 200;
   this.numMgBullets2 = 200;
   this.numSmoke = 3;
   this.hp = 200;
+  this.numMines = 10;
 
   this.speed = 0;
   this.angleB = 0;
@@ -29,6 +32,16 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTimeSmoke = 0;
 
   this.newPos = function() {
+
+      // ammo choosing
+      if (myGameArea.keys && myGameArea.keys[49]){
+        this.ammoType = 1;
+        this.reloadTime=250;
+      }
+      if (myGameArea.keys && myGameArea.keys[50]){
+        this.ammoType = 2;
+        this.reloadTime=250;
+      }
 
       // start position zeroing
       this.moveAngleB = 0;
@@ -130,16 +143,24 @@ function PTank(x,y,imgB,imgT) {
       }
 
       // main gun
-      if (myGameArea.keys && myGameArea.keys[32] && this.reloadTime==0 && this.numBullet>0){
-        this.numBullet--;
-        bulletsP.push(new Bullet(
-        this.x+(40 * Math.sin(this.angleT)),
-        this.y-(40 * Math.cos(this.angleT)),
-        this.angleT));
-        // not precision shooting
-        //bullet.angle = tower.angle+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180);
-        this.reloadTime=250;
+      if (myGameArea.keys && myGameArea.keys[32] && this.reloadTime==0){
+        if(this.ammoType==1 && this.numBullet>0){
+          this.numBullet--;
+          bulletsP.push(new Bullet(
+          this.x+(40 * Math.sin(this.angleT)),
+          this.y-(40 * Math.cos(this.angleT)),
+          this.angleT));
+          this.reloadTime=250;
+        }else if(this.ammoType==2 && this.numBullet2>0){
+          this.numBullet2--;
+          bulletsP.push(new Bullet2(
+          this.x+(40 * Math.sin(this.angleT)),
+          this.y-(40 * Math.cos(this.angleT)),
+          this.angleT));
+          this.reloadTime=250;
+        }
       }
+      //reloading
       if(this.reloadTime>0){
         this.reloadTime--;
       }
@@ -174,9 +195,26 @@ function PTank(x,y,imgB,imgT) {
       for(var j = 0; j < kills.length; j++) {
        for(var i = 0; i < bulletsP.length; i++) {
         if(Math.abs(bulletsP[i].x-kills[j].x)<15 && Math.abs(bulletsP[i].y-kills[j].y)<15){
-           explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-           bulletsP.splice(i,1);
-           kills[j].hp=kills[j].hp-50;
+           if(bulletsP[i].type==1){
+             // heat rounds
+             explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+             bulletsP.splice(i,1);
+             kills[j].hp=kills[j].hp-50;
+           }else if(bulletsP[i].type==2){
+             // sabot rounds
+             var inArray=false;
+             for(var x=0; x<bulletsP[i].hitsDead.length; x++){
+               if(j==bulletsP[i].hitsDead[x]){
+                 inArray=true;
+               }
+             }
+             // if tank wasnt hit before
+             if(inArray==false){
+               bulletsP[i].hitsDead.push(j);
+               kills[j].hp=kills[j].hp-50;
+               explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+             }
+          }
         }
        }
       }
@@ -206,13 +244,31 @@ function PTank(x,y,imgB,imgT) {
 
           // gun
           // detection if player hits  ai tank
-          for(var i = 0; i < bulletsP.length; i++) {
+           for(var i = 0; i < bulletsP.length; i++) {
             if(Math.abs(bulletsP[i].x-aiTanks[t].x)<15 && Math.abs(bulletsP[i].y-aiTanks[t].y)<15){
-                aiTanks[t].hp=aiTanks[t].hp-50;
-                explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-                bulletsP.splice(i,1);
+               if(bulletsP[i].type==1){
+                 // heat rounds
+                 explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+                 bulletsP.splice(i,1);
+                 aiTanks[t].hp=aiTanks[t].hp-50;
+               }else if(bulletsP[i].type==2){
+                 // sabot rounds
+                 var inArray=false;
+                 for(var x=0; x<bulletsP[i].hits.length; x++){
+                   if(t==bulletsP[i].hits[x]){
+                     inArray=true;
+                   }
+                 }
+                 // if tank wasnt hit before
+                 if(inArray==false){
+                   bulletsP[i].hits.push(t);
+                  aiTanks[t].hp=aiTanks[t].hp-50;
+                   explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+                 }
+              }
             }
-          }
+           }
+
 
           // machinegun
           // detection if player hits  ai tank
