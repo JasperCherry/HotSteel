@@ -5,48 +5,50 @@ to do:
 
 
 
-flamethrower
+third type of tank
+
+
+
 
 
 
 ///////////////////////////////////////////
 
-sound of smoke, make it shorter
+upgrades:
 
-mouse pointer
+gun ammo
+mines ammo
+mg ammo
+flame ammo
 
 
-third type of tank
+gun rate
+mg rate
+mines rate
+
+
+gun precision
+mg precision
+
+
+loading ammo on tank
+
+how to solve 2 mgs?
+
+
+
+
+//////////////////////////////////////
 
 names of the tanks
 
-mine graphics
-
-make player tank more dark
-
-tracks and dead bodies sign
 
 
 
+mine graphics?
 
+exploaded bodies sign on the ground?
 
-/---/---/---/
-Menu
-
-
-tank improvements / parts :
-
-reload time
-
-accuracy
-
-speed
-
-mines
-
-hp
-
-deadly power of shot
 
 
 // extra 

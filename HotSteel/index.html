@@ -117,6 +117,7 @@ canvas {
 <img src="flame/f8.png" id="f8" style="display: none;">
 <img src="flame/f9.png" id="f9" style="display: none;">
 
+<img src="pointer/pointer.png" id="pointer" style="display: none;">
 
 <img src="maps/map1.jpg" id="map1" style="display: none;">
 
@@ -172,10 +173,17 @@ var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
 
+/*
+aiTanks[0]= new AiTank2(600,100);
 
-aiTanks[0]= new AiTank2(1100,100);
 aiTanks[1]= new AiTank2(1100,150);
-
+aiTanks[2]= new AiTank(1900,100);
+aiTanks[3]= new AiTank(2200,400);
+aiTanks[4]= new AiTank(2400,500);
+aiTanks[5]= new AiTank(3000,100);
+aiTanks[6]= new AiTank(3000,150);
+aiTanks[7]= new AiTank(3000,250);
+*/
 
 // map variables
 var kills = new Array();
@@ -237,8 +245,8 @@ for(var t = 0; t < aiTanks.length; t++) {
   aiTanks[t].update();
   ctx.fillStyle = "white";
   ctx.font = "10px Arial";
-  ctx.fillText("HP",aiTanks[t].x-10,aiTanks[t].y);
-  ctx.fillText(aiTanks[t].hp,aiTanks[t].x-10,aiTanks[t].y+20);
+  ctx.fillText("HP",aiTanks[t].x-3,aiTanks[t].y);
+  ctx.fillText(aiTanks[t].hp,aiTanks[t].x-5,aiTanks[t].y+15);
 }
 
 ///////////////////////////////// drawing player tank

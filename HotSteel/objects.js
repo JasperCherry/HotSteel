@@ -68,8 +68,9 @@ function DeadBodyFire(x,y){
 }
 
 
-function DeadBody(x, y, angle1, angle2, img1, img2) {
+function DeadBody(x, y, angle1, angle2, img1, img2, tower) {
 
+    this.towerLoose=tower;
     this.hp = 100;
     this.img1=img1;
     this.img2=img2;
@@ -95,10 +96,12 @@ function DeadBody(x, y, angle1, angle2, img1, img2) {
         ctx.restore();
 
         // drawing the tower
+        if(this.towerLoose==false){
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angleTower);
+        }
         // tower of grey tank with long barrel should be in different position
         if(this.img2==gerbw2){
           ctx.translate(0, -3);
@@ -247,9 +250,6 @@ function MgBullet(x, y, angle) {
 
 function Flame(x, y, angle) {
 
-    //this.mg = new Audio('sounds/mg.mp3');
-    //this.playSound=true;
-
     this.liveTime=40;
     this.radius = 3;
     this.speed = 7;
@@ -288,9 +288,7 @@ function Flame(x, y, angle) {
             this.fLoop=0;
           }
         }
-
         this.size+=0.01;
-
         /*
         ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);

@@ -1,7 +1,21 @@
+/*
+if(this.towerLoose==false){
+ ctx = myGameArea.context;
+ ctx.save();
+ ctx.translate(this.x, this.y);
+ ctx.rotate(this.angleT);
+ ctx.translate(0, -3);
+ ctx.drawImage(this.imgT, -20, -30);
+ ctx.restore();
+}
+
+*/
 
 function AiTank(x,y) {
 
   this.type="one";
+
+  this.towerLoose=false;
 
   // tank on fire
   this.fireProtect=50;
@@ -22,8 +36,6 @@ function AiTank(x,y) {
   this.reloadTime = 250;
   this.reloadTimeM = 0;
 
-  this.numBullet = 20;
-  this.numMgBullets = 200;
   this.hp = 100;
 
   this.x=x;
@@ -120,7 +132,7 @@ function AiTank(x,y) {
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
     }
-    if (this.reloadTime==0&&this.shotReady){
+    if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
       this.angleT+( (Math.round(Math.random() * (40)) - 20) * Math.PI / 180)));
@@ -128,8 +140,8 @@ function AiTank(x,y) {
     }
 
     // mg
-    if (this.reloadTimeM==0 && this.numMgBullets>0 && this.mgShotReady){
-      this.numMgBullets--;
+    console.log(this.mgShotReady);
+    if (this.reloadTimeM==0&&this.mgShotReady){
       mgBulletsAi.push(new MgBullet(
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
       this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
@@ -187,7 +199,7 @@ function AiTank(x,y) {
 
 
     // targeting player tank for mg
-    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+    if(this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
       && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
       ){
@@ -276,12 +288,14 @@ function AiTank(x,y) {
       ctx.drawImage(this.imgB, -20, -30);
       ctx.restore();
       // drawing the tower
-      ctx = myGameArea.context;
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.angleT);
-      ctx.drawImage(this.imgT, -20, -30);
-      ctx.restore();
+      if(this.towerLoose==false){
+       ctx = myGameArea.context;
+       ctx.save();
+       ctx.translate(this.x, this.y);
+       ctx.rotate(this.angleT);
+       ctx.drawImage(this.imgT, -20, -30);
+       ctx.restore();
+      }
       // drawing the flames
       if(this.onFire){
         ctx = myGameArea.context;
@@ -309,7 +323,9 @@ function AiTank(x,y) {
 
 function AiTank2(x,y) {
 
-  this.type="two";
+  this.type="one";
+
+  this.towerLoose=false;
 
   // tank on fire
   this.fireProtect=50;
@@ -330,8 +346,6 @@ function AiTank2(x,y) {
   this.reloadTime = 250;
   this.reloadTimeM = 0;
 
-  this.numBullet = 20;
-  this.numMgBullets = 200;
   this.hp = 150;
 
   this.x=x;
@@ -428,21 +442,21 @@ function AiTank2(x,y) {
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
     }
-    if (this.reloadTime==0&&this.shotReady){
+    if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
       this.reloadTime=250;
     }
 
     // mg
-    if (this.reloadTimeM==0 && this.numMgBullets>0 && this.mgShotReady){
-      this.numMgBullets--;
+    console.log(this.mgShotReady);
+    if (this.reloadTimeM==0&&this.mgShotReady){
       mgBulletsAi.push(new MgBullet(
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
       this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
       this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM=8;
+      this.reloadTimeM=6;
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
@@ -495,7 +509,7 @@ function AiTank2(x,y) {
 
 
     // targeting player tank for mg
-    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+    if(this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       if( (Math.abs(pTank.x-this.x)<600 && Math.abs(pTank.y-this.y)<600)
       && ( (Math.round((this.aiTargetAngle+2*Math.PI) * 3) / 3) == (Math.round(this.angleB * 3) / 3) )
       ){
@@ -507,7 +521,7 @@ function AiTank2(x,y) {
 
     // detecting smoke cover
     for(var i = 0; i < smoke.length; i++) {
-      if(Math.abs(pTank.x-smoke[i].x)<35 && Math.abs(pTank.y-smoke[i].y)<35){
+      if(Math.abs(pTank.x-smoke[i].x)<70 && Math.abs(pTank.y-smoke[i].y)<70){
         this.shotReady=false;
         this.mgShotReady=false;
       }
@@ -575,6 +589,7 @@ function AiTank2(x,y) {
   }
 
   this.update = function() {
+
       // drawing the body
       ctx = myGameArea.context;
       ctx.save();
@@ -583,13 +598,15 @@ function AiTank2(x,y) {
       ctx.drawImage(this.imgB, -20, -30);
       ctx.restore();
       // drawing the tower
-      ctx = myGameArea.context;
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.angleT);
-      ctx.translate(0, -3);
-      ctx.drawImage(this.imgT, -20, -30);
-      ctx.restore();
+      if(this.towerLoose==false){
+       ctx = myGameArea.context;
+       ctx.save();
+       ctx.translate(this.x, this.y);
+       ctx.rotate(this.angleT);
+       ctx.translate(0, -3);
+       ctx.drawImage(this.imgT, -20, -30);
+       ctx.restore();
+      }
       // drawing the flames
       if(this.onFire){
         ctx = myGameArea.context;
@@ -607,6 +624,7 @@ function AiTank2(x,y) {
           }
         }
       }
+
 
   }
 

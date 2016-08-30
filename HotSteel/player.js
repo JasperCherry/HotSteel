@@ -1,11 +1,18 @@
 
 function PTank(x,y,imgB,imgT) {
 
+  this.towerLoose=false;
+
   this.x=x;
   this.y=y;
   this.imgB=imgB;
   this.imgT=imgT;
+  this.imgP=pointer;
 
+
+  this.gunSpeed=250;
+  this.mgSpeed=6;
+  this.mineSpeed=40;
 
   this.ammoType = 1;
   this.numBullet = 20;
@@ -33,16 +40,19 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTimeMine = 0;
   this.reloadTimeSmoke = 0;
 
+  this.flame = new Audio('sounds/flame.mp3');
+
+
   this.newPos = function() {
 
       // ammo choosing
       if (myGameArea.keys && myGameArea.keys[49]){
         this.ammoType = 1;
-        this.reloadTime=250;
+        this.reloadTime=this.gunSpeed;
       }
       if (myGameArea.keys && myGameArea.keys[50]){
         this.ammoType = 2;
-        this.reloadTime=250;
+        this.reloadTime=this.gunSpeed;
       }
 
       // start position zeroing
@@ -132,7 +142,7 @@ function PTank(x,y,imgB,imgT) {
         this.y+(35 * Math.cos(this.angleB))
         ));
         this.numMines--;
-        this.reloadTimeMine=50;
+        this.reloadTimeMine=this.mineSpeed;
       }
 
       // detection if player tank is on the mine and trigering it
@@ -152,14 +162,14 @@ function PTank(x,y,imgB,imgT) {
           this.x+(40 * Math.sin(this.angleT)),
           this.y-(40 * Math.cos(this.angleT)),
           this.angleT));
-          this.reloadTime=250;
+          this.reloadTime=this.gunSpeed;
         }else if(this.ammoType==2 && this.numBullet2>0){
           this.numBullet2--;
           bulletsP.push(new Bullet2(
           this.x+(40 * Math.sin(this.angleT)),
           this.y-(40 * Math.cos(this.angleT)),
           this.angleT));
-          this.reloadTime=250;
+          this.reloadTime=this.gunSpeed;
         }
       }
       //reloading
@@ -174,14 +184,28 @@ function PTank(x,y,imgB,imgT) {
         this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
         this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
         this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-        this.reloadTimeM=8;
+        this.reloadTimeM=this.mgSpeed;
       }
       if(this.reloadTimeM>0){
         this.reloadTimeM--;
       }
 
+      // machinegun 2
+      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets2>0){
+        this.numMgBullets2--;
+        mgBulletsP.push(new MgBullet(
+        this.x+(15 * Math.sin(this.angleT))+ 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
+        this.y-(15 * Math.cos(this.angleT))- 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
+        this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+        this.reloadTimeM2=this.mgSpeed;
+      }
+      if(this.reloadTimeM2>0){
+        this.reloadTimeM2--;
+      }
+
       // flamethrower
       if (myGameArea.keys && myGameArea.keys[81] && this.reloadTimeF==0 && this.numFlames>0){
+        this.flame.play();
         this.numFlames--;
         flames.push(new Flame(
         this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
@@ -192,17 +216,9 @@ function PTank(x,y,imgB,imgT) {
       if(this.reloadTimeF>0){
         this.reloadTimeF--;
       }
-
-      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets2>0){
-        this.numMgBullets2--;
-        mgBulletsP.push(new MgBullet(
-        this.x+(15 * Math.sin(this.angleT))+ 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
-        this.y-(15 * Math.cos(this.angleT))- 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
-        this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-        this.reloadTimeM2=8;
-      }
-      if(this.reloadTimeM2>0){
-        this.reloadTimeM2--;
+      if(!(myGameArea.keys&&myGameArea.keys[81])||this.numFlames<=0){
+        this.flame.pause();
+        this.flame.load();
       }
 
 
@@ -290,6 +306,10 @@ function PTank(x,y,imgB,imgT) {
                    explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
                  }
               }
+              // losing tower
+              if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<50) ){
+                aiTanks[t].towerLoose=true;
+              }
             }
            }
 
@@ -319,20 +339,19 @@ function PTank(x,y,imgB,imgT) {
             }
           }
 
+
+
           // ai kill detection
           if(aiTanks[t].hp<=0){
 
              if(aiTanks[t].type=='one'){
-               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT, geraw, gerbw));
+               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+               geraw, gerbw, aiTanks[t].towerLoose));
              }
              if(aiTanks[t].type=='two'){
-               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT, geraw2, gerbw2));
+               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+               geraw2, gerbw2, aiTanks[t].towerLoose));
              }
-
-             if((Math.floor(Math.random() * 3))==0){
-              killsFire.push(new DeadBodyFire(aiTanks[t].x, aiTanks[t].y));
-             }
-
              aiTanks.splice(t,1);
            }
 
@@ -340,8 +359,7 @@ function PTank(x,y,imgB,imgT) {
 
       // player kill detection
       if(this.hp<=0){
-         kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw));
-         killsFire.push(new DeadBodyFire(this.x, this.y));
+         kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose));
          pTank = new PTank(100,300,rusa,rusb);
        }
 
@@ -372,6 +390,13 @@ function PTank(x,y,imgB,imgT) {
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
       ctx.drawImage(this.imgT, -20, -30);
+      ctx.restore();
+      // drawing the pointer
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
 
   }
