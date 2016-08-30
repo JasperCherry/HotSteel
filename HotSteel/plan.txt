@@ -4,19 +4,17 @@ to do:
 
 
 
-sabot rounds, red, penetrating tanks and obstacles
+
+flamethrower
 
 
 
 ///////////////////////////////////////////
 
-flamethrower
+sound of smoke, make it shorter
 
 mouse pointer
 
-pointing through obstacles detection system
-
-obstacles on map
 
 third type of tank
 
@@ -24,9 +22,10 @@ names of the tanks
 
 mine graphics
 
-
+make player tank more dark
 
 tracks and dead bodies sign
+
 
 
 
@@ -49,3 +48,8 @@ hp
 
 deadly power of shot
 
+
+// extra 
+
+pointing through obstacles ai detection system
+obstacles on map

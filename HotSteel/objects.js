@@ -2,12 +2,12 @@
 function DeadBodyFire(x,y){
 
     this.phase=1;
-    this.phaseTimer=400;
+    this.phaseTimer=250;
     this.fireLoop=0;
     this.delayTime=0;
     this.x=x;
     this.y=y;
-    this.size=1.8;
+    this.size=2;
     this.flameSpeed=2;
 
     // drawing the fire
@@ -163,9 +163,8 @@ function Bullet2(x, y, angle) {
 
     this.hits=new Array();
     this.hitsDead=new Array();
-    
+
     this.type=2;
-    this.active=true;
     this.liveTime=100;
     this.radius = 2;
     this.speed = 20;
@@ -232,6 +231,66 @@ function MgBullet(x, y, angle) {
         ctx.beginPath();
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -19, -19);
+        /*
+        ctx.fillStyle = "red";
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        */
+        ctx.restore();
+    }
+    this.newPos = function() {
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
+
+function Flame(x, y, angle) {
+
+    //this.mg = new Audio('sounds/mg.mp3');
+    //this.playSound=true;
+
+    this.liveTime=40;
+    this.radius = 3;
+    this.speed = 7;
+    this.angle = angle;
+    this.x = x;
+    this.y = y;
+
+    this.fLoop=0;
+    this.delayTime=0;
+    this.size=0.1;
+
+
+    if(this.playSound){
+      this.mg.play();
+      this.playSound=false;
+    }
+
+    this.update = function() {
+        this.liveTime--;
+
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.translate(0, 0);
+
+        ctx.drawImage(document.getElementById("f"+this.fLoop), -128*this.size,
+        -128*this.size, 256*this.size, 256*this.size);
+
+        this.delayTime++;
+        if(this.delayTime==1){
+          this.fLoop++;
+          this.delayTime=0;
+          if(this.fLoop==10){
+            this.fLoop=0;
+          }
+        }
+
+        this.size+=0.01;
+
         /*
         ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);

@@ -106,6 +106,17 @@ canvas {
 <img src="smoke/sm28.png" id="sm28" style="display: none;">
 <img src="smoke/sm29.png" id="sm29" style="display: none;">
 
+<img src="flame/f0.png" id="f0" style="display: none;">
+<img src="flame/f1.png" id="f1" style="display: none;">
+<img src="flame/f2.png" id="f2" style="display: none;">
+<img src="flame/f3.png" id="f3" style="display: none;">
+<img src="flame/f4.png" id="f4" style="display: none;">
+<img src="flame/f5.png" id="f5" style="display: none;">
+<img src="flame/f6.png" id="f6" style="display: none;">
+<img src="flame/f7.png" id="f7" style="display: none;">
+<img src="flame/f8.png" id="f8" style="display: none;">
+<img src="flame/f9.png" id="f9" style="display: none;">
+
 
 <img src="maps/map1.jpg" id="map1" style="display: none;">
 
@@ -160,14 +171,17 @@ var aiTanks = new Array();
 var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
-aiTanks[0]= new AiTank(2100,100);
-aiTanks[1]= new AiTank(2100,150);
-aiTanks[2]= new AiTank(2100,200);
-aiTanks[3]= new AiTank(2100,250);
+
+
+aiTanks[0]= new AiTank2(1100,100);
+aiTanks[1]= new AiTank2(1100,150);
+
 
 // map variables
 var kills = new Array();
 var killsFire = new Array();
+var tanksFire = new Array();
+var flames = new Array();
 var mines = new Array();
 var explosionsM = new Array();
 var explosionsH = new Array();
@@ -178,11 +192,6 @@ var smoke = new Array();
 var fieldMapX=1000;
 var fieldMapY=600;
 
-
-kills.push(new DeadBody(300, 300, 0, 0, rusaw, rusbw));
-kills.push(new DeadBody(350, 300, 0, 0, rusaw, rusbw));
-kills.push(new DeadBody(400, 300, 0, 0, rusaw, rusbw));
-kills.push(new DeadBody(450, 300, 0, 0, rusaw, rusbw));
 
 
 
@@ -260,6 +269,14 @@ for(var i = 0; i < mgBulletsAi.length; i++) {
 
 ///////////////////////// player
 
+for(var i = 0; i < flames.length; i++) {
+  flames[i].newPos();
+  flames[i].update();
+  if(flames[i].liveTime==0){
+    flames.splice(i,1);
+  }
+}
+
 for(var i = 0; i < bulletsP.length; i++) {
   bulletsP[i].newPos();
   bulletsP[i].update();
@@ -283,16 +300,7 @@ for(var i = 0; i < mgBulletsP.length; i++) {
 for(var i = 0; i < killsFire.length; i++) {
   killsFire[i].update();
 }
-
-// hit explosions
-for(var i = 0; i < explosionsH.length; i++) {
-  explosionsH[i].update();
-  if(explosionsH[i].exLoop==11){
-    explosionsH.splice(i,1);
-  }
-}
-
-// dead tank kill detection and switching off fire
+// dead tank kill detection and switching off fire if dead tank is destroyed
 for(var i = 0; i < kills.length; i++) {
   // deleting dead tank
   if(kills[i].hp<=0){
@@ -306,7 +314,16 @@ for(var i = 0; i < kills.length; i++) {
     kills.splice(i,1);
   }
 }
-// drawing explosions
+
+// hit explosions
+for(var i = 0; i < explosionsH.length; i++) {
+  explosionsH[i].update();
+  if(explosionsH[i].exLoop==11){
+    explosionsH.splice(i,1);
+  }
+}
+
+// dead tank explosions
 for(var i = 0; i < explosionsDead.length; i++) {
   explosionsDead[i].update();
   if(explosionsDead[i].exLoop==11){
@@ -370,6 +387,9 @@ ctx.fillText(pTank.numMines,570,645);
 
 ctx.fillText("Smoke",640,620);
 ctx.fillText(pTank.numSmoke,640,645);
+
+ctx.fillText("Flamethrower",720,620);
+ctx.fillText(pTank.numFlames,720,645);
 
 }// end of a game update function
 </script>

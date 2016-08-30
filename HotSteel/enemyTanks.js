@@ -2,6 +2,16 @@
 function AiTank(x,y) {
 
   this.type="one";
+
+  // tank on fire
+  this.fireProtect=50;
+  this.onFire=false;
+  this.fireHurtDelay=0;
+  this.delayTime=0;
+  this.fireLoop=0;
+  this.size=2;
+  this.flameSpeed=2;
+
   this.aiX="none";
   this.aiY="none";
   this.aiDestinationAngle="none";
@@ -35,6 +45,15 @@ function AiTank(x,y) {
     // start position zeroing
     this.moveAngleB = 0;
     this.speed = 0;
+
+    // detecting fire
+    if(this.onFire==true){
+      if(this.fireHurtDelay==4){
+        this.hp--;
+        this.fireHurtDelay=0;
+      }
+      this.fireHurtDelay++;
+    }
 
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
@@ -248,6 +267,7 @@ function AiTank(x,y) {
   }
 
   this.update = function() {
+
       // drawing the body
       ctx = myGameArea.context;
       ctx.save();
@@ -262,6 +282,24 @@ function AiTank(x,y) {
       ctx.rotate(this.angleT);
       ctx.drawImage(this.imgT, -20, -30);
       ctx.restore();
+      // drawing the flames
+      if(this.onFire){
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.drawImage(document.getElementById("l"+this.fireLoop), -64*this.size, -110*this.size,
+        128*this.size, 128*this.size);
+        ctx.restore();
+        this.delayTime++;
+        if(this.delayTime==this.flameSpeed){
+          this.delayTime=0;
+          this.fireLoop++;
+          if(this.fireLoop==10){
+            this.fireLoop=0;
+          }
+        }
+      }
+
 
   }
 
@@ -272,6 +310,15 @@ function AiTank(x,y) {
 function AiTank2(x,y) {
 
   this.type="two";
+
+  // tank on fire
+  this.fireProtect=50;
+  this.onFire=false;
+  this.fireHurtDelay=0;
+  this.delayTime=0;
+  this.fireLoop=0;
+  this.size=2;
+  this.flameSpeed=2;
 
   this.aiX="none";
   this.aiY="none";
@@ -306,6 +353,15 @@ function AiTank2(x,y) {
     // start position zeroing
     this.moveAngleB = 0;
     this.speed = 0;
+
+    // detecting fire
+    if(this.onFire==true){
+      if(this.fireHurtDelay==4){
+        this.hp--;
+        this.fireHurtDelay=0;
+      }
+      this.fireHurtDelay++;
+    }
 
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
@@ -534,6 +590,23 @@ function AiTank2(x,y) {
       ctx.translate(0, -3);
       ctx.drawImage(this.imgT, -20, -30);
       ctx.restore();
+      // drawing the flames
+      if(this.onFire){
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.drawImage(document.getElementById("l"+this.fireLoop), -64*this.size, -110*this.size,
+        128*this.size, 128*this.size);
+        ctx.restore();
+        this.delayTime++;
+        if(this.delayTime==this.flameSpeed){
+          this.delayTime=0;
+          this.fireLoop++;
+          if(this.fireLoop==10){
+            this.fireLoop=0;
+          }
+        }
+      }
 
   }
 

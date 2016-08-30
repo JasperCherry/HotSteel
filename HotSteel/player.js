@@ -10,6 +10,7 @@ function PTank(x,y,imgB,imgT) {
   this.ammoType = 1;
   this.numBullet = 20;
   this.numBullet2 = 20;
+  this.numFlames = 500;
   this.numMgBullets = 200;
   this.numMgBullets2 = 200;
   this.numSmoke = 3;
@@ -26,6 +27,7 @@ function PTank(x,y,imgB,imgT) {
   this.previousY=this.y;
 
   this.reloadTime = 250;
+  this.reloadTimeF = 0;
   this.reloadTimeM = 0;
   this.reloadTimeM2 = 0;
   this.reloadTimeMine = 0;
@@ -178,6 +180,19 @@ function PTank(x,y,imgB,imgT) {
         this.reloadTimeM--;
       }
 
+      // flamethrower
+      if (myGameArea.keys && myGameArea.keys[81] && this.reloadTimeF==0 && this.numFlames>0){
+        this.numFlames--;
+        flames.push(new Flame(
+        this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB + ((Math.round(Math.random() * (10)) - 5) * Math.PI / 180)));
+        this.reloadTimeF=1;
+      }
+      if(this.reloadTimeF>0){
+        this.reloadTimeF--;
+      }
+
       if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets2>0){
         this.numMgBullets2--;
         mgBulletsP.push(new MgBullet(
@@ -233,6 +248,15 @@ function PTank(x,y,imgB,imgT) {
        }
       }
 
+      // detection if player hits  dead tank by flamethrower
+      for(var j = 0; j < kills.length; j++) {
+        for(var i = 0; i < flames.length; i++) {
+          if(Math.abs(flames[i].x-kills[j].x)<15 && Math.abs(flames[i].y-kills[j].y)<15){
+            flames.splice(i,1);
+          }
+        }
+     }
+
       // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////
       for(var t = 0; t < aiTanks.length; t++) {
@@ -283,6 +307,18 @@ function PTank(x,y,imgB,imgT) {
             }
           }
 
+          // flamethrower
+          // detection if player hits  ai tank
+          for(var i = 0; i < flames.length; i++) {
+            if(Math.abs(flames[i].x-aiTanks[t].x)<15 && Math.abs(flames[i].y-aiTanks[t].y)<15){
+              flames.splice(i,1);
+              aiTanks[t].fireProtect--;
+              if(aiTanks[t].fireProtect<=0){
+                aiTanks[t].onFire=true;
+              }
+            }
+          }
+
           // ai kill detection
           if(aiTanks[t].hp<=0){
 
@@ -293,7 +329,9 @@ function PTank(x,y,imgB,imgT) {
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT, geraw2, gerbw2));
              }
 
-             killsFire.push(new DeadBodyFire(aiTanks[t].x, aiTanks[t].y));
+             if((Math.floor(Math.random() * 3))==0){
+              killsFire.push(new DeadBodyFire(aiTanks[t].x, aiTanks[t].y));
+             }
 
              aiTanks.splice(t,1);
            }
