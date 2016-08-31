@@ -5,11 +5,6 @@ to do:
 
 
 
-third type of tank
-
-
-
-
 
 
 ///////////////////////////////////////////
@@ -33,7 +28,7 @@ mg precision
 
 loading ammo on tank
 
-how to solve 2 mgs?
+two mg - ammo separatly, upgrades together
 
 
 

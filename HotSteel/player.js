@@ -2,6 +2,7 @@
 function PTank(x,y,imgB,imgT) {
 
   this.towerLoose=false;
+  this.inSmoke=false;
 
   this.x=x;
   this.y=y;
@@ -44,6 +45,14 @@ function PTank(x,y,imgB,imgT) {
 
 
   this.newPos = function() {
+
+      // if player is in smoke cover, cannot see the pointer
+      this.inSmoke=false;
+      for(var i = 0; i < smoke.length; i++) {
+        if(Math.abs(pTank.x-smoke[i].x)<70 && Math.abs(pTank.y-smoke[i].y)<70){
+          this.inSmoke=true;
+        }
+      }
 
       // ammo choosing
       if (myGameArea.keys && myGameArea.keys[49]){
@@ -208,8 +217,8 @@ function PTank(x,y,imgB,imgT) {
         this.flame.play();
         this.numFlames--;
         flames.push(new Flame(
-        this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
-        this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.x+(25 * Math.sin(this.angleB))- 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(25 * Math.cos(this.angleB))+ 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
         this.angleB + ((Math.round(Math.random() * (10)) - 5) * Math.PI / 180)));
         this.reloadTimeF=1;
       }
@@ -352,6 +361,10 @@ function PTank(x,y,imgB,imgT) {
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
                geraw2, gerbw2, aiTanks[t].towerLoose));
              }
+             if(aiTanks[t].type=='three'){
+               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+               geraw3, gerbw3, aiTanks[t].towerLoose));
+             }
              aiTanks.splice(t,1);
            }
 
@@ -360,6 +373,8 @@ function PTank(x,y,imgB,imgT) {
       // player kill detection
       if(this.hp<=0){
          kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose));
+         this.flame.pause();
+         this.flame.load();
          pTank = new PTank(100,300,rusa,rusb);
        }
 
@@ -392,13 +407,14 @@ function PTank(x,y,imgB,imgT) {
       ctx.drawImage(this.imgT, -20, -30);
       ctx.restore();
       // drawing the pointer
+      if(this.inSmoke==false){
       ctx = myGameArea.context;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
       ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
-
+      }
   }
 
 }

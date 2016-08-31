@@ -106,6 +106,9 @@ function DeadBody(x, y, angle1, angle2, img1, img2, tower) {
         if(this.img2==gerbw2){
           ctx.translate(0, -3);
           ctx.drawImage(this.img2, -20, -30);
+        }else if(this.img2==gerbw3){
+          ctx.translate(0, -14);
+          ctx.drawImage(this.img2, -20, -30);
         }else{
           ctx.drawImage(this.img2, -20, -30);
         }
