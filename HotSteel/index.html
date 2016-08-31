@@ -124,6 +124,8 @@ canvas {
 
 <img src="maps/map1.jpg" id="map1" style="display: none;">
 
+<img src="wall.jpg" id="wall" style="display: none;">
+
 
 <script src="objects.js"></script>
 <script src="enemyTanks.js"></script>
@@ -193,25 +195,36 @@ var fieldMapY=600;
 ////// DEMO
 
 var points=0;
+var gameStart=false;
 
 
 
 ///////////////////////////////////// MAIN FUNCTION
 function updateGameArea() {
+// DEMO
+if(!gameStart){
+var ctx = myGameArea.context;
+ctx.drawImage(wall, 0, 0);
 
+if (myGameArea.keys && myGameArea.keys[13]){
+  gameStart=true;
+}
+
+}else{
 
 // DEMO
 if (0 == aiTanks.length) {
+
     aiTanks[0]= new AiTank(1100,500);
 
-    aiTanks[0]= new AiTank(1900,500);
-    aiTanks[0]= new AiTank2(1900,600);
+    aiTanks[1]= new AiTank(1900,500);
+    aiTanks[2]= new AiTank2(1900,600);
 
-    aiTanks[0]= new AiTank(3000,400);
-    aiTanks[0]= new AiTank2(3000,500);
-    aiTanks[0]= new AiTank2(3000,600);
+    aiTanks[3]= new AiTank(3500,400);
+    aiTanks[4]= new AiTank2(3500,500);
+    aiTanks[5]= new AiTank2(3500,600);
 
-    aiTanks[0]= new AiTank3(3800,500);
+    aiTanks[6]= new AiTank3(5500,500);
 }
 
 
@@ -411,13 +424,13 @@ ctx.fillText(pTank.numFlames,720,645);
 // DEMO
 ctx.fillText("Points",900,620);
 ctx.fillText(points,900,645);
-
+}// end  of game start  // DEMO
 }// end of a game update function
 </script>
 
 <center>
-  <p>Steering : arrows to move, a,d - > turning turrent, space-> gun
-     w-> body mg, s-> turrent mg, e-> smoke, q-> flamethrower, g-> mines.</p>
+  <p>MANUAL : ARROWS-move, A,D-turning turrent, SPACE-gun, 1,2-ammo type
+     W-body mg, S-turrent mg, E-smoke, Q-flamethrower, G-mines.</p>
 </center>
 
 </body>

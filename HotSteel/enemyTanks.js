@@ -664,8 +664,8 @@ function AiTank3(x,y) {
   this.shotReady=false;
   this.mgShotReady=false;
   this.reloadTime = 250;
-  this.reloadTimeM = 0;
-  this.reloadTimeM2 = 0;
+  this.reloadTimeM = 8;
+
 
   this.hp = 250;
 
@@ -772,16 +772,21 @@ function AiTank3(x,y) {
     }
 
     // mg tower
-    if (this.reloadTimeM2==0&&this.shotReady&&!this.towerLoose){
+    if(this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+
+    if (this.reloadTimeM==0&&this.shotReady&&!this.towerLoose){
       mgBulletsAi.push(new MgBullet(
       this.x+(20 * Math.sin(this.angleT))+ 3 * (Math.sin(this.angleT+90 * Math.PI / 180)),
       this.y-(20 * Math.cos(this.angleT))- 3 * (Math.cos(this.angleT+90 * Math.PI / 180)),
       this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM2=8;
+      this.reloadTimeM=8;
     }
-    if(this.reloadTimeM2>0){
-      this.reloadTimeM2--;
+    if(this.reloadTimeM>0){
+      this.reloadTimeM--;
+     }
+
     }
+
     }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////

@@ -24,7 +24,7 @@ function PTank(x,y,imgB,imgT) {
   this.numMgBullets = 200;
   this.numMgBullets2 = 200;
   this.numSmoke = 3;
-  this.hp = 200;
+  this.hp = 300;
   this.numMines = 10;
 
   this.speed = 0;
@@ -44,7 +44,8 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTimeSmoke = 0;
 
   this.flame = new Audio('sounds/flame.mp3');
-
+  this.move = new Audio('sounds/move.mp3');
+  this.moveT = new Audio('sounds/moveT.mp3');
 
   this.newPos = function() {
   if(this.alive){
@@ -108,6 +109,28 @@ function PTank(x,y,imgB,imgT) {
       if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
         this.moveAngleT = 0;
       }
+
+      // sound of movement
+      // body
+      if(this.speed!=0||this.moveAngleB!=0){
+        this.move.play();
+      }else{
+        this.move.load();
+      }
+      // turrent
+      if(this.moveAngleT==1&&this.moveAngleB==0||
+        this.moveAngleT==2||
+        this.moveAngleT==-1&&this.moveAngleB==0||
+        this.moveAngleT==-2||
+        myGameArea.keys[65]&&this.moveAngleB==1||
+        myGameArea.keys[68]&&this.moveAngleB==-1
+      ){
+        this.moveT.play();
+      }else{
+        this.moveT.load();
+      }
+
+
 
       // map control
       if(this.x>=fieldMapX){
@@ -368,7 +391,7 @@ function PTank(x,y,imgB,imgT) {
              if(aiTanks[t].type=='three'){
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
                geraw3, gerbw3, aiTanks[t].towerLoose));
-               points+=120;
+               points+=150;
              }
              aiTanks.splice(t,1);
            }

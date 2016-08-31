@@ -37,8 +37,7 @@ two mg - ammo separatly, upgrades together
 
 names of the tanks
 
-
-
+tracks signs
 
 mine graphics?
 
