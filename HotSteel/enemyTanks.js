@@ -142,7 +142,6 @@ function AiTank(x,y) {
     }
 
     // mg
-    console.log(this.mgShotReady);
     if (this.reloadTimeM==0&&this.mgShotReady){
       mgBulletsAi.push(new MgBullet(
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
