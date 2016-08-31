@@ -402,11 +402,13 @@ function PTank(x,y,imgB,imgT) {
       if(this.hp<=0){
          kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose));
          this.flame.pause();
-         this.flame.load();
+         this.move.pause();
+         this.moveT.pause();
          this.alive=false;
          for(var x=0; x<aiTanks.length; x++){
            aiTanks[x].active=false;
          }
+         // tanks dont die when player is dead when on mine
          //pTank = new PTank(100,300,rusa,rusb);
        }
 
