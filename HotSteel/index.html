@@ -175,23 +175,6 @@ var aiTanks = new Array();
 var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
-aiTanks[0]= new AiTank3(900,100);
-
-/*
-aiTanks[1]= new AiTank2(1900,150);
-aiTanks[2]= new AiTank(1900,100);
-
-aiTanks[3]= new AiTank(3000,400);
-aiTanks[4]= new AiTank(3000,500);
-aiTanks[5]= new AiTank(3000,100);
-aiTanks[6]= new AiTank(3000,150);
-aiTanks[7]= new AiTank(3000,250);
-
-aiTanks[8]= new AiTank2(3800,100);
-aiTanks[9]= new AiTank2(3800,150);
-aiTanks[10]= new AiTank2(3800,250);
-*/
-
 // map variables
 var kills = new Array();
 var killsFire = new Array();
@@ -207,11 +190,30 @@ var smoke = new Array();
 var fieldMapX=1000;
 var fieldMapY=600;
 
+////// DEMO
+
+var points=0;
 
 
 
 ///////////////////////////////////// MAIN FUNCTION
 function updateGameArea() {
+
+
+// DEMO
+if (0 == aiTanks.length) {
+    aiTanks[0]= new AiTank(1100,500);
+
+    aiTanks[0]= new AiTank(1900,500);
+    aiTanks[0]= new AiTank2(1900,600);
+
+    aiTanks[0]= new AiTank(3000,400);
+    aiTanks[0]= new AiTank2(3000,500);
+    aiTanks[0]= new AiTank2(3000,600);
+
+    aiTanks[0]= new AiTank3(3800,500);
+}
+
 
 ///////////////////////////////////// drawing objects
 
@@ -406,10 +408,17 @@ ctx.fillText(pTank.numSmoke,640,645);
 ctx.fillText("Flamethrower",720,620);
 ctx.fillText(pTank.numFlames,720,645);
 
+// DEMO
+ctx.fillText("Points",900,620);
+ctx.fillText(points,900,645);
+
 }// end of a game update function
 </script>
 
-
+<center>
+  <p>Steering : arrows to move, a,d - > turning turrent, space-> gun
+     w-> body mg, s-> turrent mg, e-> smoke, q-> flamethrower, g-> mines.</p>
+</center>
 
 </body>
 </html>

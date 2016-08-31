@@ -1,6 +1,7 @@
 
 function PTank(x,y,imgB,imgT) {
 
+  this.alive=true;
   this.towerLoose=false;
   this.inSmoke=false;
 
@@ -16,7 +17,8 @@ function PTank(x,y,imgB,imgT) {
   this.mineSpeed=40;
 
   this.ammoType = 1;
-  this.numBullet = 20;
+
+  this.numBullet = 30;
   this.numBullet2 = 20;
   this.numFlames = 500;
   this.numMgBullets = 200;
@@ -45,7 +47,7 @@ function PTank(x,y,imgB,imgT) {
 
 
   this.newPos = function() {
-
+  if(this.alive){
       // if player is in smoke cover, cannot see the pointer
       this.inSmoke=false;
       for(var i = 0; i < smoke.length; i++) {
@@ -356,14 +358,17 @@ function PTank(x,y,imgB,imgT) {
              if(aiTanks[t].type=='one'){
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
                geraw, gerbw, aiTanks[t].towerLoose));
+               points+=30;
              }
              if(aiTanks[t].type=='two'){
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
                geraw2, gerbw2, aiTanks[t].towerLoose));
+               points+=50;
              }
              if(aiTanks[t].type=='three'){
                kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
                geraw3, gerbw3, aiTanks[t].towerLoose));
+               points+=120;
              }
              aiTanks.splice(t,1);
            }
@@ -375,7 +380,11 @@ function PTank(x,y,imgB,imgT) {
          kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose));
          this.flame.pause();
          this.flame.load();
-         pTank = new PTank(100,300,rusa,rusb);
+         this.alive=false;
+         for(var x=0; x<aiTanks.length; x++){
+           aiTanks[x].active=false;
+         }
+         //pTank = new PTank(100,300,rusa,rusb);
        }
 
       // body and tower new position
@@ -387,11 +396,12 @@ function PTank(x,y,imgB,imgT) {
       this.y -= this.speed * Math.cos(this.angleB);
       // tower
       this.angleT += this.moveAngleT * Math.PI / 180;
-
+  }
   }
 
 
   this.update = function() {
+  if(this.alive){
       // drawing the body
       ctx = myGameArea.context;
       ctx.save();
@@ -416,5 +426,5 @@ function PTank(x,y,imgB,imgT) {
       ctx.restore();
       }
   }
-
+  }
 }

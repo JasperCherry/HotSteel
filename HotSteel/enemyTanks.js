@@ -16,6 +16,7 @@ function AiTank(x,y) {
   this.type="one";
 
   this.towerLoose=false;
+  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -128,6 +129,7 @@ function AiTank(x,y) {
     }
 
     // shooting
+    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -150,6 +152,8 @@ function AiTank(x,y) {
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
+    }
+
     }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
@@ -326,6 +330,7 @@ function AiTank2(x,y) {
   this.type="two";
 
   this.towerLoose=false;
+  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -438,6 +443,7 @@ function AiTank2(x,y) {
     }
 
     // shooting
+    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -459,6 +465,7 @@ function AiTank2(x,y) {
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
+    }
     }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
@@ -638,6 +645,7 @@ function AiTank3(x,y) {
   this.type="three";
 
   this.towerLoose=false;
+  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -751,6 +759,7 @@ function AiTank3(x,y) {
     }
 
     // shooting
+    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -758,7 +767,7 @@ function AiTank3(x,y) {
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
       this.reloadTime=250;
     }
 
@@ -772,6 +781,7 @@ function AiTank3(x,y) {
     }
     if(this.reloadTimeM2>0){
       this.reloadTimeM2--;
+    }
     }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
