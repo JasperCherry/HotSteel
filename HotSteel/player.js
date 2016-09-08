@@ -1,5 +1,8 @@
 
-function PTank(x,y,imgB,imgT) {
+function PTank(x,y) {
+
+  this.id=tankId;
+  tankId++;
 
   this.alive=true;
   this.towerLoose=false;
@@ -7,8 +10,8 @@ function PTank(x,y,imgB,imgT) {
 
   this.x=x;
   this.y=y;
-  this.imgB=imgB;
-  this.imgT=imgT;
+  this.imgB=rusa;
+  this.imgT=rusb;
   this.imgP=pointer;
 
 
@@ -43,6 +46,7 @@ function PTank(x,y,imgB,imgT) {
   this.reloadTimeMine = 0;
   this.reloadTimeSmoke = 0;
 
+  this.gunReload = new Audio('sounds/gunReload.mp3');
   this.flame = new Audio('sounds/flame.mp3');
   this.move = new Audio('sounds/move.mp3');
   this.moveT = new Audio('sounds/moveT.mp3');
@@ -111,24 +115,32 @@ function PTank(x,y,imgB,imgT) {
       }
 
       // sound of movement
+
       // body
-      if(this.speed!=0||this.moveAngleB!=0){
-        this.move.play();
-      }else{
-        this.move.load();
-      }
+        if(this.speed!=0||this.moveAngleB!=0){
+          if(sound){
+            this.move.play();
+          }
+        }else{
+          this.move.load();
+        }
+
       // turrent
       if(this.moveAngleT==1&&this.moveAngleB==0||
         this.moveAngleT==2||
         this.moveAngleT==-1&&this.moveAngleB==0||
         this.moveAngleT==-2||
-        myGameArea.keys[65]&&this.moveAngleB==1||
-        myGameArea.keys[68]&&this.moveAngleB==-1
+        myGameArea.keys&&myGameArea.keys[65]&&this.moveAngleB==1||
+        myGameArea.keys&&myGameArea.keys[68]&&this.moveAngleB==-1
       ){
-        this.moveT.play();
+        if(sound){
+          this.moveT.play();
+        }
       }else{
         this.moveT.load();
       }
+
+
 
 
 
@@ -153,6 +165,21 @@ function PTank(x,y,imgB,imgT) {
               this.y=this.previousY;
             }
       }
+
+      // touching obstacles by player
+      for(var j = 0; j < obstacles.length; j++) {
+          if(
+            this.x>obstacles[j].x &&
+            this.x<obstacles[j].x+obstacles[j].width &&
+            this.y>obstacles[j].y &&
+            this.y<obstacles[j].y+obstacles[j].height
+          ){
+            this.x=this.previousX;
+            this.y=this.previousY;
+          }
+      }
+
+
 
       // weapons
 
@@ -210,6 +237,12 @@ function PTank(x,y,imgB,imgT) {
       if(this.reloadTime>0){
         this.reloadTime--;
       }
+      // sound of reload
+      if(sound){
+        if(this.reloadTime==20){
+          this.gunReload.play();
+        }
+      }
 
       // machinegun
       if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeM==0 && this.numMgBullets>0){
@@ -239,7 +272,9 @@ function PTank(x,y,imgB,imgT) {
 
       // flamethrower
       if (myGameArea.keys && myGameArea.keys[81] && this.reloadTimeF==0 && this.numFlames>0){
-        this.flame.play();
+        if(sound){
+          this.flame.play();
+        }
         this.numFlames--;
         flames.push(new Flame(
         this.x+(25 * Math.sin(this.angleB))- 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
@@ -256,56 +291,8 @@ function PTank(x,y,imgB,imgT) {
       }
 
 
-      // detection if player hits dead tank by gun
-      for(var j = 0; j < kills.length; j++) {
-       for(var i = 0; i < bulletsP.length; i++) {
-        if(Math.abs(bulletsP[i].x-kills[j].x)<15 && Math.abs(bulletsP[i].y-kills[j].y)<15){
-           if(bulletsP[i].type==1){
-             // heat rounds
-             explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-             bulletsP.splice(i,1);
-             kills[j].hp=kills[j].hp-50;
-           }else if(bulletsP[i].type==2){
-             // sabot rounds
-             var inArray=false;
-             for(var x=0; x<bulletsP[i].hitsDead.length; x++){
-               if(j==bulletsP[i].hitsDead[x]){
-                 inArray=true;
-               }
-             }
-             // if tank wasnt hit before
-             if(inArray==false){
-               bulletsP[i].hitsDead.push(j);
-               kills[j].hp=kills[j].hp-50;
-               explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-             }
-          }
-        }
-       }
-      }
+      
 
-      // detection if player hits dead tank by machinegun
-      for(var j = 0; j < kills.length; j++) {
-       for(var i = 0; i < mgBulletsP.length; i++) {
-        if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
-           mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-           mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
-           if(mgBulletsP[i].active){
-             kills[j].hp=kills[j].hp-5;
-             mgBulletsP[i].active=false;
-           }
-        }
-       }
-      }
-
-      // detection if player hits  dead tank by flamethrower
-      for(var j = 0; j < kills.length; j++) {
-        for(var i = 0; i < flames.length; i++) {
-          if(Math.abs(flames[i].x-kills[j].x)<15 && Math.abs(flames[i].y-kills[j].y)<15){
-            flames.splice(i,1);
-          }
-        }
-     }
 
       // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -329,19 +316,19 @@ function PTank(x,y,imgB,imgT) {
                  // sabot rounds
                  var inArray=false;
                  for(var x=0; x<bulletsP[i].hits.length; x++){
-                   if(t==bulletsP[i].hits[x]){
+                   if(aiTanks[t].id==bulletsP[i].hits[x]){
                      inArray=true;
                    }
                  }
                  // if tank wasnt hit before
                  if(inArray==false){
-                   bulletsP[i].hits.push(t);
+                   bulletsP[i].hits.push(aiTanks[t].id);
                   aiTanks[t].hp=aiTanks[t].hp-50;
                    explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
                  }
               }
-              // losing tower
-              if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<50) ){
+              // losing tower , 25% possible when 50 or less hp after shot
+              if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) ){
                 aiTanks[t].towerLoose=true;
               }
             }
@@ -373,43 +360,16 @@ function PTank(x,y,imgB,imgT) {
             }
           }
 
-
-
-          // ai kill detection
-          if(aiTanks[t].hp<=0){
-
-             if(aiTanks[t].type=='one'){
-               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-               geraw, gerbw, aiTanks[t].towerLoose));
-               points+=30;
-             }
-             if(aiTanks[t].type=='two'){
-               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-               geraw2, gerbw2, aiTanks[t].towerLoose));
-               points+=50;
-             }
-             if(aiTanks[t].type=='three'){
-               kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-               geraw3, gerbw3, aiTanks[t].towerLoose));
-               points+=150;
-             }
-             aiTanks.splice(t,1);
-           }
-
-      }
+      } // end of interactions with ai tanks
 
       // player kill detection
-      if(this.hp<=0){
-         kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose));
+      if(this.hp<=0&&!this.deadBodyMade){
+         kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose, this.id));
          this.flame.pause();
          this.move.pause();
          this.moveT.pause();
          this.alive=false;
-         for(var x=0; x<aiTanks.length; x++){
-           aiTanks[x].active=false;
-         }
-         // tanks dont die when player is dead when on mine
-         //pTank = new PTank(100,300,rusa,rusb);
+         // pTank = new PTank(100,300,rusa,rusb);
        }
 
       // body and tower new position
@@ -421,7 +381,9 @@ function PTank(x,y,imgB,imgT) {
       this.y -= this.speed * Math.cos(this.angleB);
       // tower
       this.angleT += this.moveAngleT * Math.PI / 180;
-  }
+
+  } // end of alive condition
+
   }
 
 
@@ -450,6 +412,6 @@ function PTank(x,y,imgB,imgT) {
       ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
       }
-  }
+  } // end of alive condition
   }
 }

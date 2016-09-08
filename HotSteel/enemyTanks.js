@@ -13,10 +13,13 @@ if(this.towerLoose==false){
 
 function AiTank(x,y) {
 
+  this.id=tankId;
+  tankId++;
+
   this.type="one";
+  this.name=sTanks[Math.floor(Math.random()*sTanks.length)];
 
   this.towerLoose=false;
-  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -53,6 +56,15 @@ function AiTank(x,y) {
   this.previousX=this.x;
   this.previousY=this.y;
 
+  this.setDes = function(x,y) {
+    if(this.aiX=="none"&&this.aiY=="none"){
+      this.aiX=x;
+      this.aiY=y;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      this.speed=1;
+    }
+  }
+
   this.newPos = function() {
 
     // start position zeroing
@@ -84,14 +96,29 @@ function AiTank(x,y) {
         }
     }
 
+    // touching obstacles by ai
+    for(var j = 0; j < obstacles.length; j++) {
+        if(
+          this.x>obstacles[j].x &&
+          this.x<obstacles[j].x+obstacles[j].width &&
+          this.y>obstacles[j].y &&
+          this.y<obstacles[j].y+obstacles[j].height
+        ){
+          this.x=this.previousX;
+          this.y=this.previousY;
+          this.aiX="none";
+          this.aiY="none";
+        }
+    }
+
     // moving around the map
     // pick up destination
     if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=Math.round(Math.random()*fieldMapX);
       this.aiY=Math.round(Math.random()*fieldMapY);
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
     }
+
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
       this.speed=1;
@@ -116,6 +143,7 @@ function AiTank(x,y) {
     ctx.restore();
     */
 
+
     // weapons
 
     // mines
@@ -129,7 +157,6 @@ function AiTank(x,y) {
     }
 
     // shooting
-    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -147,13 +174,12 @@ function AiTank(x,y) {
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
       this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
       this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM=8;
+      this.reloadTimeM=6;
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
     }
 
-    }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,54 +244,6 @@ function AiTank(x,y) {
         this.shotReady=false;
         this.mgShotReady=false;
       }
-    }
-
-    // gun
-    // detection if ai hits player tank
-
-    // detection if ai hits player
-    for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
-        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-        bulletsAi.splice(i,1);
-        pTank.hp=pTank.hp-20;
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
-         explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-         bulletsAi.splice(i,1);
-         kills[j].hp=kills[j].hp-50;
-      }
-     }
-    }
-
-    // machinegun
-    // detection if ai hits player
-    for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          pTank.hp=pTank.hp-2;
-          mgBulletsAi[i].active=false;
-        }
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          kills[j].hp=kills[j].hp-5;
-          mgBulletsAi[i].active=false;
-        }
-      }
-     }
     }
 
 
@@ -326,10 +304,13 @@ function AiTank(x,y) {
 
 function AiTank2(x,y) {
 
+  this.id=tankId;
+  tankId++;
+
   this.type="two";
+  this.name=mTanks[Math.floor(Math.random()*mTanks.length)];
 
   this.towerLoose=false;
-  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -366,6 +347,15 @@ function AiTank2(x,y) {
   this.previousX=this.x;
   this.previousY=this.y;
 
+  this.setDes = function(x,y) {
+    if(this.aiX=="none"&&this.aiY=="none"){
+      this.aiX=x;
+      this.aiY=y;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      this.speed=1;
+    }
+  }
+
   this.newPos = function() {
 
     // start position zeroing
@@ -397,14 +387,29 @@ function AiTank2(x,y) {
         }
     }
 
+    // touching obstacles by ai
+    for(var j = 0; j < obstacles.length; j++) {
+        if(
+          this.x>obstacles[j].x &&
+          this.x<obstacles[j].x+obstacles[j].width &&
+          this.y>obstacles[j].y &&
+          this.y<obstacles[j].y+obstacles[j].height
+        ){
+          this.x=this.previousX;
+          this.y=this.previousY;
+          this.aiX="none";
+          this.aiY="none";
+        }
+    }
+
     // moving around the map
     // pick up destination
     if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=Math.round(Math.random()*fieldMapX);
       this.aiY=Math.round(Math.random()*fieldMapY);
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
     }
+
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
       this.speed=1;
@@ -429,6 +434,7 @@ function AiTank2(x,y) {
     ctx.restore();
     */
 
+
     // weapons
 
     // mines
@@ -442,7 +448,6 @@ function AiTank2(x,y) {
     }
 
     // shooting
-    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -465,7 +470,7 @@ function AiTank2(x,y) {
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
     }
-    }
+
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -530,54 +535,6 @@ function AiTank2(x,y) {
         this.shotReady=false;
         this.mgShotReady=false;
       }
-    }
-
-    // gun
-    // detection if ai hits player tank
-
-    // detection if ai hits player
-    for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
-        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-        bulletsAi.splice(i,1);
-        pTank.hp=pTank.hp-20;
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
-         explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-         bulletsAi.splice(i,1);
-         kills[j].hp=kills[j].hp-50;
-      }
-     }
-    }
-
-    // machinegun
-    // detection if ai hits player
-    for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          pTank.hp=pTank.hp-2;
-          mgBulletsAi[i].active=false;
-        }
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          kills[j].hp=kills[j].hp-5;
-          mgBulletsAi[i].active=false;
-        }
-      }
-     }
     }
 
 
@@ -641,10 +598,13 @@ function AiTank2(x,y) {
 
 function AiTank3(x,y) {
 
+  this.id=tankId;
+  tankId++;
+
   this.type="three";
+  this.name=lTanks[Math.floor(Math.random()*lTanks.length)];
 
   this.towerLoose=false;
-  this.active=true;
 
   // tank on fire
   this.fireProtect=50;
@@ -682,6 +642,15 @@ function AiTank3(x,y) {
   this.previousX=this.x;
   this.previousY=this.y;
 
+  this.setDes = function(x,y) {
+    if(this.aiX=="none"&&this.aiY=="none"){
+      this.aiX=x;
+      this.aiY=y;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      this.speed=1;
+    }
+  }
+
   this.newPos = function() {
 
     // start position zeroing
@@ -713,14 +682,29 @@ function AiTank3(x,y) {
         }
     }
 
+    // touching obstacles by ai
+    for(var j = 0; j < obstacles.length; j++) {
+        if(
+          this.x>obstacles[j].x &&
+          this.x<obstacles[j].x+obstacles[j].width &&
+          this.y>obstacles[j].y &&
+          this.y<obstacles[j].y+obstacles[j].height
+        ){
+          this.x=this.previousX;
+          this.y=this.previousY;
+          this.aiX="none";
+          this.aiY="none";
+        }
+    }
+
     // moving around the map
     // pick up destination
     if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=Math.round(Math.random()*fieldMapX);
       this.aiY=Math.round(Math.random()*fieldMapY);
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
     }
+
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
       this.speed=1;
@@ -745,6 +729,7 @@ function AiTank3(x,y) {
     ctx.restore();
     */
 
+
     // weapons
 
     // mines
@@ -758,7 +743,6 @@ function AiTank3(x,y) {
     }
 
     // shooting
-    if(this.active){
     // main gun
     if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
       this.reloadTime--;
@@ -770,23 +754,18 @@ function AiTank3(x,y) {
       this.reloadTime=250;
     }
 
-    // mg tower
-    if(this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
-
-    if (this.reloadTimeM==0&&this.shotReady&&!this.towerLoose){
+    // mg
+    if (this.reloadTimeM==0&&this.mgShotReady){
       mgBulletsAi.push(new MgBullet(
-      this.x+(20 * Math.sin(this.angleT))+ 3 * (Math.sin(this.angleT+90 * Math.PI / 180)),
-      this.y-(20 * Math.cos(this.angleT))- 3 * (Math.cos(this.angleT+90 * Math.PI / 180)),
-      this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM=8;
+      this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+      this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+      this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      this.reloadTimeM=6;
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
-     }
-
     }
 
-    }
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -853,54 +832,6 @@ function AiTank3(x,y) {
       }
     }
 
-    // gun
-    // detection if ai hits player tank
-
-    // detection if ai hits player
-    for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
-        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-        bulletsAi.splice(i,1);
-        pTank.hp=pTank.hp-20;
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < bulletsAi.length; i++) {
-      if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
-         explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-         bulletsAi.splice(i,1);
-         kills[j].hp=kills[j].hp-50;
-      }
-     }
-    }
-
-    // machinegun
-    // detection if ai hits player
-    for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          pTank.hp=pTank.hp-2;
-          mgBulletsAi[i].active=false;
-        }
-      }
-    }
-    // detection if ai hits dead tank
-    for(var j = 0; j < kills.length; j++) {
-     for(var i = 0; i < mgBulletsAi.length; i++) {
-      if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
-        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
-        if(mgBulletsAi[i].active){
-          kills[j].hp=kills[j].hp-5;
-          mgBulletsAi[i].active=false;
-        }
-      }
-     }
-    }
-
 
       // body and tower new position
       // body
@@ -929,7 +860,7 @@ function AiTank3(x,y) {
        ctx.save();
        ctx.translate(this.x, this.y);
        ctx.rotate(this.angleT);
-       ctx.translate(0, -14);
+       ctx.translate(0, -12);
        ctx.drawImage(this.imgT, -20, -30);
        ctx.restore();
       }

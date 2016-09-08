@@ -5,47 +5,13 @@ to do:
 
 
 
+///////////////////////////////////////////////////////////////
 
-
-///////////////////////////////////////////
-
-upgrades:
-
-gun ammo
-mines ammo
-mg ammo
-flame ammo
-
-
-gun rate
-mg rate
-mines rate
-
-
-gun precision
-mg precision
-
-
-loading ammo on tank
-
-two mg - ammo separatly, upgrades together
-
-
-
-
-//////////////////////////////////////
 
 names of the tanks
 
-tracks signs
-
-mine graphics?
-
-exploaded bodies sign on the ground?
 
 
 
-// extra 
+complete smoke effect, one frame missing
 
-pointing through obstacles ai detection system
-obstacles on map

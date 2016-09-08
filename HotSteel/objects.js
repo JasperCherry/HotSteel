@@ -68,8 +68,9 @@ function DeadBodyFire(x,y){
 }
 
 
-function DeadBody(x, y, angle1, angle2, img1, img2, tower) {
+function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
 
+    this.id = id;
     this.towerLoose=tower;
     this.hp = 100;
     this.img1=img1;
@@ -133,9 +134,11 @@ function Bullet(x, y, angle) {
     this.y = y;
     this.img = b;
 
-    if(this.playSound){
-      this.gun.play();
-      this.playSound=false;
+    if(sound){
+      if(this.playSound){
+        this.gun.play();
+        this.playSound=false;
+      }
     }
 
     this.update = function() {
@@ -179,9 +182,11 @@ function Bullet2(x, y, angle) {
     this.y = y;
     this.img = b2;
 
-    if(this.playSound){
-      this.gun.play();
-      this.playSound=false;
+    if(sound){
+      if(this.playSound){
+        this.gun.play();
+        this.playSound=false;
+      }
     }
 
     this.update = function() {
@@ -223,9 +228,11 @@ function MgBullet(x, y, angle) {
     this.y = y;
     this.img = mgb;
 
-    if(this.playSound){
-      this.mg.play();
-      this.playSound=false;
+    if(sound){
+      if(this.playSound){
+        this.mg.play();
+        this.playSound=false;
+      }
     }
 
     this.update = function() {
@@ -264,10 +271,11 @@ function Flame(x, y, angle) {
     this.delayTime=0;
     this.size=0.1;
 
-
-    if(this.playSound){
-      this.mg.play();
-      this.playSound=false;
+    if(sound){
+      if(this.playSound){
+        this.mg.play();
+        this.playSound=false;
+      }
     }
 
     this.update = function() {
@@ -306,6 +314,7 @@ function Flame(x, y, angle) {
     }
 }
 
+
 function Mine(x, y) {
 
     this.radius = 6;
@@ -328,6 +337,25 @@ function Mine(x, y) {
 
 }
 
+function Obstacle(x, y, width, height) {
+
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+
+
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.restore();
+    }
+
+}
+
+
 function ExplosionM(x, y) {
 
     this.x = x;
@@ -340,8 +368,10 @@ function ExplosionM(x, y) {
 
         this.update = function() {
           if(this.playSound){
-            this.exmd.play();
-            this.playSound=false;
+            if(sound){
+              this.exmd.play();
+              this.playSound=false;
+            }
           }
           ctx = myGameArea.context;
           ctx.save();
@@ -395,8 +425,10 @@ function ExplosionDead(x, y) {
 
         this.update = function() {
           if(this.playSound){
-            this.exmd.play();
-            this.playSound=false;
+            if(sound){
+              this.exmd.play();
+              this.playSound=false;
+            }
           }
           ctx = myGameArea.context;
           ctx.save();
@@ -430,8 +462,10 @@ function Smoke(x, y) {
 
         this.update = function() {
           if(this.playSound){
-            this.smoke.play();
-            this.playSound=false;
+            if(sound){
+              this.smoke.play();
+              this.playSound=false;
+            }
           }
           ctx = myGameArea.context;
           ctx.save();
