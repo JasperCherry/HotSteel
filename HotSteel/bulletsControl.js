@@ -73,6 +73,7 @@ function bulletsControl() {
        bulletsP[i].y>obstacles[j].y &&
        bulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
+       explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
        bulletsP.splice(i,1);
      }
    }
@@ -87,7 +88,11 @@ function bulletsControl() {
        mgBulletsP[i].y>obstacles[j].y &&
        mgBulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
-       mgBulletsP.splice(i,1);
+       mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
+       mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
+       if(mgBulletsP[i].active){
+         mgBulletsP[i].active=false;
+       }
      }
    }
   }
@@ -167,6 +172,7 @@ function bulletsControl() {
        bulletsAi[i].y>obstacles[j].y &&
        bulletsAi[i].y<obstacles[j].y+obstacles[j].height
      ){
+       explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
        bulletsAi.splice(i,1);
      }
    }
@@ -181,7 +187,11 @@ function bulletsControl() {
        mgBulletsAi[i].y>obstacles[j].y &&
        mgBulletsAi[i].y<obstacles[j].y+obstacles[j].height
      ){
-       mgBulletsAi.splice(i,1);
+       mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
+       mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+       if(mgBulletsAi[i].active){
+         mgBulletsAi[i].active=false;
+       }
      }
    }
   }

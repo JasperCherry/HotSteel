@@ -337,19 +337,48 @@ function Mine(x, y) {
 
 }
 
-function Obstacle(x, y, width, height) {
+function Obstacle(x, y, type) {
 
+    this.type = type;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+
+
+    if(this.type==1){
+      this.width = 65;
+      this.height = 50;
+      this.img=ob1;
+    }else if(this.type==2){
+      this.width = 60;
+      this.height = 60;
+      this.img=ob2;
+    }else if(this.type==3){
+      this.width = 50;
+      this.height = 50;
+      this.img=ob3;
+    }
 
 
     this.update = function() {
         ctx = myGameArea.context;
         ctx.save();
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        //ctx.fillStyle = "black";
+
+        if(this.type==1){
+          //ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.drawImage(this.img, this.x-10, this.y-10, 84, 70);
+        }
+
+        if(this.type==2){
+          //ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.drawImage(this.img, this.x-15, this.y-5, 84, 70);
+        }
+
+        if(this.type==3){
+          //ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.drawImage(this.img, this.x-15, this.y-10, 84, 70);
+        }
+
         ctx.restore();
     }
 
