@@ -10,9 +10,15 @@ function PTank(x,y) {
 
   this.x=x;
   this.y=y;
-  this.imgB=rusa;
-  this.imgT=rusb;
   this.imgP=pointer;
+
+  if(terrain==0){
+    this.imgB=rusa;
+    this.imgT=rusb;
+  }else if(terrain==1){
+    this.imgB=srusa;
+    this.imgT=srusb;
+  }
 
 
   this.gunSpeed=250;
@@ -21,8 +27,8 @@ function PTank(x,y) {
 
   this.ammoType = 1;
 
-  this.numBullet = 30;
-  this.numBullet2 = 20;
+  this.numBullet = 20;
+  this.numBullet2 = 10;
   this.numFlames = 500;
   this.numMgBullets = 200;
   this.numMgBullets2 = 200;
@@ -62,14 +68,24 @@ function PTank(x,y) {
       }
 
       // ammo choosing
-      if (myGameArea.keys && myGameArea.keys[49]){
+      if (myGameArea.keys && myGameArea.keys[49] && this.numBullet>0){
         this.ammoType = 1;
         this.reloadTime=this.gunSpeed;
       }
-      if (myGameArea.keys && myGameArea.keys[50]){
+      if (myGameArea.keys && myGameArea.keys[50] && this.numBullet2>0){
         this.ammoType = 2;
         this.reloadTime=this.gunSpeed;
       }
+      // switching when type of ammo is empty
+      if(this.numBullet==0&&this.numBullet2>0){
+        this.ammoType = 2;
+      }
+      if(this.numBullet2==0&&this.numBullet>0){
+        this.ammoType = 1;
+      }
+
+
+
 
       // start position zeroing
       this.moveAngleB = 0;
@@ -234,13 +250,15 @@ function PTank(x,y) {
         }
       }
       //reloading
-      if(this.reloadTime>0){
-        this.reloadTime--;
-      }
-      // sound of reload
-      if(sound){
-        if(this.reloadTime==20){
-          this.gunReload.play();
+      if(this.numBullet>0||this.numBullet2>0){
+        if(this.reloadTime>0){
+          this.reloadTime--;
+        }
+        // sound of reload
+        if(sound){
+          if(this.reloadTime==20){
+            this.gunReload.play();
+          }
         }
       }
 
@@ -248,8 +266,8 @@ function PTank(x,y) {
       if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeM==0 && this.numMgBullets>0){
         this.numMgBullets--;
         mgBulletsP.push(new MgBullet(
-        this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
-        this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.x+(25 * Math.sin(this.angleB))- 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(25 * Math.cos(this.angleB))+ 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
         this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
         this.reloadTimeM=this.mgSpeed;
       }
@@ -291,7 +309,7 @@ function PTank(x,y) {
       }
 
 
-      
+
 
 
       // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
@@ -364,7 +382,11 @@ function PTank(x,y) {
 
       // player kill detection
       if(this.hp<=0&&!this.deadBodyMade){
-         kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose, this.id));
+         if(terrain==0){
+           kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose, this.id));
+         }else if(terrain==1){
+           kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, srusaw, srusbw, this.towerLoose, this.id));
+         }
          this.flame.pause();
          this.move.pause();
          this.moveT.pause();

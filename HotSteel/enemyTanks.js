@@ -44,8 +44,14 @@ function AiTank(x,y) {
 
   this.x=x;
   this.y=y;
-  this.imgB=gera;
-  this.imgT=gerb;
+
+  if(terrain==0){
+    this.imgB=gera;
+    this.imgT=gerb;
+  }else if(terrain==1){
+    this.imgB=sgera;
+    this.imgT=sgerb;
+  }
 
   this.speed = 0;
   this.angleB = 0;
@@ -335,8 +341,14 @@ function AiTank2(x,y) {
 
   this.x=x;
   this.y=y;
-  this.imgB=gera2;
-  this.imgT=gerb2;
+
+  if(terrain==0){
+    this.imgB=gera2;
+    this.imgT=gerb2;
+  }else if(terrain==1){
+    this.imgB=sgera2;
+    this.imgT=sgerb2;
+  }
 
   this.speed = 0;
   this.angleB = 0;
@@ -630,8 +642,14 @@ function AiTank3(x,y) {
 
   this.x=x;
   this.y=y;
-  this.imgB=gera3;
-  this.imgT=gerb3;
+
+  if(terrain==0){
+    this.imgB=gera3;
+    this.imgT=gerb3;
+  }else if(terrain==1){
+    this.imgB=sgera3;
+    this.imgT=sgerb3;
+  }
 
   this.speed = 0;
   this.angleB = 0;

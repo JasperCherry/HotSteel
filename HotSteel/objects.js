@@ -103,10 +103,10 @@ function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angleTower);
         // tower of grey tank with long barrel should be in different position
-        if(this.img2==gerbw2){
+        if(this.img2==gerbw2||this.img2==sgerbw2){
           ctx.translate(0, -3);
           ctx.drawImage(this.img2, -20, -30);
-        }else if(this.img2==gerbw3){
+        }else if(this.img2==gerbw3||this.img2==sgerbw3){
           ctx.translate(0, -14);
           ctx.drawImage(this.img2, -20, -30);
         }else{

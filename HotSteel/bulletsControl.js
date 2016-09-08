@@ -1,0 +1,234 @@
+function bulletsControl() {
+
+  //////////////////////////////////////////////  bullets conditions
+
+  ///////////////////////////////////////////////////////////// player
+
+  // detection if player hits dead tank by gun
+  for(var j = 0; j < kills.length; j++) {
+   for(var i = 0; i < bulletsP.length; i++) {
+    if(Math.abs(bulletsP[i].x-kills[j].x)<15 && Math.abs(bulletsP[i].y-kills[j].y)<15){
+       if(bulletsP[i].type==1){
+         // heat rounds
+         explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+         bulletsP.splice(i,1);
+         kills[j].hp=kills[j].hp-50;
+       }else if(bulletsP[i].type==2){
+         // sabot rounds
+         var inArray=false;
+         // checks alive tanks as well to avoid dobule hit on alive and dead tank
+         for(var x=0; x<bulletsP[i].hits.length; x++){
+           if(kills[j].id==bulletsP[i].hits[x]){
+             inArray=true;
+           }
+         }
+         // checking dead tanks
+         for(var x=0; x<bulletsP[i].hitsDead.length; x++){
+           if(kills[j].id==bulletsP[i].hitsDead[x]){
+             inArray=true;
+           }
+         }
+         // if tank wasnt hit before
+         if(inArray==false){
+           bulletsP[i].hitsDead.push(kills[j].id);
+           kills[j].hp=kills[j].hp-50;
+           explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+         }
+      }
+    }
+   }
+  }
+
+  // detection if player hits dead tank by machinegun
+  for(var j = 0; j < kills.length; j++) {
+   for(var i = 0; i < mgBulletsP.length; i++) {
+    if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
+       mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
+       mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
+       if(mgBulletsP[i].active){
+         kills[j].hp=kills[j].hp-5;
+         mgBulletsP[i].active=false;
+       }
+    }
+   }
+  }
+
+  // detection if player hits  dead tank by flamethrower
+  for(var j = 0; j < kills.length; j++) {
+    for(var i = 0; i < flames.length; i++) {
+      if(Math.abs(flames[i].x-kills[j].x)<15 && Math.abs(flames[i].y-kills[j].y)<15){
+        flames.splice(i,1);
+      }
+    }
+  }
+
+  //////////////////////////// hitting obstacles
+
+  // gun
+  for(var j = 0; j < obstacles.length; j++) {
+   for(var i = 0; i < bulletsP.length; i++) {
+     if(
+       bulletsP[i].x>obstacles[j].x &&
+       bulletsP[i].x<obstacles[j].x+obstacles[j].width &&
+       bulletsP[i].y>obstacles[j].y &&
+       bulletsP[i].y<obstacles[j].y+obstacles[j].height
+     ){
+       bulletsP.splice(i,1);
+     }
+   }
+  }
+
+  // mg
+  for(var j = 0; j < obstacles.length; j++) {
+   for(var i = 0; i < mgBulletsP.length; i++) {
+     if(
+       mgBulletsP[i].x>obstacles[j].x &&
+       mgBulletsP[i].x<obstacles[j].x+obstacles[j].width &&
+       mgBulletsP[i].y>obstacles[j].y &&
+       mgBulletsP[i].y<obstacles[j].y+obstacles[j].height
+     ){
+       mgBulletsP.splice(i,1);
+     }
+   }
+  }
+
+  // flamethrower
+  for(var j = 0; j < obstacles.length; j++) {
+   for(var i = 0; i < flames.length; i++) {
+     if(
+       flames[i].x>obstacles[j].x &&
+       flames[i].x<obstacles[j].x+obstacles[j].width &&
+       flames[i].y>obstacles[j].y &&
+       flames[i].y<obstacles[j].y+obstacles[j].height
+     ){
+       flames.splice(i,1);
+     }
+   }
+  }
+
+  /////////////////////////////////////////////////////////////// ai
+
+  // gun
+  // detection if ai hits player tank
+
+  // detection if ai hits player
+  for(var i = 0; i < bulletsAi.length; i++) {
+    if(Math.abs(bulletsAi[i].x-pTank.x)<15 && Math.abs(bulletsAi[i].y-pTank.y)<15){
+      explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
+      bulletsAi.splice(i,1);
+      pTank.hp=pTank.hp-20;
+    }
+  }
+  // detection if ai hits dead tank
+  for(var j = 0; j < kills.length; j++) {
+   for(var i = 0; i < bulletsAi.length; i++) {
+    if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
+       explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
+       bulletsAi.splice(i,1);
+       kills[j].hp=kills[j].hp-50;
+    }
+   }
+  }
+
+  // machinegun
+  // detection if ai hits player
+  for(var i = 0; i < mgBulletsAi.length; i++) {
+    if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
+      mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
+      mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+      if(mgBulletsAi[i].active){
+        pTank.hp=pTank.hp-2;
+        mgBulletsAi[i].active=false;
+      }
+    }
+  }
+  // detection if ai hits dead tank
+  for(var j = 0; j < kills.length; j++) {
+   for(var i = 0; i < mgBulletsAi.length; i++) {
+    if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
+      mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
+      mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+      if(mgBulletsAi[i].active){
+        kills[j].hp=kills[j].hp-5;
+        mgBulletsAi[i].active=false;
+      }
+    }
+   }
+  }
+
+  //////////////////////////// hitting obstacles
+
+  // gun
+  for(var j = 0; j < obstacles.length; j++) {
+   for(var i = 0; i < bulletsAi.length; i++) {
+     if(
+       bulletsAi[i].x>obstacles[j].x &&
+       bulletsAi[i].x<obstacles[j].x+obstacles[j].width &&
+       bulletsAi[i].y>obstacles[j].y &&
+       bulletsAi[i].y<obstacles[j].y+obstacles[j].height
+     ){
+       bulletsAi.splice(i,1);
+     }
+   }
+  }
+
+  // mg
+  for(var j = 0; j < obstacles.length; j++) {
+   for(var i = 0; i < mgBulletsAi.length; i++) {
+     if(
+       mgBulletsAi[i].x>obstacles[j].x &&
+       mgBulletsAi[i].x<obstacles[j].x+obstacles[j].width &&
+       mgBulletsAi[i].y>obstacles[j].y &&
+       mgBulletsAi[i].y<obstacles[j].y+obstacles[j].height
+     ){
+       mgBulletsAi.splice(i,1);
+     }
+   }
+  }
+
+
+
+
+  ///////////////////////////////////// kills detection
+
+  // ai kill detection
+  for(var t = 0; t < aiTanks.length; t++) {
+
+  if(aiTanks[t].hp<=0){
+
+     if(aiTanks[t].type=='one'){
+       if(terrain==0){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         geraw, gerbw, aiTanks[t].towerLoose, aiTanks[t].id));
+       }else if(terrain==1){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         sgeraw, sgerbw, aiTanks[t].towerLoose, aiTanks[t].id));
+       }
+       points+=30;
+     }
+     if(aiTanks[t].type=='two'){
+       if(terrain==0){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         geraw2, gerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
+       }else if(terrain==1){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         sgeraw2, sgerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
+       }
+       points+=50;
+     }
+     if(aiTanks[t].type=='three'){
+       if(terrain==0){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         geraw3, gerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
+       }else if(terrain==1){
+         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+         sgeraw3, sgerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
+       }
+       points+=150;
+     }
+     aiTanks.splice(t,1);
+   }
+
+  }
+
+}
