@@ -27,8 +27,8 @@ function PTank(x,y) {
 
   this.ammoType = 1;
 
-  this.numBullet = 20;
-  this.numBullet2 = 10;
+  this.numBullet = 40;
+  this.numBullet2 = 20;
   this.numFlames = 500;
   this.numMgBullets = 200;
   this.numMgBullets2 = 200;
@@ -37,6 +37,7 @@ function PTank(x,y) {
   this.numMines = 10;
 
   this.speed = 0;
+  this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
   this.angleT = 0;
@@ -83,8 +84,6 @@ function PTank(x,y) {
       if(this.numBullet2==0&&this.numBullet>0){
         this.ammoType = 1;
       }
-
-
 
 
       // start position zeroing
@@ -156,8 +155,35 @@ function PTank(x,y) {
         this.moveT.load();
       }
 
+      // drawing tracks
+      if(this.trackTimer==10){
 
+        tracks.push(new Track(
+          this.x+(0 * Math.sin(this.angleB))- 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+          this.y-(0 * Math.cos(this.angleB))+ 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+          this.angleB
+          ));
 
+        tracks.push(new Track(
+          this.x+(0 * Math.sin(this.angleB))+ 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+          this.y-(0 * Math.cos(this.angleB))- 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+          this.angleB
+          ));
+
+        this.trackTimer=0;
+      }
+
+      if(this.speed!=0||this.moveAngleB!=0){
+        this.trackTimer++;
+      }
+
+/*
+mgBulletsP.push(new MgBullet(
+this.x+(25 * Math.sin(this.angleB))- 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+this.y-(25 * Math.cos(this.angleB))+ 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+this.reloadTimeM=this.mgSpeed;
+*/
 
 
       // map control
@@ -193,6 +219,14 @@ function PTank(x,y) {
             this.x=this.previousX;
             this.y=this.previousY;
           }
+      }
+
+      for(var t = 0; t < aiTanks.length; t++) {
+        // touching enemy tanks
+        if((Math.abs(aiTanks[t].x-pTank.x)<30)&&(Math.abs(aiTanks[t].y-pTank.y)<30)){
+          pTank.x=pTank.previousX;
+          pTank.y=pTank.previousY;
+        }
       }
 
 
@@ -238,14 +272,16 @@ function PTank(x,y) {
           bulletsP.push(new Bullet(
           this.x+(40 * Math.sin(this.angleT)),
           this.y-(40 * Math.cos(this.angleT)),
-          this.angleT));
+          this.angleT,
+          this.ammoType));
           this.reloadTime=this.gunSpeed;
         }else if(this.ammoType==2 && this.numBullet2>0){
           this.numBullet2--;
           bulletsP.push(new Bullet2(
           this.x+(40 * Math.sin(this.angleT)),
           this.y-(40 * Math.cos(this.angleT)),
-          this.angleT));
+          this.angleT,
+          this.ammoType));
           this.reloadTime=this.gunSpeed;
         }
       }
@@ -308,91 +344,6 @@ function PTank(x,y) {
         this.flame.load();
       }
 
-
-
-
-
-      // interactions with ai tanks /////////////////////////////////////////////////////////////////////////
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-      for(var t = 0; t < aiTanks.length; t++) {
-          // touching enemy tank
-          if((Math.abs(aiTanks[t].x-pTank.x)<30)&&(Math.abs(aiTanks[t].y-pTank.y)<30)){
-            pTank.x=pTank.previousX;
-            pTank.y=pTank.previousY;
-          }
-
-          // gun
-          // detection if player hits  ai tank
-           for(var i = 0; i < bulletsP.length; i++) {
-            if(Math.abs(bulletsP[i].x-aiTanks[t].x)<15 && Math.abs(bulletsP[i].y-aiTanks[t].y)<15){
-               if(bulletsP[i].type==1){
-                 // heat rounds
-                 explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-                 bulletsP.splice(i,1);
-                 aiTanks[t].hp=aiTanks[t].hp-50;
-               }else if(bulletsP[i].type==2){
-                 // sabot rounds
-                 var inArray=false;
-                 for(var x=0; x<bulletsP[i].hits.length; x++){
-                   if(aiTanks[t].id==bulletsP[i].hits[x]){
-                     inArray=true;
-                   }
-                 }
-                 // if tank wasnt hit before
-                 if(inArray==false){
-                   bulletsP[i].hits.push(aiTanks[t].id);
-                  aiTanks[t].hp=aiTanks[t].hp-50;
-                   explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-                 }
-              }
-              // losing tower , 25% possible when 50 or less hp after shot
-              if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) ){
-                aiTanks[t].towerLoose=true;
-              }
-            }
-           }
-
-
-          // machinegun
-          // detection if player hits  ai tank
-          for(var i = 0; i < mgBulletsP.length; i++) {
-            if(Math.abs(mgBulletsP[i].x-aiTanks[t].x)<15 && Math.abs(mgBulletsP[i].y-aiTanks[t].y)<15){
-              mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
-              mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
-              if(mgBulletsP[i].active){
-                aiTanks[t].hp=aiTanks[t].hp-2;
-                mgBulletsP[i].active=false;
-              }
-            }
-          }
-
-          // flamethrower
-          // detection if player hits  ai tank
-          for(var i = 0; i < flames.length; i++) {
-            if(Math.abs(flames[i].x-aiTanks[t].x)<15 && Math.abs(flames[i].y-aiTanks[t].y)<15){
-              flames.splice(i,1);
-              aiTanks[t].fireProtect--;
-              if(aiTanks[t].fireProtect<=0){
-                aiTanks[t].onFire=true;
-              }
-            }
-          }
-
-      } // end of interactions with ai tanks
-
-      // player kill detection
-      if(this.hp<=0&&!this.deadBodyMade){
-         if(terrain==0){
-           kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, rusaw, rusbw, this.towerLoose, this.id));
-         }else if(terrain==1){
-           kills.push(new DeadBody(this.x, this.y, this.angleB, this.angleB, srusaw, srusbw, this.towerLoose, this.id));
-         }
-         this.flame.pause();
-         this.move.pause();
-         this.moveT.pause();
-         this.alive=false;
-         // pTank = new PTank(100,300,rusa,rusb);
-       }
 
       // body and tower new position
       // body

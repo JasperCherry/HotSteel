@@ -150,7 +150,10 @@ canvas {
 <img src="maps/map3.jpg" id="map3" style="display: none;">
 <img src="maps/map4.jpg" id="map4" style="display: none;">
 
+<img src="tanks/track.png" id="track" style="display: none;">
+
 <img src="wall.jpg" id="wall" style="display: none;">
+<img src="menu.jpg" id="menu" style="display: none;">
 
 
 <script src="objects.js"></script>
@@ -215,21 +218,29 @@ var fieldMapX=1000;
 var fieldMapY=600;
 
 // tank names
-var sTanks = ["Little Johan", "Mouse", "Bonbon", "Puppy", "Grasshopper", "Schmetterling",
- "Hamster", "Chicken chaser", "Sprinter", "Can", "Bastard", "Barker", "Freak", "Athlete", "Herring"];
+var sTanks = ["Little John", "Mouse", "Bonbon", "Puppy", "Grasshopper", "Butterfly",
+ "Hamster", "Chicken chaser", "Sprinter", "Can", "Bastard", "Barker", "Freak", "Athlete", "Herring",
+ "Skipper", "Gloomy", "Mosquito", "Sparrow", "Cricket"];
 
-var mTanks = ["Firefly", "Warrior", "Nuttcracker", "Pride", "Just cause", "Madman",
- "Dagger", "Sower", "Rammer", "Goblin", "Assassin", "Horn", "Hornet", "Rottweiler"];
+var mTanks = ["Firefly", "Warrior", "Nuttcracker", "Prince", "Pride", "Just cause", "Madman",
+ "Dagger", "Sower", "Rammer", "Goblin", "Assassin", "Horn", "Hornet", "Rottweiler", "Robber", "Lionheart", "Jaws",
+  "Swordfish", "Shepherd"];
 
-var lTanks = ["Angela", "Klara", "Helga", "Zigfrida", "Erika", "Gerda", "Grizelda",
- "Brenda", "Heide", "Brunhilde"];
+var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram", "Ox", "Hog", "Big Foot", "Buffalo",
+"Icebreaker", "Lucifer", "Archangel"];
 
+var totalPoints=0;
 var points=0;
-var gameStart=false;
-var sound=false; // sound in the game
+var level=0;
+var sound=true; // sound in the game
+var menuTanks=new Audio('sounds/menuTanks.mp3')
 var tankId=0;
-
 var terrain=0;  // 0 - grass, 1 - sand   // ai tanks camo
+
+var cButton=0;
+var cTimer=0;
+var eTimer=0;
+var createMenuTanks=true;
 
 
 // player tank vars
@@ -244,27 +255,9 @@ var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
 
-
-
-
 ////////////////////////////////////////////////////////// enemies for test
-
-//obstacles[0] = new Obstacle(100,100,1);
-//obstacles[1] = new Obstacle(250,100,2);
-//obstacles[2] = new Obstacle(400,100,3);
-
-
-//aiTanks[0] = new AiTank(900,100);
-//aiTanks[1] = new AiTank(900,200);
-//aiTanks[2] = new AiTank2(900,300);
-//aiTanks[3] = new AiTank3(900,400);
-//aiTanks[4] = new AiTank(800,200);
-//aiTanks[5] = new AiTank(800,300);
-//aiTanks[6] = new AiTank2(800,400);
-
-
-
-
+//obstacles[0] = new Obstacle(800,150,1);
+//aiTanks[0] = new AiTank(1100,100);
 
 
 
@@ -274,25 +267,244 @@ var mgBulletsAi = new Array();
 function updateGameArea() {
 
 
-// first screen
-if(gameStart){
 
-  var ctx = myGameArea.context;
+if(level==0){ // first screen
+  ctx = myGameArea.context;
   ctx.drawImage(wall, 0, 0);
-
+  ctx.font = "50px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("Press enter to start",200,100);
   if (myGameArea.keys && myGameArea.keys[13]){
-  gameStart=true;
+    eTimer=20;
+    level=1;
+  }
+}
+
+
+
+if(level==1){ // main menu
+
+  // playing sound of the tanks in the menu
+  if(sound){
+    menuTanks.play();
+  }else{
+    menuTanks.load();
+  }
+
+  ctx = myGameArea.context;
+  ctx.drawImage(menu, 0, 0);
+
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "white";
+  ctx.fillText("Total points : "+totalPoints,750,50);
+
+  ctx.font = "30px Arial";
+
+  if(cButton==0){
+    ctx.fillStyle = "red";
+    ctx.fillText("Campaign",650,150);
+  }else{
+    ctx.fillStyle = "white";
+    ctx.fillText("Campaign",650,150);
+  }
+
+  if(cButton==1){
+    ctx.fillStyle = "red";
+    ctx.fillText("Survival Mode",650,230);
+  }else{
+    ctx.fillStyle = "white";
+    ctx.fillText("Survival Mode",650,230);
+  }
+
+  if(cButton==2){
+    ctx.fillStyle = "red";
+    ctx.fillText("Garage",650,310);
+  }else{
+    ctx.fillStyle = "white";
+    ctx.fillText("Garage",650,310);
+  }
+
+  if(sound){
+    if(cButton==3){
+      ctx.fillStyle = "red";
+      ctx.fillText("Sound on",650,390);
+    }else{
+      ctx.fillStyle = "white";
+      ctx.fillText("Sound on",650,390);
+    }
+  }else{
+    if(cButton==3){
+      ctx.fillStyle = "red";
+      ctx.fillText("Sound off",650,390);
+    }else{
+      ctx.fillStyle = "white";
+      ctx.fillText("Sound off",650,390);
+    }
+  }
+
+  if(cButton==4){
+    ctx.fillStyle = "red";
+    ctx.fillText("Author",650,470);
+  }else{
+    ctx.fillStyle = "white";
+    ctx.fillText("Author",650,470);
+  }
+
+  if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
+    cTimer=10;
+    cButton--;
+    if(cButton==-1){
+      cButton=4;
+    }
+  }
+
+  if(myGameArea.keys && myGameArea.keys[40] && cTimer==0){
+    cTimer=10;
+    cButton++;
+    if(cButton==5){
+      cButton=0;
+    }
+  }
+
+  if(cTimer>0){
+    cTimer--;
+  }
+  if(eTimer>0){
+    eTimer--;
+  }
+
+  // using main menu options
+  if(myGameArea.keys && myGameArea.keys[13] && eTimer==0 && cButton==1){
+    level=100;
+    clearLevel();
+    menuTanks.load();
+  }
+
+  if(myGameArea.keys && myGameArea.keys[13] && eTimer==0 && cButton==3){
+    sound=!sound;
+    eTimer=20;
   }
 
 
-}else{
 
-// bullets and killing detection
+
+  //// tanks going around
+  if(createMenuTanks){
+    aiTanks[0] = new AiTank(200,700);
+    aiTanks[0].dumb=true;
+    aiTanks[1] = new AiTank(143,900);
+    aiTanks[1].dumb=true;
+
+    aiTanks[2] = new AiTank3(900,800);
+    aiTanks[2].dumb=true;
+
+
+
+    createMenuTanks=false;
+  }
+
+  // moving in circle1 around
+  for(var t = 0; t < aiTanks.length; t++) {
+
+    if(aiTanks[t].type=="one"){
+
+      if(aiTanks[t].y<2000&&aiTanks[t].y>650){
+        aiTanks[t].setDes(300,450);
+        aiTanks[t].angleB=aiTanks[t].aiDestinationAngle;
+      }
+
+      if(aiTanks[t].y<470){
+        aiTanks[t].setDes(220,100);
+      }
+      if(aiTanks[t].y<120){
+        aiTanks[t].setDes(-100,-200);
+      }
+      if(aiTanks[t].y<-150){
+        aiTanks[t] = new AiTank(200,800);
+        aiTanks[t].dumb=true;
+      }
+    }
+
+    if(aiTanks[t].type=="three"){
+
+      if(aiTanks[t].y<2000&&aiTanks[t].y>650){
+        aiTanks[t].setDes(450,550);
+        aiTanks[t].angleB=aiTanks[t].aiDestinationAngle;
+      }
+
+      if(aiTanks[t].y<570){
+        aiTanks[t].setDes(350,200);
+      }
+      if(aiTanks[t].y<220){
+        aiTanks[t].setDes(400,-200);
+      }
+      if(aiTanks[t].y<-150){
+        aiTanks[t] = new AiTank3(900,800);
+        aiTanks[t].dumb=true;
+      }
+    }
+
+  }
+
+    //////////////////////////// ai tanks drawing
+    // tracks
+    for(var i = 0; i < tracks.length; i++) {
+      if(tracks[i].timer<0){
+        tracks.splice(i,1);
+      }else{
+        tracks[i].update();
+      }
+    }
+    // new positions
+    for(var t = 0; t < aiTanks.length; t++) {
+      aiTanks[t].newPos();
+    }
+    // drawing ai tank
+    for(var t = 0; t < aiTanks.length; t++) {
+      aiTanks[t].update();
+    }
+
+
+
+}// end of level 1 / menu
+
+
+
+
+
+if(level==100){ // survival mode
+
+  obstacles[0] = new Obstacle(800,150,1);
+  obstacles[1] = new Obstacle(220,110,2);
+  obstacles[2] = new Obstacle(300,130,1);
+  obstacles[3] = new Obstacle(820,500,2);
+  obstacles[4] = new Obstacle(800,370,1);
+  obstacles[5] = new Obstacle(100,300,3);
+  obstacles[6] = new Obstacle(150,350,2);
+  obstacles[7] = new Obstacle(210,330,1);
+  obstacles[8] = new Obstacle(360,340,3);
+
+  if(aiTanks.length==0){
+    aiTanks[0] = new AiTank(1100,100);
+    aiTanks[1] = new AiTank(1400,200);
+    aiTanks[2] = new AiTank2(1900,400);
+    aiTanks[3] = new AiTank3(2100,500);
+  }
+
+
+if(pTank.alive){
 bulletsControl();
-// drawing objects during in game mode
 gameDrawing();
+}else{
+  clearLevel();
+  level=1;
+  createMenuTanks=true;
+}
 
-}// end  of game start
+}// end of level 100 / survival mode
+
+
+
 
 }// end of a game update function
 

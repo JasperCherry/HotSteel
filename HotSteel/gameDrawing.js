@@ -5,8 +5,16 @@ function gameDrawing() {
 
   // drawing the map
   var ctx = myGameArea.context;
-  ctx.drawImage(map1, 0, 0);
+  ctx.drawImage(map3, 0, 0);
 
+  // tracks
+  for(var i = 0; i < tracks.length; i++) {
+    if(tracks[i].timer<0){
+      tracks.splice(i,1);
+    }else{
+      tracks[i].update();
+    }
+  }
 
   // mines
   for(var i = 0; i < mines.length; i++) {
@@ -208,5 +216,7 @@ function gameDrawing() {
 
   ctx.fillText("Points",900,620);
   ctx.fillText(points,900,645);
+
+
 
 }

@@ -120,12 +120,13 @@ function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
 
 
 
-function Bullet(x, y, angle) {
+function Bullet(x, y, angle, type) {
 
+    this.type=type;
     this.gun = new Audio('sounds/gun.mp3');
     this.playSound=true;
 
-    this.type=1;
+    this.type=type;
     this.liveTime=100;
     this.radius = 2;
     this.speed = 20;
@@ -165,8 +166,9 @@ function Bullet(x, y, angle) {
     }
 }
 
-function Bullet2(x, y, angle) {
+function Bullet2(x, y, angle, type) {
 
+    this.type=type;
     this.gun = new Audio('sounds/gun.mp3');
     this.playSound=true;
 
@@ -333,6 +335,35 @@ function Mine(x, y) {
         ctx.closePath();
         ctx.fill();
         ctx.restore();
+    }
+
+}
+
+function Track(x, y, angle) {
+
+    this.scale=0.04
+
+    this.angle = angle;
+    this.x = x;
+    this.y = y;
+    this.img = track;
+
+    this.timer=150;
+    this.opacity=0.5+0.5/150;
+
+
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.globalAlpha = this.opacity;
+        ctx.drawImage(this.img, -200*this.scale, -150*this.scale, 400*this.scale, 300*this.scale);
+        ctx.globalAlpha = 1;
+        ctx.restore();
+
+        this.opacity=this.opacity-0.5/150;
+        this.timer--;
     }
 
 }
@@ -535,5 +566,39 @@ function Smoke(x, y) {
           }
           ctx.restore();
         }
+
+}
+
+
+
+// remove all objects function
+function clearLevel() {
+
+  pTank.flame.pause();
+  pTank.move.pause();
+  pTank.moveT.pause();
+
+  kills = new Array();
+  killsFire = new Array();
+  tanksFire = new Array();
+  flames = new Array();
+  mines = new Array();
+  explosionsM = new Array();
+  explosionsH = new Array();
+  explosionsDead = new Array();
+  smoke = new Array();
+  tracks = new Array();
+  obstacles = new Array();
+
+  bulletsP = new Array();
+  mgBulletsP = new Array();
+  aiTanks = new Array();
+  bulletsAi = new Array();
+  mgBulletsAi = new Array();
+
+  pTank = new PTank(500,300);
+
+  totalPoints+=points;
+  points=0;
 
 }

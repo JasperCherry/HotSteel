@@ -1,15 +1,6 @@
-/*
-if(this.towerLoose==false){
- ctx = myGameArea.context;
- ctx.save();
- ctx.translate(this.x, this.y);
- ctx.rotate(this.angleT);
- ctx.translate(0, -3);
- ctx.drawImage(this.imgT, -20, -30);
- ctx.restore();
-}
 
-*/
+
+
 
 function AiTank(x,y) {
 
@@ -18,7 +9,7 @@ function AiTank(x,y) {
 
   this.type="one";
   this.name=sTanks[Math.floor(Math.random()*sTanks.length)];
-
+  this.dumb=false;
   this.towerLoose=false;
 
   // tank on fire
@@ -37,7 +28,7 @@ function AiTank(x,y) {
   this.aiTargetAngle;
   this.shotReady=false;
   this.mgShotReady=false;
-  this.reloadTime = 250;
+  this.reloadTime = 150;
   this.reloadTimeM = 0;
 
   this.hp = 100;
@@ -53,7 +44,9 @@ function AiTank(x,y) {
     this.imgT=sgerb;
   }
 
+  this.vMax=1.5;
   this.speed = 0;
+  this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
   this.angleT = 0;
@@ -63,12 +56,9 @@ function AiTank(x,y) {
   this.previousY=this.y;
 
   this.setDes = function(x,y) {
-    if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=x;
       this.aiY=y;
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
-    }
   }
 
   this.newPos = function() {
@@ -127,16 +117,38 @@ function AiTank(x,y) {
 
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.speed=1;
+      this.speed=this.vMax;
       this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
       this.speed=0;
       if(this.angleB<this.aiDestinationAngle){
-        this.moveAngleB=1;
+        this.moveAngleB=this.vMax;
       }else if(this.angleB>this.aiDestinationAngle){
-        this.moveAngleB=-1;
+        this.moveAngleB=-this.vMax;
       }
+    }
+
+    // drawing tracks
+    if(this.trackTimer>=10){
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))- 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))+ 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))+ 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))- 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      this.trackTimer=0;
+    }
+
+    if(this.speed!=0||this.moveAngleB!=0){
+      this.trackTimer=this.trackTimer+this.vMax;
     }
 
     // destination target
@@ -170,8 +182,9 @@ function AiTank(x,y) {
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (40)) - 20) * Math.PI / 180)));
-      this.reloadTime=250;
+      this.angleT+( (Math.round(Math.random() * (40)) - 20) * Math.PI / 180),
+      this.type));
+      this.reloadTime=150;
     }
 
     // mg
@@ -180,7 +193,7 @@ function AiTank(x,y) {
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
       this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
       this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM=6;
+      this.reloadTimeM=8;
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
@@ -252,6 +265,12 @@ function AiTank(x,y) {
       }
     }
 
+    if(this.dumb){
+      this.shotReady=false;
+      this.mgShotReady=false;
+      this.moveAngleT=0;
+      this.angleT=this.angleB;
+    }
 
       // body and tower new position
       // body
@@ -315,7 +334,7 @@ function AiTank2(x,y) {
 
   this.type="two";
   this.name=mTanks[Math.floor(Math.random()*mTanks.length)];
-
+  this.dumb=false;
   this.towerLoose=false;
 
   // tank on fire
@@ -350,7 +369,9 @@ function AiTank2(x,y) {
     this.imgT=sgerb2;
   }
 
+  this.vMax = 1;
   this.speed = 0;
+  this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
   this.angleT = 0;
@@ -360,12 +381,9 @@ function AiTank2(x,y) {
   this.previousY=this.y;
 
   this.setDes = function(x,y) {
-    if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=x;
       this.aiY=y;
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
-    }
   }
 
   this.newPos = function() {
@@ -424,16 +442,38 @@ function AiTank2(x,y) {
 
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.speed=1;
+      this.speed=this.vMax;
       this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
       this.speed=0;
       if(this.angleB<this.aiDestinationAngle){
-        this.moveAngleB=1;
+        this.moveAngleB=this.vMax;
       }else if(this.angleB>this.aiDestinationAngle){
-        this.moveAngleB=-1;
+        this.moveAngleB=-this.vMax;
       }
+    }
+
+    // drawing tracks
+    if(this.trackTimer>=10){
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))- 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))+ 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))+ 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))- 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      this.trackTimer=0;
+    }
+
+    if(this.speed!=0||this.moveAngleB!=0){
+      this.trackTimer=this.trackTimer+this.vMax;
     }
 
     // destination target
@@ -467,7 +507,8 @@ function AiTank2(x,y) {
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180),
+      this.type));
       this.reloadTime=250;
     }
 
@@ -547,6 +588,13 @@ function AiTank2(x,y) {
         this.shotReady=false;
         this.mgShotReady=false;
       }
+    }
+
+    if(this.dumb){
+      this.shotReady=false;
+      this.mgShotReady=false;
+      this.moveAngleT=0;
+      this.angleT=this.angleB;
     }
 
 
@@ -615,7 +663,7 @@ function AiTank3(x,y) {
 
   this.type="three";
   this.name=lTanks[Math.floor(Math.random()*lTanks.length)];
-
+  this.dumb=false;
   this.towerLoose=false;
 
   // tank on fire
@@ -651,7 +699,9 @@ function AiTank3(x,y) {
     this.imgT=sgerb3;
   }
 
+  this.vMax=0.8;
   this.speed = 0;
+  this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
   this.angleT = 0;
@@ -661,12 +711,9 @@ function AiTank3(x,y) {
   this.previousY=this.y;
 
   this.setDes = function(x,y) {
-    if(this.aiX=="none"&&this.aiY=="none"){
       this.aiX=x;
       this.aiY=y;
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
-      this.speed=1;
-    }
   }
 
   this.newPos = function() {
@@ -725,16 +772,38 @@ function AiTank3(x,y) {
 
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.speed=1;
+      this.speed=this.vMax;
       this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
       this.speed=0;
       if(this.angleB<this.aiDestinationAngle){
-        this.moveAngleB=1;
+        this.moveAngleB=this.vMax;
       }else if(this.angleB>this.aiDestinationAngle){
-        this.moveAngleB=-1;
+        this.moveAngleB=-this.vMax;
       }
+    }
+
+    // drawing tracks
+    if(this.trackTimer>=10){
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))- 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))+ 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      tracks.push(new Track(
+        this.x+(0 * Math.sin(this.angleB))+ 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
+        this.y-(0 * Math.cos(this.angleB))- 14 * (Math.cos(this.angleB+90 * Math.PI / 180)),
+        this.angleB
+        ));
+
+      this.trackTimer=0;
+    }
+
+    if(this.speed!=0||this.moveAngleB!=0){
+      this.trackTimer=this.trackTimer+this.vMax;
     }
 
     // destination target
@@ -768,7 +837,8 @@ function AiTank3(x,y) {
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
       bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
       this.y-(40 * Math.cos(this.angleT)),
-      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
+      this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180),
+      this.type));
       this.reloadTime=250;
     }
 
@@ -778,7 +848,7 @@ function AiTank3(x,y) {
       this.x+(25 * Math.sin(this.angleB))+ 7 * (Math.sin(this.angleB+90 * Math.PI / 180)),
       this.y-(25 * Math.cos(this.angleB))- 7 * (Math.cos(this.angleB+90 * Math.PI / 180)),
       this.angleB + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
-      this.reloadTimeM=6;
+      this.reloadTimeM=4;
     }
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
@@ -850,6 +920,12 @@ function AiTank3(x,y) {
       }
     }
 
+    if(this.dumb){
+      this.shotReady=false;
+      this.mgShotReady=false;
+      this.moveAngleT=0;
+      this.angleT=this.angleB;
+    }
 
       // body and tower new position
       // body
