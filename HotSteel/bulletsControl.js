@@ -341,7 +341,7 @@ function bulletsControl() {
          kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
          sgeraw3, sgerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
        }
-       points+=150;
+       points+=100;
      }
      aiTanks.splice(t,1);
    }

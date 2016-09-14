@@ -12,8 +12,6 @@ function AiTank(x,y) {
   this.dumb=false;
   this.towerLoose=false;
 
-  this.acceleration=0.03;
-
   // tank on fire
   this.fireProtect=50;
   this.onFire=false;
@@ -47,7 +45,8 @@ function AiTank(x,y) {
     this.imgT=sgerb;
   }
 
-  this.vMax=1.5;
+  this.vMax=1.6;
+  this.acceleration=0.1;
   this.speed = 0;
   this.trackTimer=0;
   this.angleB = 0;
@@ -65,10 +64,6 @@ function AiTank(x,y) {
   }
 
   this.newPos = function() {
-
-    // start position zeroing
-    this.moveAngleB = 0;
-    //this.speed = 0;
 
     // detecting fire
     if(this.onFire==true){
@@ -92,6 +87,7 @@ function AiTank(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -107,6 +103,7 @@ function AiTank(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -118,24 +115,30 @@ function AiTank(x,y) {
       this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
     }
 
+
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.angleB=this.aiDestinationAngle;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      //this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
       if(this.speed<this.vMax){
         this.speed=this.speed+this.acceleration;
       }
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
+      // slowing down
+      /*
       if(this.speed>0){
         this.speed=this.speed-this.acceleration;
         if(Math.abs(this.speed-this.acceleration)<this.acceleration){
           this.speed=0;
         }
       }
-      // PROBLEMS, too much gap when changing movement points
+      */
+      // turning around
       if(this.angleB<this.aiDestinationAngle){
         this.moveAngleB=this.vMax;
-      }else if(this.angleB>this.aiDestinationAngle){
+      }
+      if(this.angleB>this.aiDestinationAngle){
         this.moveAngleB=-this.vMax;
       }
     }
@@ -159,7 +162,7 @@ function AiTank(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+this.vMax;
+      this.trackTimer=this.trackTimer+2*this.vMax;
     }
 
     // destination target
@@ -222,6 +225,7 @@ function AiTank(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
       }
     }
@@ -235,6 +239,7 @@ function AiTank(x,y) {
       this.y=this.previousY;
       this.aiX="none";
       this.aiY="none";
+      this.speed=0;
     }
 
     // ai shooting and timing
@@ -395,7 +400,8 @@ function AiTank2(x,y) {
     this.imgT=sgerb2;
   }
 
-  this.vMax = 1;
+  this.vMax=1.1;
+  this.acceleration=0.06;
   this.speed = 0;
   this.trackTimer=0;
   this.angleB = 0;
@@ -413,10 +419,6 @@ function AiTank2(x,y) {
   }
 
   this.newPos = function() {
-
-    // start position zeroing
-    this.moveAngleB = 0;
-    this.speed = 0;
 
     // detecting fire
     if(this.onFire==true){
@@ -440,6 +442,7 @@ function AiTank2(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -455,6 +458,7 @@ function AiTank2(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -468,14 +472,27 @@ function AiTank2(x,y) {
 
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.speed=this.vMax;
-      this.angleB=this.aiDestinationAngle;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      //this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
+      if(this.speed<this.vMax){
+        this.speed=this.speed+this.acceleration;
+      }
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
-      this.speed=0;
+      // slowing down
+      /*
+      if(this.speed>0){
+        this.speed=this.speed-this.acceleration;
+        if(Math.abs(this.speed-this.acceleration)<this.acceleration){
+          this.speed=0;
+        }
+      }
+      */
+      // turning around
       if(this.angleB<this.aiDestinationAngle){
         this.moveAngleB=this.vMax;
-      }else if(this.angleB>this.aiDestinationAngle){
+      }
+      if(this.angleB>this.aiDestinationAngle){
         this.moveAngleB=-this.vMax;
       }
     }
@@ -499,7 +516,7 @@ function AiTank2(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+this.vMax;
+      this.trackTimer=this.trackTimer+2*this.vMax;
     }
 
     // destination target
@@ -562,6 +579,7 @@ function AiTank2(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
       }
     }
@@ -575,6 +593,7 @@ function AiTank2(x,y) {
       this.y=this.previousY;
       this.aiX="none";
       this.aiY="none";
+      this.speed=0;
     }
 
     // ai shooting and timing
@@ -743,6 +762,7 @@ function AiTank3(x,y) {
   }
 
   this.vMax=0.8;
+  this.acceleration=0.03;
   this.speed = 0;
   this.trackTimer=0;
   this.angleB = 0;
@@ -760,10 +780,6 @@ function AiTank3(x,y) {
   }
 
   this.newPos = function() {
-
-    // start position zeroing
-    this.moveAngleB = 0;
-    this.speed = 0;
 
     // detecting fire
     if(this.onFire==true){
@@ -787,6 +803,7 @@ function AiTank3(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -802,6 +819,7 @@ function AiTank3(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
     }
 
@@ -815,14 +833,27 @@ function AiTank3(x,y) {
 
     // change angle of body and move
     if(Math.abs(this.angleB-this.aiDestinationAngle)<0.03){
-      this.speed=this.vMax;
-      this.angleB=this.aiDestinationAngle;
+      this.aiDestinationAngle=Math.atan2(this.y - this.aiY, this.x - this.aiX)+(-90 * Math.PI / 180)+2*Math.PI;
+      //this.angleB=this.aiDestinationAngle;
       this.moveAngleB=0;
+      if(this.speed<this.vMax){
+        this.speed=this.speed+this.acceleration;
+      }
     }else if(Math.abs(this.angleB-this.aiDestinationAngle)>0.03){
-      this.speed=0;
+      // slowing down
+      /*
+      if(this.speed>0){
+        this.speed=this.speed-this.acceleration;
+        if(Math.abs(this.speed-this.acceleration)<this.acceleration){
+          this.speed=0;
+        }
+      }
+      */
+      // turning around
       if(this.angleB<this.aiDestinationAngle){
         this.moveAngleB=this.vMax;
-      }else if(this.angleB>this.aiDestinationAngle){
+      }
+      if(this.angleB>this.aiDestinationAngle){
         this.moveAngleB=-this.vMax;
       }
     }
@@ -846,7 +877,7 @@ function AiTank3(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+this.vMax;
+      this.trackTimer=this.trackTimer+2*this.vMax;
     }
 
     // destination target
@@ -909,6 +940,7 @@ function AiTank3(x,y) {
           this.y=this.previousY;
           this.aiX="none";
           this.aiY="none";
+          this.speed=0;
         }
       }
     }
@@ -922,6 +954,7 @@ function AiTank3(x,y) {
       this.y=this.previousY;
       this.aiX="none";
       this.aiY="none";
+      this.speed=0;
     }
 
     // ai shooting and timing

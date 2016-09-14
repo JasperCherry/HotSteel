@@ -8,8 +8,6 @@ function PTank(x,y) {
   this.towerLoose=false;
   this.inSmoke=false;
 
-  this.acceleration=0.02;
-
   this.x=x;
   this.y=y;
   this.imgP=pointer;
@@ -39,6 +37,8 @@ function PTank(x,y) {
   this.numMines = 10;
 
   this.speed = 0;
+  this.acceleration=0.06;
+  this.vMax=1.1;
   this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
@@ -107,13 +107,13 @@ function PTank(x,y) {
 
       // acceleration
       if (myGameArea.keys && myGameArea.keys[38]){
-        if(this.speed<1){
+        if(this.speed<this.vMax){
           this.speed+=this.acceleration;
         }
       }
 
       if (myGameArea.keys && myGameArea.keys[40]){
-        if(this.speed>-1){
+        if(this.speed>-this.vMax){
           this.speed-=this.acceleration;
         }
       }
@@ -185,7 +185,7 @@ function PTank(x,y) {
       }
 
       // drawing tracks
-      if(this.trackTimer==10){
+      if(this.trackTimer>=10){
 
         tracks.push(new Track(
           this.x+(0 * Math.sin(this.angleB))- 14 * (Math.sin(this.angleB+90 * Math.PI / 180)),
@@ -203,7 +203,7 @@ function PTank(x,y) {
       }
 
       if(this.speed!=0||this.moveAngleB!=0){
-        this.trackTimer++;
+        this.trackTimer=this.trackTimer+2*this.vMax;
       }
 
 /*

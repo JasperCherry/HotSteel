@@ -559,22 +559,21 @@ if(level==1){ // main menu
 
 if(level==100){ // survival mode
 
+
   obstacles[0] = new Obstacle(800,150,1);
   obstacles[1] = new Obstacle(220,110,2);
   obstacles[2] = new Obstacle(300,130,1);
-  obstacles[3] = new Obstacle(820,500,2);
-  obstacles[4] = new Obstacle(800,370,1);
-  obstacles[5] = new Obstacle(100,300,3);
-  obstacles[6] = new Obstacle(150,350,2);
-  obstacles[7] = new Obstacle(210,330,1);
-  obstacles[8] = new Obstacle(360,340,3);
+  obstacles[3] = new Obstacle(800,370,1);
+  obstacles[4] = new Obstacle(100,300,3);
+  obstacles[5] = new Obstacle(210,330,1);
+  obstacles[6] = new Obstacle(360,340,3);
 
-  if(aiTanks.length==0){
-    aiTanks[0] = new AiTank(500,200);
-    //aiTanks[1] = new AiTank(1400,200);
-    //aiTanks[2] = new AiTank2(1900,400);
-    //aiTanks[3] = new AiTank3(2100,500);
-  }
+if(aiTanks.length==0){
+  aiTanks[0] = new AiTank(1100,100);
+  aiTanks[1] = new AiTank(1400,200);
+  aiTanks[2] = new AiTank2(1900,400);
+  aiTanks[3] = new AiTank3(2100,500);
+}
 
 
 

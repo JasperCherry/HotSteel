@@ -3,11 +3,15 @@
 to do:
 
 
-tank acceleration + waving? 
+change player tank sound movement
 
 
-have a look on ai tracks relation with vmax and implement sth to player tank
-change combination when checking dest angle
+player upgrades:
+select what
+
+
+reload sign on fire sights
+
 
 
 
@@ -15,11 +19,6 @@ change combination when checking dest angle
 
 work on sounds volume
 
-change player tank sound movement
-
-
-
-reload sign on fire sights
 
 
 
