@@ -11,7 +11,8 @@ function bulletsControl() {
 
       // gun
       // detection if player hits  ai tank
-       for(var i = 0; i < bulletsP.length; i++) {
+      for(var i = 0; i < bulletsP.length; i++) {
+       if(bulletsP[i].x>0-50&&bulletsP[i].x<fieldMapX+50&&bulletsP[i].y>0-50&&bulletsP[i].y<fieldMapY+50){
         if(Math.abs(bulletsP[i].x-aiTanks[t].x)<15 && Math.abs(bulletsP[i].y-aiTanks[t].y)<15){
            if(bulletsP[i].type==1){
              // heat rounds
@@ -39,24 +40,30 @@ function bulletsControl() {
           }
         }
        }
+      }
 
 
       // machinegun
       // detection if player hits  ai tank
       for(var i = 0; i < mgBulletsP.length; i++) {
+       if(mgBulletsP[i].x>0-50&&mgBulletsP[i].x<fieldMapX+50&&mgBulletsP[i].y>0-50&&mgBulletsP[i].y<fieldMapY+50){
         if(Math.abs(mgBulletsP[i].x-aiTanks[t].x)<15 && Math.abs(mgBulletsP[i].y-aiTanks[t].y)<15){
           mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
           mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
+          mgBulletsP[i].rico++;
           if(mgBulletsP[i].active){
             aiTanks[t].hp=aiTanks[t].hp-2;
             mgBulletsP[i].active=false;
           }
         }
+       }
       }
+
 
       // flamethrower
       // detection if player hits  ai tank
       for(var i = 0; i < flames.length; i++) {
+        if(flames[i].x>0-50&&flames[i].x<fieldMapX+50&&flames[i].y>0-50&&flames[i].y<fieldMapY+50){
         if(Math.abs(flames[i].x-aiTanks[t].x)<15 && Math.abs(flames[i].y-aiTanks[t].y)<15){
           flames.splice(i,1);
           aiTanks[t].fireProtect--;
@@ -64,6 +71,7 @@ function bulletsControl() {
             aiTanks[t].onFire=true;
           }
         }
+       }
       }
 
   }
@@ -111,6 +119,7 @@ function bulletsControl() {
     if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
        mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
+       mgBulletsP[i].rico++;
        if(mgBulletsP[i].active){
          kills[j].hp=kills[j].hp-5;
          mgBulletsP[i].active=false;
@@ -156,6 +165,7 @@ function bulletsControl() {
      ){
        mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
+       mgBulletsP[i].rico++;
        if(mgBulletsP[i].active){
          mgBulletsP[i].active=false;
        }
@@ -206,6 +216,7 @@ function bulletsControl() {
     if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
       mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
       mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+      mgBulletsAi[i].rico++;
       if(mgBulletsAi[i].active){
         pTank.hp=pTank.hp-2;
         mgBulletsAi[i].active=false;
@@ -232,6 +243,7 @@ function bulletsControl() {
     if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
       mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
       mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+      mgBulletsAi[i].rico++;
       if(mgBulletsAi[i].active){
         kills[j].hp=kills[j].hp-5;
         mgBulletsAi[i].active=false;
@@ -268,6 +280,7 @@ function bulletsControl() {
      ){
        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
+       mgBulletsAi[i].rico++;
        if(mgBulletsAi[i].active){
          mgBulletsAi[i].active=false;
        }

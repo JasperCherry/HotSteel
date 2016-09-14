@@ -8,6 +8,8 @@ function PTank(x,y) {
   this.towerLoose=false;
   this.inSmoke=false;
 
+  this.acceleration=0.02;
+
   this.x=x;
   this.y=y;
   this.imgP=pointer;
@@ -89,7 +91,7 @@ function PTank(x,y) {
       // start position zeroing
       this.moveAngleB = 0;
       this.moveAngleT = 0;
-      this.speed = 0;
+      //this.speed = 0;
 
       // body rotation, turrent static
       if (myGameArea.keys && myGameArea.keys[37]){
@@ -100,12 +102,39 @@ function PTank(x,y) {
         this.moveAngleB = 1;
         this.moveAngleT = 1;
       }
+
+
+
+      // acceleration
       if (myGameArea.keys && myGameArea.keys[38]){
-        this.speed=1;
+        if(this.speed<1){
+          this.speed+=this.acceleration;
+        }
       }
+
       if (myGameArea.keys && myGameArea.keys[40]){
-        this.speed=-1;
+        if(this.speed>-1){
+          this.speed-=this.acceleration;
+        }
       }
+
+      // slowing down
+      if (myGameArea.keys && !myGameArea.keys[40] && !myGameArea.keys[38]){
+        if(this.speed>0){
+          this.speed-=this.acceleration;
+        }
+        if(this.speed<0){
+          this.speed+=this.acceleration;
+        }
+        if(Math.abs(this.speed-this.acceleration)<this.acceleration){
+          this.speed=0;
+        }
+      }
+
+
+
+
+
 
       // turrent rotation
       if (myGameArea.keys && myGameArea.keys[65]){

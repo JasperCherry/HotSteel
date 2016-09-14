@@ -1,71 +1,4 @@
 
-function DeadBodyFire(x,y){
-
-    this.phase=1;
-    this.phaseTimer=250;
-    this.fireLoop=0;
-    this.delayTime=0;
-    this.x=x;
-    this.y=y;
-    this.size=2;
-    this.flameSpeed=2;
-
-    // drawing the fire
-    this.update = function() {
-      ctx = myGameArea.context;
-      ctx.save();
-      ctx.translate(this.x, this.y);
-
-//ctx.drawImage(document.getElementById("sm"+this.exLoop),
-//-128*this.width, -128*this.height, 256*this.width, 255*this.height);
-
-      if(this.phase==1){
-        ctx.drawImage(document.getElementById("s"+this.fireLoop), -64*this.size, -110*this.size,
-        128*this.size, 128*this.size);
-        this.delayTime++;
-        if(this.delayTime==this.flameSpeed){
-          this.delayTime=0;
-          this.fireLoop++;
-          if(this.fireLoop==8){
-          this.fireLoop=0;
-          this.phase=2;
-          }
-        }
-      }else if(this.phase==2){
-        ctx.drawImage(document.getElementById("l"+this.fireLoop), -64*this.size, -110*this.size,
-        128*this.size, 128*this.size);
-        this.delayTime++;
-        if(this.delayTime==this.flameSpeed){
-          this.delayTime=0;
-          this.fireLoop++;
-          this.phaseTimer--;
-          if(this.fireLoop==10){
-          this.fireLoop=0;
-          }
-          if(this.phaseTimer==0){
-            this.phase=3;
-          }
-        }
-      }else if(this.phase==3){
-        ctx.drawImage(document.getElementById("e"+this.fireLoop), -64*this.size, -110*this.size,
-        128*this.size, 128*this.size);
-        this.delayTime++;
-        if(this.delayTime==this.flameSpeed){
-          this.delayTime=0;
-          this.fireLoop++;
-          if(this.fireLoop==6){
-          this.fireLoop=0;
-          this.phase=4;
-          }
-        }
-      }else if(this.phase==4){
-
-      }
-
-      ctx.restore();
-    }
-
-}
 
 
 function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
@@ -221,6 +154,7 @@ function MgBullet(x, y, angle) {
     this.mg = new Audio('sounds/mg.mp3');
     this.playSound=true;
 
+    this.rico=0;
     this.active=true;
     this.liveTime=100;
     this.radius = 1;
@@ -534,9 +468,9 @@ function Smoke(x, y) {
           if(this.totalTime>0){
 
             ctx.drawImage(document.getElementById("sm"+this.exLoop),
-            -128*this.width, -128*this.height, 256*this.width, 255*this.height);
+            -128*this.width, -128*this.height, 256*this.width, 256*this.height);
             ctx.drawImage(document.getElementById("sm"+this.exLoop),
-            -128*this.width, -128*this.height, 256*this.width, 255*this.height);
+            -128*this.width, -128*this.height, 256*this.width, 256*this.height);
 
             /*
             ctx.fillStyle = "red";
@@ -548,8 +482,8 @@ function Smoke(x, y) {
             if(this.delayTime==2){
               this.exLoop++;
               this.delayTime=0;
-              if(this.exLoop==30){
-                this.exLoop=1;
+              if(this.exLoop==90){
+                this.exLoop=0;
               }
             }
             // showing up

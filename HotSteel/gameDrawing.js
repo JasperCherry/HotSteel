@@ -81,6 +81,9 @@ function gameDrawing() {
     if(mgBulletsAi[i].liveTime==0){
       mgBulletsAi.splice(i,1);
     }
+    if(mgBulletsAi[i].rico==4){
+      mgBulletsAi.splice(i,1);
+    }
   }
 
   ///////////////////////// player
@@ -105,6 +108,9 @@ function gameDrawing() {
     mgBulletsP[i].newPos();
     mgBulletsP[i].update();
     if(mgBulletsP[i].liveTime==0){
+      mgBulletsP.splice(i,1);
+    }
+    if(mgBulletsP[i].rico==4){
       mgBulletsP.splice(i,1);
     }
   }

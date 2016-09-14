@@ -1,20 +1,41 @@
-////single player only
+ ////single player only
 
 to do:
 
+
+tank acceleration + waving? 
+
+
+have a look on ai tracks relation with vmax and implement sth to player tank
+change combination when checking dest angle
 
 
 
 ///////////////////////////////////////////////////////////////
 
+work on sounds volume
+
+change player tank sound movement
 
 
-complete smoke effect, one frame missing
+
+reload sign on fire sights
+
+
+
+
+
+
+/////////////////extra :
+
+
+trees
+
 
 counting web visits
 
 
-cut player movement sound, so theres no gap in it at the end
+controls might be overcomplicated 
+(maybe switching weapons? can reduce controls and help in multiplayer)
 
-make one button pressed skips in the game,
-by checking variable that is changing when button goes to array with buttons 
+
