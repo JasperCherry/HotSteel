@@ -162,7 +162,7 @@ function AiTank(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+2*this.vMax;
+      this.trackTimer=this.trackTimer+1.5*this.vMax;
     }
 
     // destination target
@@ -516,7 +516,7 @@ function AiTank2(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+2*this.vMax;
+      this.trackTimer=this.trackTimer+1.5*this.vMax;
     }
 
     // destination target
@@ -877,7 +877,7 @@ function AiTank3(x,y) {
     }
 
     if(this.speed!=0||this.moveAngleB!=0){
-      this.trackTimer=this.trackTimer+2*this.vMax;
+      this.trackTimer=this.trackTimer+1.5*this.vMax;
     }
 
     // destination target

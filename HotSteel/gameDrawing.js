@@ -5,7 +5,7 @@ function gameDrawing() {
 
   // drawing the map
   var ctx = myGameArea.context;
-  ctx.drawImage(map3, 0, 0);
+  ctx.drawImage(map2, 0, 0);
 
   // tracks
   for(var i = 0; i < tracks.length; i++) {
@@ -206,7 +206,6 @@ function gameDrawing() {
   ctx.fillStyle = "white";
   ctx.fillText("MG ammo",430,620);
   ctx.fillText(pTank.numMgBullets,430,645);
-  ctx.fillText("/  "+pTank.numMgBullets2,480,645);
 
   ctx.fillText("Mines",570,620);
   ctx.fillText(pTank.numMines,570,645);

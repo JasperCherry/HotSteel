@@ -469,9 +469,7 @@ function Smoke(x, y) {
 
             ctx.drawImage(document.getElementById("sm"+this.exLoop),
             -128*this.width, -128*this.height, 256*this.width, 256*this.height);
-            ctx.drawImage(document.getElementById("sm"+this.exLoop),
-            -128*this.width, -128*this.height, 256*this.width, 256*this.height);
-
+            
             /*
             ctx.fillStyle = "red";
             ctx.arc(0, 0, this.radius, 0, 2*Math.PI);

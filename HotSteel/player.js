@@ -20,25 +20,26 @@ function PTank(x,y) {
     this.imgT=srusb;
   }
 
+  // upgrades
+  this.gunSpeed=100; // 300,250,200,150,100
+  this.mgSpeed=4; // 10,8,6,5,4
+  this.sights=3;  // 1,2,3
+  this.numBullet = 60; // 12, 24, 36, 48, 60
+  this.numBullet2 = 40; // 8, 16, 24, 32, 40
+  this.numFlames = 1000; // 200, 400, 600, 800, 1000
+  this.numMgBullets = 750; // 150, 300, 450, 600, 750
+  this.numSmoke = 5; // 1,2,3,4,5
+  this.numMines = 30; // 6, 12, 18, 24, 30
+  this.hp = 300; // 80, 120, 180, 240, 300
+  this.acceleration=0.06; // constant
+  this.vMax=1.6; // 0.8, 1, 1.2, 1.4, 1.6
+  this.secondMg=true; // or false if not mounted
+  this.flamethrower=true; // or false if not mounted
 
-  this.gunSpeed=250;
-  this.mgSpeed=6;
+
   this.mineSpeed=40;
-
   this.ammoType = 1;
-
-  this.numBullet = 40;
-  this.numBullet2 = 20;
-  this.numFlames = 500;
-  this.numMgBullets = 200;
-  this.numMgBullets2 = 200;
-  this.numSmoke = 3;
-  this.hp = 300;
-  this.numMines = 10;
-
   this.speed = 0;
-  this.acceleration=0.06;
-  this.vMax=1.1;
   this.trackTimer=0;
   this.angleB = 0;
   this.moveAngleB = 0;
@@ -48,7 +49,7 @@ function PTank(x,y) {
   this.previousX=this.x;
   this.previousY=this.y;
 
-  this.reloadTime = 250;
+  this.reloadTime = this.gunSpeed;
   this.reloadTimeF = 0;
   this.reloadTimeM = 0;
   this.reloadTimeM2 = 0;
@@ -95,13 +96,36 @@ function PTank(x,y) {
 
       // body rotation, turrent static
       if (myGameArea.keys && myGameArea.keys[37]){
-        this.moveAngleB = -1;
-        this.moveAngleT = -1;
+        this.moveAngleB = -this.vMax;
+        this.moveAngleT = -this.vMax;
       }
       if (myGameArea.keys && myGameArea.keys[39]){
-        this.moveAngleB = 1;
+        this.moveAngleB = this.vMax;
+        this.moveAngleT = this.vMax;
+      }
+
+      // turrent rotation
+      if (myGameArea.keys && myGameArea.keys[65]){
+        this.moveAngleT = -1;
+      }
+      if (myGameArea.keys && myGameArea.keys[68]){
         this.moveAngleT = 1;
       }
+
+      // turrent + body rotation
+      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[37]){
+        this.moveAngleT = -1-this.vMax;
+      }
+      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[39]){
+        this.moveAngleT = 1+this.vMax;
+      }
+      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[39]){
+        this.moveAngleT = -1+this.vMax;
+      }
+      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
+        this.moveAngleT = 1-this.vMax;
+      }
+
 
 
 
@@ -132,32 +156,6 @@ function PTank(x,y) {
       }
 
 
-
-
-
-
-      // turrent rotation
-      if (myGameArea.keys && myGameArea.keys[65]){
-        this.moveAngleT = -1;
-      }
-      if (myGameArea.keys && myGameArea.keys[68]){
-        this.moveAngleT = 1;
-      }
-
-      // turrent + body rotation
-      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[37]){
-        this.moveAngleT = -2;
-      }
-      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[39]){
-        this.moveAngleT = 2;
-      }
-      if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[39]){
-        this.moveAngleT = 0;
-      }
-      if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
-        this.moveAngleT = 0;
-      }
-
       // sound of movement
 
       // body
@@ -171,9 +169,11 @@ function PTank(x,y) {
 
       // turrent
       if(this.moveAngleT==1&&this.moveAngleB==0||
-        this.moveAngleT==2||
+        this.moveAngleT==1+this.vMax||
         this.moveAngleT==-1&&this.moveAngleB==0||
-        this.moveAngleT==-2||
+        this.moveAngleT==-1-this.vMax||
+        this.moveAngleT==1-this.vMax||
+        this.moveAngleT==-1+this.vMax||
         myGameArea.keys&&myGameArea.keys[65]&&this.moveAngleB==1||
         myGameArea.keys&&myGameArea.keys[68]&&this.moveAngleB==-1
       ){
@@ -203,7 +203,7 @@ function PTank(x,y) {
       }
 
       if(this.speed!=0||this.moveAngleB!=0){
-        this.trackTimer=this.trackTimer+2*this.vMax;
+        this.trackTimer=this.trackTimer+1.5*this.vMax;
       }
 
 /*
@@ -328,6 +328,8 @@ this.reloadTimeM=this.mgSpeed;
       }
 
       // machinegun
+      if(this.flamethrower==false){
+
       if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeM==0 && this.numMgBullets>0){
         this.numMgBullets--;
         mgBulletsP.push(new MgBullet(
@@ -340,9 +342,13 @@ this.reloadTimeM=this.mgSpeed;
         this.reloadTimeM--;
       }
 
+      }
+
       // machinegun 2
-      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets2>0){
-        this.numMgBullets2--;
+      if(this.secondMg){
+
+      if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets>0){
+        this.numMgBullets--;
         mgBulletsP.push(new MgBullet(
         this.x+(15 * Math.sin(this.angleT))+ 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
         this.y-(15 * Math.cos(this.angleT))- 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
@@ -353,7 +359,11 @@ this.reloadTimeM=this.mgSpeed;
         this.reloadTimeM2--;
       }
 
+      }
+
       // flamethrower
+      if(this.flamethrower){
+
       if (myGameArea.keys && myGameArea.keys[81] && this.reloadTimeF==0 && this.numFlames>0){
         if(sound){
           this.flame.play();
@@ -371,6 +381,8 @@ this.reloadTimeM=this.mgSpeed;
       if(!(myGameArea.keys&&myGameArea.keys[81])||this.numFlames<=0){
         this.flame.pause();
         this.flame.load();
+      }
+
       }
 
 
@@ -405,6 +417,10 @@ this.reloadTimeM=this.mgSpeed;
       ctx.rotate(this.angleT);
       ctx.drawImage(this.imgT, -20, -30);
       ctx.restore();
+
+    // sights
+    ctx.globalAlpha = 1;
+    if(this.sights==1||this.sights==2||this.sights==3){
       // drawing the pointer
       if(this.inSmoke==false){
       ctx = myGameArea.context;
@@ -413,7 +429,73 @@ this.reloadTimeM=this.mgSpeed;
       ctx.rotate(this.angleT);
       ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
+      // drawing the loading time
+      ctx.strokeStyle = "red";
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.translate(0, -104);
+      ctx.rotate(-90 * Math.PI / 180);
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.restore();
       }
+    }
+    if(this.sights==2||this.sights==3){
+      // drawing the pointer
+      if(this.inSmoke==false){
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.drawImage(this.imgP, -64*0.25, -270, 128*0.25, 128*0.25);
+      ctx.restore();
+      // drawing the loading time
+      ctx.strokeStyle = "red";
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.translate(0, -254);
+      ctx.rotate(-90 * Math.PI / 180);
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.restore();
+      }
+    }
+    if(this.sights==3){
+      // drawing the pointer
+      if(this.inSmoke==false){
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.drawImage(this.imgP, -64*0.25, -420, 128*0.25, 128*0.25);
+      ctx.restore();
+      // drawing the loading time
+      ctx.strokeStyle = "red";
+      ctx = myGameArea.context;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angleT);
+      ctx.translate(0, -404);
+      ctx.rotate(-90 * Math.PI / 180);
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
   } // end of alive condition
-  }
+  } // end of update function
 }

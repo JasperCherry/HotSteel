@@ -3,21 +3,16 @@
 to do:
 
 
-change player tank sound movement
+sound for turent possible cut
+
+different sound for movement
 
 
-player upgrades:
-select what
-
-
-reload sign on fire sights
-
+upgrades menu
 
 
 
 ///////////////////////////////////////////////////////////////
-
-work on sounds volume
 
 
 
@@ -28,7 +23,7 @@ work on sounds volume
 /////////////////extra :
 
 
-trees
+trees?
 
 
 counting web visits
