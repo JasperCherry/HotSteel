@@ -3,16 +3,14 @@
 to do:
 
 
-sound for turent possible cut
+sound for turent -  possible cut
 
 different sound for movement
 
+font
 
-upgrades menu
+menu graphics, shadow or sth
 
-best points result
-
-make background image separated , tank and menu
 
 
 ///////////////////////////////////////////////////////////////
@@ -35,4 +33,8 @@ counting web visits
 controls might be overcomplicated 
 (maybe switching weapons? can reduce controls and help in multiplayer)
 
+////////////////// point of the game
 
+to unlock extras have to finish 8 of 12 campaign missions
+
+bonus as last mission in campaign

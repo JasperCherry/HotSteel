@@ -35,7 +35,7 @@ function menus(){
 
     ctx.font = "20px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText("Points : "+totalPoints,750,50);
+    ctx.fillText("Cash : "+totalPoints,750,50);
 
     ctx.font = "30px Arial";
 
@@ -235,7 +235,7 @@ function menus(){
 
     ctx.fillStyle = "white";
     ctx.font = "30px Arial";
-    ctx.fillText("Points:",650,100);
+    ctx.fillText("Cash:",650,100);
     ctx.fillText(totalPoints,750,100);
 
 
@@ -1075,7 +1075,7 @@ function menus(){
     aiTanks[1] = new AiTank(1400,500);
     aiTanks[2] = new AiTank2(2500,400);
     aiTanks[3] = new AiTank2(3600,100);
-    aiTanks[4] = new AiTank3(600,-4500);
+    aiTanks[4] = new AiTank3(600,-3500);
   }
 
 

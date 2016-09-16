@@ -216,9 +216,8 @@ function gameDrawing() {
   ctx.fillText("Flamethrower",720,620);
   ctx.fillText(pTank.numFlames,720,645);
 
-
-  ctx.fillText("Points",900,620);
-  ctx.fillText(points,900,645);
+  ctx.fillText("Cash earned",870,620);
+  ctx.fillText(points,870,645);
 
 
 
