@@ -304,7 +304,6 @@ function bulletsControl() {
      pTank.move.pause();
      pTank.moveT.pause();
      pTank.alive=false;
-     points-=100;
      // pTank = new PTank(100,300,rusa,rusb);
    }
 

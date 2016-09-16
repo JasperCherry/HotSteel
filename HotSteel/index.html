@@ -240,6 +240,7 @@ canvas {
 
 <img src="wall.jpg" id="wall" style="display: none;">
 <img src="menu.jpg" id="menu" style="display: none;">
+<img src="garage.jpg" id="garage" style="display: none;">
 
 
 <script src="objects.js"></script>
@@ -247,6 +248,7 @@ canvas {
 <script src="player.js"></script>
 <script src="bulletsControl.js"></script>
 <script src="gameDrawing.js"></script>
+<script src="menus.js"></script>
 
 
 <script>
@@ -328,9 +330,26 @@ var cTimer=0;
 var createMenuTanks=true;
 
 
+// player upgrades
+var gunSpeedG=300; // 300,250,200,150,100
+var mgSpeedG=10; // 10,8,6,5,4
+var sightsG=1;  // 1,2,3
+var numBulletG = 12; // 12, 24, 36, 48, 60
+var numBullet2G = 0; // 8, 16, 24, 32, 40
+var numFlamesG = 0; // 200, 400, 600, 800, 1000
+var numMgBulletsG = 150; // 150, 300, 450, 600, 750
+var numSmokeG = 0; // 1,2,3,4,5
+var numMinesG = 0; // 6, 12, 18, 24, 30
+var hpG = 80; // 80, 120, 180, 240, 300
+var accelerationG=0.06; // constant
+var vMaxG=0.8; // 0.8, 1, 1.2, 1.4, 1.6
+var secondMgG=false; // or false if not mounted
+var flamethrowerG=false; // or false if not mounted
+
+var upgradePrice=0;
+
 // player tank vars
 var pTank = new PTank(500,300);
-
 var bulletsP = new Array();
 var mgBulletsP = new Array();
 
@@ -340,265 +359,9 @@ var bulletsAi = new Array();
 var mgBulletsAi = new Array();
 
 
-////////////////////////////////////////////////////////// enemies for test
-//obstacles[0] = new Obstacle(800,150,1);
-//aiTanks[0] = new AiTank(1100,100);
-
-
-
-
-
 ///////////////////////////////////// MAIN INTERVAL FUNCTION
 function updateGameArea() {
-
-// time between pressing keys
-  if(cTimer>0){
-    cTimer--;
-  }
-
-
-if(level==0){ // first screen
-  ctx = myGameArea.context;
-  ctx.drawImage(wall, 0, 0);
-  ctx.font = "50px Arial";
-  ctx.fillStyle = "black";
-  ctx.fillText("Press enter to start",200,100);
-  if (myGameArea.keys && myGameArea.keys[13]){
-    cTimer=20;
-    level=1;
-  }
-}
-
-
-
-if(level==1){ // main menu
-
-  // playing sound of the tanks in the menu
-  if(sound){
-    menuTanks.play();
-  }else{
-    menuTanks.load();
-  }
-
-  ctx = myGameArea.context;
-  ctx.drawImage(menu, 0, 0);
-
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "white";
-  ctx.fillText("Total points : "+totalPoints,750,50);
-
-  ctx.font = "30px Arial";
-
-  if(cButton==0){
-    ctx.fillStyle = "red";
-    ctx.fillText("Campaign",650,150);
-  }else{
-    ctx.fillStyle = "white";
-    ctx.fillText("Campaign",650,150);
-  }
-
-  if(cButton==1){
-    ctx.fillStyle = "red";
-    ctx.fillText("Survival Mode",650,230);
-  }else{
-    ctx.fillStyle = "white";
-    ctx.fillText("Survival Mode",650,230);
-  }
-
-  if(cButton==2){
-    ctx.fillStyle = "red";
-    ctx.fillText("Garage",650,310);
-  }else{
-    ctx.fillStyle = "white";
-    ctx.fillText("Garage",650,310);
-  }
-
-  if(sound){
-    if(cButton==3){
-      ctx.fillStyle = "red";
-      ctx.fillText("Sound on",650,390);
-    }else{
-      ctx.fillStyle = "white";
-      ctx.fillText("Sound on",650,390);
-    }
-  }else{
-    if(cButton==3){
-      ctx.fillStyle = "red";
-      ctx.fillText("Sound off",650,390);
-    }else{
-      ctx.fillStyle = "white";
-      ctx.fillText("Sound off",650,390);
-    }
-  }
-
-  if(cButton==4){
-    ctx.fillStyle = "red";
-    ctx.fillText("Author",650,470);
-  }else{
-    ctx.fillStyle = "white";
-    ctx.fillText("Author",650,470);
-  }
-
-  if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
-    cTimer=10;
-    cButton--;
-    if(cButton==-1){
-      cButton=4;
-    }
-  }
-
-  if(myGameArea.keys && myGameArea.keys[40] && cTimer==0){
-    cTimer=10;
-    cButton++;
-    if(cButton==5){
-      cButton=0;
-    }
-  }
-
-
-
-  // using main menu options
-  if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==1){
-    cTimer=20;
-    level=100;
-    clearLevel();
-    menuTanks.load();
-  }
-
-  if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==3){
-    cTimer=20;
-    sound=!sound;
-  }
-
-
-
-
-  //// tanks going around
-  if(createMenuTanks){
-    aiTanks[0] = new AiTank(200,700);
-    aiTanks[0].dumb=true;
-    aiTanks[1] = new AiTank(143,900);
-    aiTanks[1].dumb=true;
-
-    aiTanks[2] = new AiTank3(900,800);
-    aiTanks[2].dumb=true;
-
-
-
-    createMenuTanks=false;
-  }
-
-  // moving in circle1 around
-  for(var t = 0; t < aiTanks.length; t++) {
-
-    if(aiTanks[t].type=="one"){
-
-      if(aiTanks[t].y<2000&&aiTanks[t].y>650){
-        aiTanks[t].setDes(300,450);
-        aiTanks[t].angleB=aiTanks[t].aiDestinationAngle;
-      }
-
-      if(aiTanks[t].y<470){
-        aiTanks[t].setDes(220,100);
-      }
-      if(aiTanks[t].y<120){
-        aiTanks[t].setDes(-100,-200);
-      }
-      if(aiTanks[t].y<-150){
-        aiTanks[t] = new AiTank(200,800);
-        aiTanks[t].dumb=true;
-      }
-    }
-
-    if(aiTanks[t].type=="three"){
-
-      if(aiTanks[t].y<2000&&aiTanks[t].y>650){
-        aiTanks[t].setDes(450,550);
-        aiTanks[t].angleB=aiTanks[t].aiDestinationAngle;
-      }
-
-      if(aiTanks[t].y<570){
-        aiTanks[t].setDes(350,200);
-      }
-      if(aiTanks[t].y<220){
-        aiTanks[t].setDes(400,-200);
-      }
-      if(aiTanks[t].y<-150){
-        aiTanks[t] = new AiTank3(900,800);
-        aiTanks[t].dumb=true;
-      }
-    }
-
-  }
-
-    //////////////////////////// ai tanks drawing
-    // tracks
-    for(var i = 0; i < tracks.length; i++) {
-      if(tracks[i].timer<0){
-        tracks.splice(i,1);
-      }else{
-        tracks[i].update();
-      }
-    }
-    // new positions
-    for(var t = 0; t < aiTanks.length; t++) {
-      aiTanks[t].newPos();
-    }
-    // drawing ai tank
-    for(var t = 0; t < aiTanks.length; t++) {
-      aiTanks[t].update();
-    }
-
-
-
-}// end of level 1 / menu
-
-
-
-
-
-if(level==100){ // survival mode
-
-
-  obstacles[0] = new Obstacle(800,150,1);
-  obstacles[1] = new Obstacle(220,110,2);
-  obstacles[2] = new Obstacle(300,130,1);
-  obstacles[3] = new Obstacle(800,370,1);
-  obstacles[4] = new Obstacle(100,300,3);
-  obstacles[5] = new Obstacle(210,330,1);
-  obstacles[6] = new Obstacle(360,340,3);
-
-if(aiTanks.length==0){
-  aiTanks[0] = new AiTank(1100,100);
-  aiTanks[1] = new AiTank(1400,200);
-  aiTanks[2] = new AiTank2(1900,400);
-  aiTanks[3] = new AiTank3(2100,500);
-}
-
-
-
-if(pTank.alive){
-bulletsControl();
-gameDrawing();
-}else{
-  clearLevel();
-  level=1;
-  createMenuTanks=true;
-}
-
-if(myGameArea.keys && myGameArea.keys[27] && cTimer==0){
-  cTimer=20;
-  clearLevel();
-  level=1;
-  totalPoints-=100;
-  createMenuTanks=true;
-}
-
-}// end of level 100 / survival mode
-
-
-
-
+  menus();
 }// end of a game update function
 
 </script>

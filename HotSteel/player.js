@@ -21,20 +21,20 @@ function PTank(x,y) {
   }
 
   // upgrades
-  this.gunSpeed=100; // 300,250,200,150,100
-  this.mgSpeed=4; // 10,8,6,5,4
-  this.sights=3;  // 1,2,3
-  this.numBullet = 60; // 12, 24, 36, 48, 60
-  this.numBullet2 = 40; // 8, 16, 24, 32, 40
-  this.numFlames = 1000; // 200, 400, 600, 800, 1000
-  this.numMgBullets = 750; // 150, 300, 450, 600, 750
-  this.numSmoke = 5; // 1,2,3,4,5
-  this.numMines = 30; // 6, 12, 18, 24, 30
-  this.hp = 300; // 80, 120, 180, 240, 300
-  this.acceleration=0.06; // constant
-  this.vMax=1.6; // 0.8, 1, 1.2, 1.4, 1.6
-  this.secondMg=true; // or false if not mounted
-  this.flamethrower=true; // or false if not mounted
+  this.gunSpeed=gunSpeedG; // 300,250,200,150,100
+  this.mgSpeed=mgSpeedG; // 10,8,6,5,4
+  this.sights=sightsG;  // 1,2,3
+  this.numBullet=numBulletG; // 12, 24, 36, 48, 60
+  this.numBullet2=numBullet2G; // 8, 16, 24, 32, 40
+  this.numFlames=numFlamesG; // 200, 400, 600, 800, 1000
+  this.numMgBullets=numMgBulletsG; // 150, 300, 450, 600, 750
+  this.numSmoke=numSmokeG; // 1,2,3,4,5
+  this.numMines=numMinesG; // 6, 12, 18, 24, 30
+  this.hp=hpG; // 80, 120, 180, 240, 300
+  this.vMax=vMaxG; // 0.8, 1, 1.2, 1.4, 1.6
+  this.acceleration=accelerationG; // constant
+  this.secondMg=secondMgG; // or false if not mounted
+  this.flamethrower=flamethrowerG; // or false if not mounted
 
 
   this.mineSpeed=40;
@@ -364,7 +364,7 @@ this.reloadTimeM=this.mgSpeed;
       // flamethrower
       if(this.flamethrower){
 
-      if (myGameArea.keys && myGameArea.keys[81] && this.reloadTimeF==0 && this.numFlames>0){
+      if (myGameArea.keys && myGameArea.keys[87] && this.reloadTimeF==0 && this.numFlames>0){
         if(sound){
           this.flame.play();
         }
@@ -378,7 +378,7 @@ this.reloadTimeM=this.mgSpeed;
       if(this.reloadTimeF>0){
         this.reloadTimeF--;
       }
-      if(!(myGameArea.keys&&myGameArea.keys[81])||this.numFlames<=0){
+      if(!(myGameArea.keys&&myGameArea.keys[87])||this.numFlames<=0){
         this.flame.pause();
         this.flame.load();
       }
