@@ -350,8 +350,8 @@ this.reloadTimeM=this.mgSpeed;
       if (myGameArea.keys && myGameArea.keys[83] && this.reloadTimeM2==0 && this.numMgBullets>0){
         this.numMgBullets--;
         mgBulletsP.push(new MgBullet(
-        this.x+(15 * Math.sin(this.angleT))+ 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
-        this.y-(15 * Math.cos(this.angleT))- 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
+        this.x+(15 * Math.sin(this.angleT))- 4 * (Math.sin(this.angleT+90 * Math.PI / 180)),
+        this.y-(15 * Math.cos(this.angleT))+ 4 * (Math.cos(this.angleT+90 * Math.PI / 180)),
         this.angleT + ((Math.round(Math.random() * (20)) - 10) * Math.PI / 180)));
         this.reloadTimeM2=this.mgSpeed;
       }

@@ -3,21 +3,30 @@
 to do:
 
 
+
+///////////////////////////////////////////////////////////////
+
 sound for turent -  possible cut
 
 different sound for movement
 
-font
+
+artillery 3xupgrades after campaign
+
+sounds for menu acctions
 
 menu graphics, shadow or sth
 
+make ai tanks being hit from 50pixels outside map only
 
 
-///////////////////////////////////////////////////////////////
+tanks ai collsion with rocks avoidance
 
+when player is killed, waiting few seconds
 
+upgrades, achievements and cash as cookie
 
-
+better cannon bullet detection, so it cannot shoot over rocks / tanks
 
 
 

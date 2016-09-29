@@ -238,9 +238,10 @@ canvas {
 
 <img src="tanks/track.png" id="track" style="display: none;">
 
-<img src="wall.jpg" id="wall" style="display: none;">
-<img src="menu.jpg" id="menu" style="display: none;">
-<img src="garage.jpg" id="garage" style="display: none;">
+<img src="menus/wall.jpg" id="wall" style="display: none;">
+<img src="menus/menu.jpg" id="menu" style="display: none;">
+<img src="menus/garage.jpg" id="garage" style="display: none;">
+<img src="menus/garage2.png" id="garage2" style="display: none;">
 
 
 <script src="objects.js"></script>
@@ -317,7 +318,7 @@ var mTanks = ["Firefly", "Warrior", "Nuttcracker", "Prince", "Pride", "Just caus
 var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram", "Ox", "Hog", "Big Foot", "Buffalo",
 "Icebreaker", "Lucifer", "Archangel"];
 
-var totalPoints=0;
+var totalPoints=100000;
 var points=0;
 var level=0;
 var sound=true; // sound in the game
@@ -372,7 +373,7 @@ function updateGameArea() {
 
 <center>
   <p>MANUAL : ARROWS-move, A,D-turning turrent, SPACE-gun, 1,2-ammo type
-     W-body mg, S-turrent mg, E-smoke, Q-flamethrower, G-mines.</p>
+     W-body mg/flames, S-turrent mg, E-smoke, G-mines.</p>
 </center>
 
 </body>

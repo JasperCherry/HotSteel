@@ -10,9 +10,9 @@ function menus(){
   if(level==0){ // level 0 // first screen
     ctx = myGameArea.context;
     ctx.drawImage(wall, 0, 0);
-    ctx.font = "50px Arial";
+    ctx.font = "bold 50px Courier New";
     ctx.fillStyle = "black";
-    ctx.fillText("Press enter to start",170,120);
+    ctx.fillText("Press enter to start",140,110);
     if (myGameArea.keys && myGameArea.keys[13]){
       cTimer=20;
       level=1;
@@ -33,11 +33,11 @@ function menus(){
     ctx = myGameArea.context;
     ctx.drawImage(menu, 0, 0);
 
-    ctx.font = "20px Arial";
+    ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
     ctx.fillText("Cash : "+totalPoints,750,50);
 
-    ctx.font = "30px Arial";
+    ctx.font = "bold 30px Courier New";
 
     if(cButton==0){
       ctx.fillStyle = "red";
@@ -219,33 +219,40 @@ function menus(){
   if(level==2){ // level 2 // garage
     var ctx = myGameArea.context;
     ctx.drawImage(garage, 0, 0);
+    ctx.drawImage(garage2, 320, 30, 1060*0.65, 774*0.65);
 
-    ctx.font = "30px Arial";
+    ctx.font = "bold 30px Courier New";
     ctx.fillStyle = "white";
     ctx.fillText("Press enter to upgrade",350,620);
 
-    ctx.font = "20px Arial";
+    ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
     ctx.fillText("Press esc to return",20,40);
 
     ctx.fillStyle = "white";
-    ctx.font = "30px Arial";
-    ctx.fillText("Price:",450,100);
-    ctx.fillText(upgradePrice,550,100);
+    ctx.font = "bold 30px Courier New";
+    ctx.fillText("Price:",450,70);
+    ctx.fillText(upgradePrice,570,70);
 
     ctx.fillStyle = "white";
-    ctx.font = "30px Arial";
-    ctx.fillText("Cash:",650,100);
-    ctx.fillText(totalPoints,750,100);
+    ctx.font = "bold 30px Courier New";
+    ctx.fillText("Cash:",650,70);
+    ctx.fillText(totalPoints,750,70);
 
 
-    ctx.font = "20px Arial";
+    ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
     ctx.fillText("Basics:",100,100);
 
 
     if(cButton==0){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(750, 230, 35, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(hpG==80){
         upgradePrice=200;
         ctx.fillText("1/5",350,140);
@@ -289,6 +296,12 @@ function menus(){
 
     if(cButton==1){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(790, 150, 35, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(vMaxG==0.8){
         ctx.fillText("1/5",350,180);
         upgradePrice=200;
@@ -332,6 +345,12 @@ function menus(){
 
     if(cButton==2){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(630, 240, 35, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(gunSpeedG==300){
         ctx.fillText("1/5",350,220);
         upgradePrice=200;
@@ -375,6 +394,12 @@ function menus(){
 
     if(cButton==3){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(635, 320, 35, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(mgSpeedG==10){
         ctx.fillText("1/5",350,260);
         upgradePrice=200;
@@ -413,7 +438,7 @@ function menus(){
         ctx.fillText("5/5",350,260);
       }
     }
-    ctx.fillText("Machinegun reload time",100,260);
+    ctx.fillText("MG reload time",100,260);
 
 
     ctx.fillStyle = "white";
@@ -711,6 +736,17 @@ function menus(){
 
     if(cButton==10){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(640, 170, 15, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(694, 187, 15, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(sightsG==1){
         ctx.fillText("1/3",920,500);
         upgradePrice=500;
@@ -740,6 +776,12 @@ function menus(){
 
     if(cButton==11){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(645, 238, 15, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(!secondMgG){
         ctx.fillText("Mount",920,540);
         upgradePrice=2000;
@@ -760,6 +802,12 @@ function menus(){
 
     if(cButton==12){
       ctx.fillStyle = "red";
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.lineWidth=2;
+      ctx.arc(635, 320, 35, 0, (2*Math.PI));
+      ctx.stroke();
+      ctx.closePath();
       if(!flamethrowerG){
         ctx.fillText("Mount",920,580);
         upgradePrice=2000;
@@ -1071,11 +1119,13 @@ function menus(){
     obstacles[6] = new Obstacle(170,540,3);
 
   if(aiTanks.length==0){
-    aiTanks[0] = new AiTank(600,-300);
-    aiTanks[1] = new AiTank(1400,500);
-    aiTanks[2] = new AiTank2(2500,400);
-    aiTanks[3] = new AiTank2(3600,100);
-    aiTanks[4] = new AiTank3(600,-3500);
+    aiTanks[0] = new AiTank(600,-100);
+    aiTanks[1] = new AiTank(1500,500);
+    aiTanks[2] = new AiTank(1700,400);
+    aiTanks[3] = new AiTank2(300,-1200);
+    aiTanks[4] = new AiTank2(200,-1500);
+    aiTanks[5] = new AiTank2(400,-1900);
+    aiTanks[6] = new AiTank3(3000,500);
   }
 
 
