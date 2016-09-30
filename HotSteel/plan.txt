@@ -7,6 +7,8 @@ to do:
 ///////////////////////////////////////////////////////////////
 
 artillery 3xupgrades after campaign
+- shots in tanks on map far from player, if no tanks, random points far from player.
+- can randomly destroy dead tank
 
 sounds for menu acctions
 
@@ -19,8 +21,10 @@ tanks ai collsion with rocks avoidance
 when player is killed, waiting few seconds
 
 better cannon bullet detection, so it cannot shoot over rocks / tanks from small distance.
-- bullet doesnt show its flame, move flame back, only after some time of leaving barrel bullet shows flame
-
+- bullet doesnt show its flame, move flame back,
+ only after some time of leaving barrel bullet shows flame
+- bullet position is being moved and checked by the loop in bullet control,
+ or by bullet update function in it, with smaller distance, closer detection
 
 
 
