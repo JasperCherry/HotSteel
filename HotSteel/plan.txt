@@ -2,13 +2,13 @@
 
 to do:
 
+make ai tanks being hit from 50pixels outside map only
+
+upgrades, achievements and cash as cookie
 
 
 ///////////////////////////////////////////////////////////////
 
-sound for turent -  possible cut
-
-different sound for movement
 
 
 artillery 3xupgrades after campaign
@@ -17,14 +17,13 @@ sounds for menu acctions
 
 menu graphics, shadow or sth
 
-make ai tanks being hit from 50pixels outside map only
+
 
 
 tanks ai collsion with rocks avoidance
 
 when player is killed, waiting few seconds
 
-upgrades, achievements and cash as cookie
 
 better cannon bullet detection, so it cannot shoot over rocks / tanks
 
@@ -32,8 +31,6 @@ better cannon bullet detection, so it cannot shoot over rocks / tanks
 
 /////////////////extra :
 
-
-trees?
 
 
 counting web visits
@@ -44,6 +41,9 @@ controls might be overcomplicated
 
 ////////////////// point of the game
 
-to unlock extras have to finish 8 of 12 campaign missions
+to finish campaign to unlock extra stuff
 
-bonus as last mission in campaign
+30% - extras
+
+70% - artillery
+

@@ -35,58 +35,58 @@ function menus(){
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
-    ctx.fillText("Cash : "+totalPoints,750,50);
+    ctx.fillText("Cash : "+totalPoints,730,100);
 
     ctx.font = "bold 30px Courier New";
 
     if(cButton==0){
       ctx.fillStyle = "red";
-      ctx.fillText("Campaign",650,150);
+      ctx.fillText("Campaign",630,190);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Campaign",650,150);
+      ctx.fillText("Campaign",630,190);
     }
 
     if(cButton==1){
       ctx.fillStyle = "red";
-      ctx.fillText("Survival Mode",650,230);
+      ctx.fillText("Survival Mode",630,270);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Survival Mode",650,230);
+      ctx.fillText("Survival Mode",630,270);
     }
 
     if(cButton==2){
       ctx.fillStyle = "red";
-      ctx.fillText("Upgrades",650,310);
+      ctx.fillText("Upgrades",630,350);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Upgrades",650,310);
+      ctx.fillText("Upgrades",630,350);
     }
 
     if(sound){
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound on",650,390);
+        ctx.fillText("Sound on",630,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound on",650,390);
+        ctx.fillText("Sound on",630,430);
       }
     }else{
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound off",650,390);
+        ctx.fillText("Sound off",630,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound off",650,390);
+        ctx.fillText("Sound off",630,430);
       }
     }
 
     if(cButton==4){
       ctx.fillStyle = "red";
-      ctx.fillText("Author",650,470);
+      ctx.fillText("Author",630,510);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Author",650,470);
+      ctx.fillText("Author",630,510);
     }
 
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
@@ -732,7 +732,7 @@ function menus(){
 
 
     ctx.fillStyle = "white";
-    ctx.fillText("Extras:",820,460);
+    ctx.fillText("Extras:",540,440);
 
     if(cButton==10){
       ctx.fillStyle = "red";
@@ -748,30 +748,30 @@ function menus(){
       ctx.stroke();
       ctx.closePath();
       if(sightsG==1){
-        ctx.fillText("1/3",920,500);
+        ctx.fillText("1/3",640,480);
         upgradePrice=500;
       }
       if(sightsG==2){
-        ctx.fillText("2/3",920,500);
+        ctx.fillText("2/3",640,480);
         upgradePrice=500;
       }
       if(sightsG==3){
-        ctx.fillText("3/3",920,500);
+        ctx.fillText("3/3",640,480);
         upgradePrice="Max";
       }
     }else{
       ctx.fillStyle = "white";
       if(sightsG==1){
-        ctx.fillText("1/3",920,500);
+        ctx.fillText("1/3",640,480);
       }
       if(sightsG==2){
-        ctx.fillText("2/3",920,500);
+        ctx.fillText("2/3",640,480);
       }
       if(sightsG==3){
-        ctx.fillText("3/3",920,500);
+        ctx.fillText("3/3",640,480);
       }
     }
-    ctx.fillText("Sights",770,500);
+    ctx.fillText("Sights",470,480);
 
 
     if(cButton==11){
@@ -783,21 +783,21 @@ function menus(){
       ctx.stroke();
       ctx.closePath();
       if(!secondMgG){
-        ctx.fillText("Mount",920,540);
+        ctx.fillText("Mount",640,520);
         upgradePrice=2000;
       }else{
-        ctx.fillText("Mounted",920,540);
+        ctx.fillText("Mounted",640,520);
         upgradePrice="Max";
       }
     }else{
       ctx.fillStyle = "white";
       if(!secondMgG){
-        ctx.fillText("Mount",920,540);
+        ctx.fillText("Mount",640,520);
       }else{
-        ctx.fillText("Mounted",920,540);
+        ctx.fillText("Mounted",640,520);
       }
     }
-    ctx.fillText("Tower MG",770,540);
+    ctx.fillText("Tower MG",470,520);
 
 
     if(cButton==12){
@@ -809,21 +809,21 @@ function menus(){
       ctx.stroke();
       ctx.closePath();
       if(!flamethrowerG){
-        ctx.fillText("Mount",920,580);
+        ctx.fillText("Mount",640,560);
         upgradePrice=2000;
       }else{
-        ctx.fillText("Mounted",920,580);
+        ctx.fillText("Mounted",640,560);
         upgradePrice="Max";
       }
     }else{
       ctx.fillStyle = "white";
       if(!flamethrowerG){
-        ctx.fillText("Mount",920,580);
+        ctx.fillText("Mount",640,560);
       }else{
-        ctx.fillText("Mounted",920,580);
+        ctx.fillText("Mounted",640,560);
       }
     }
-    ctx.fillText("Flamethrower",770,580);
+    ctx.fillText("Flamethrower",470,560);
 
 
 
@@ -1117,7 +1117,7 @@ function menus(){
     obstacles[4] = new Obstacle(100,300,3);
     obstacles[5] = new Obstacle(210,330,1);
     obstacles[6] = new Obstacle(170,540,3);
-
+/*
   if(aiTanks.length==0){
     aiTanks[0] = new AiTank(600,-100);
     aiTanks[1] = new AiTank(1500,500);
@@ -1127,7 +1127,7 @@ function menus(){
     aiTanks[5] = new AiTank2(400,-1900);
     aiTanks[6] = new AiTank3(3000,500);
   }
-
+*/
 
 
   if(pTank.alive){
