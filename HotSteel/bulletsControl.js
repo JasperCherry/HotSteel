@@ -9,6 +9,9 @@ function bulletsControl() {
 
     for(var t = 0; t < aiTanks.length; t++) {
 
+      // detection if tank is maximum 50px outside map only
+      if(aiTanks[t].x>-50&&aiTanks[t].x<fieldMapX+50&&aiTanks[t].y>-50&&aiTanks[t].y<fieldMapY+50){
+
       // gun
       // detection if player hits  ai tank
       for(var i = 0; i < bulletsP.length; i++) {
@@ -74,7 +77,9 @@ function bulletsControl() {
        }
       }
 
-  }
+      }// outside map hit control
+
+  }// end of all enemy tanks looping
 
   // hitting dead tanks
 

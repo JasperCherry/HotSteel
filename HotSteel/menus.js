@@ -464,7 +464,7 @@ function menus(){
         upgradePrice=500;
       }
       if(numBulletG==60){
-        ctx.fillText("1/5",350,360);
+        ctx.fillText("5/5",350,360);
         upgradePrice="Max";
       }
     }else{
@@ -482,7 +482,7 @@ function menus(){
         ctx.fillText("4/5",350,360);
       }
       if(numBulletG==60){
-        ctx.fillText("1/5",350,360);
+        ctx.fillText("5/5",350,360);
       }
     }
     ctx.fillText("HEAT",100,360);
@@ -1117,7 +1117,7 @@ function menus(){
     obstacles[4] = new Obstacle(100,300,3);
     obstacles[5] = new Obstacle(210,330,1);
     obstacles[6] = new Obstacle(170,540,3);
-/*
+
   if(aiTanks.length==0){
     aiTanks[0] = new AiTank(600,-100);
     aiTanks[1] = new AiTank(1500,500);
@@ -1127,7 +1127,7 @@ function menus(){
     aiTanks[5] = new AiTank2(400,-1900);
     aiTanks[6] = new AiTank3(3000,500);
   }
-*/
+
 
 
   if(pTank.alive){

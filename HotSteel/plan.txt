@@ -2,30 +2,26 @@
 
 to do:
 
-make ai tanks being hit from 50pixels outside map only
-
-upgrades, achievements and cash as cookie
 
 
 ///////////////////////////////////////////////////////////////
-
-
 
 artillery 3xupgrades after campaign
 
 sounds for menu acctions
 
-menu graphics, shadow or sth
+more interesting menu graphics, shadow or sth
 
-
-
+upgrades, achievements and cash as cookie
 
 tanks ai collsion with rocks avoidance
 
 when player is killed, waiting few seconds
 
+better cannon bullet detection, so it cannot shoot over rocks / tanks from small distance.
+- bullet doesnt show its flame, move flame back, only after some time of leaving barrel bullet shows flame
 
-better cannon bullet detection, so it cannot shoot over rocks / tanks
+
 
 
 

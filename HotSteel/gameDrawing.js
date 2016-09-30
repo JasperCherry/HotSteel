@@ -5,7 +5,8 @@ function gameDrawing() {
 
   // drawing the map
   var ctx = myGameArea.context;
-  ctx.drawImage(map2, 0, 0);
+  ctx.drawImage(map1, 0, 0);
+
 
   // tracks
   for(var i = 0; i < tracks.length; i++) {
@@ -162,62 +163,67 @@ function gameDrawing() {
 
   // drawing informations about current game
 
+
+  ctx.drawImage(stat, 0, 600);
   ctx.fillStyle ="black";
-  ctx.fillRect( 0, 600, 1000, 50);
-  ctx.font = "20px Arial";
+  ctx.fillRect( 0, 600, 1000, 4);
+
+  ctx.font = "bold 20px Courier New";
   ctx.fillStyle = "white";
 
-  ctx.fillText("Player HP",10,620);
+  ctx.fillText("Armor",10,620);
   ctx.fillText(pTank.hp,10,645);
 
 
   //////////////// cannon
-  ctx.fillText("Cannon",130,620);
+  ctx.fillText("Cannon",100,620);
   // loading
   if(pTank.reloadTime==0){
     ctx.fillStyle = "red";
-    ctx.fillText("ready",130,645);
+    ctx.fillText("ready",100,645);
   }else{
     if(pTank.numBullet>0||pTank.numBullet2>0){
       ctx.fillStyle = "white";
-      ctx.fillText("loading",130,645);
+      ctx.fillText("loading",100,645);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("no ammo",130,645);
+      ctx.fillText("no ammo",100,645);
     }
   }
   // ammo info
   if(pTank.ammoType==1){
     ctx.fillStyle = "red";
-    ctx.fillText("HEAT",240,620);
+    ctx.fillText("HEAT",230,620);
     ctx.fillStyle = "white";
-    ctx.fillText("SABOT",320,620);
+    ctx.fillText("SABOT",310,620);
   }else if(pTank.ammoType==2){
     ctx.fillStyle = "white";
-    ctx.fillText("HEAT",240,620);
+    ctx.fillText("HEAT",230,620);
     ctx.fillStyle = "red";
-    ctx.fillText("SABOT",320,620);
+    ctx.fillText("SABOT",310,620);
   }
   ctx.fillStyle = "white";
-  ctx.fillText(pTank.numBullet,240,645);
-  ctx.fillText(pTank.numBullet2,320,645);
+  ctx.fillText(pTank.numBullet,230,645);
+  ctx.fillText(pTank.numBullet2,310,645);
 
 
   ctx.fillStyle = "white";
-  ctx.fillText("MG ammo",430,620);
-  ctx.fillText(pTank.numMgBullets,430,645);
+  ctx.fillText("MG ammo",400,620);
+  ctx.fillText(pTank.numMgBullets,400,645);
 
-  ctx.fillText("Mines",570,620);
-  ctx.fillText(pTank.numMines,570,645);
+  ctx.fillText("Mines",510,620);
+  ctx.fillText(pTank.numMines,510,645);
 
-  ctx.fillText("Smoke",640,620);
-  ctx.fillText(pTank.numSmoke,640,645);
+  ctx.fillText("Smoke",590,620);
+  ctx.fillText(pTank.numSmoke,590,645);
 
-  ctx.fillText("Flamethrower",720,620);
-  ctx.fillText(pTank.numFlames,720,645);
+  if(flamethrowerG){
+  ctx.fillText("Fuel",670,620);
+  ctx.fillText(pTank.numFlames,670,645);
+  }
 
-  ctx.fillText("Cash earned",870,620);
-  ctx.fillText(points,870,645);
+  ctx.fillText("Cash earned",840,620);
+  ctx.fillText(points,840,645);
 
 
 

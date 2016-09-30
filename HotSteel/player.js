@@ -72,11 +72,11 @@ function PTank(x,y) {
       }
 
       // ammo choosing
-      if (myGameArea.keys && myGameArea.keys[49] && this.numBullet>0){
+      if (this.ammoType != 1 && myGameArea.keys && myGameArea.keys[49] && this.numBullet>0){
         this.ammoType = 1;
         this.reloadTime=this.gunSpeed;
       }
-      if (myGameArea.keys && myGameArea.keys[50] && this.numBullet2>0){
+      if (this.ammoType != 2 && myGameArea.keys && myGameArea.keys[50] && this.numBullet2>0){
         this.ammoType = 2;
         this.reloadTime=this.gunSpeed;
       }
@@ -92,7 +92,7 @@ function PTank(x,y) {
       // start position zeroing
       this.moveAngleB = 0;
       this.moveAngleT = 0;
-      //this.speed = 0;
+
 
       // body rotation, turrent static
       if (myGameArea.keys && myGameArea.keys[37]){
