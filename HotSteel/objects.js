@@ -78,13 +78,14 @@ function Bullet(x, y, angle, type) {
     this.update = function() {
 
         this.liveTime--;
+        if(this.liveTime<99){
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.drawImage(this.img, -34, -47);
+        ctx.drawImage(this.img, -35, -30);
         /*
         ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
@@ -92,6 +93,7 @@ function Bullet(x, y, angle, type) {
         ctx.fill();
         */
         ctx.restore();
+        }
     }
     this.newPos = function() {
         this.x += this.speed * Math.sin(this.angle);
@@ -133,7 +135,7 @@ function Bullet2(x, y, angle, type) {
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.translate(0, 0);
-        ctx.drawImage(this.img, -34, -47);
+        ctx.drawImage(this.img, -35, -30);
         /*
         ctx.fillStyle = "red";
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);

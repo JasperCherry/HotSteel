@@ -194,8 +194,8 @@ function AiTank(x,y) {
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
-      bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
-      this.y-(40 * Math.cos(this.angleT)),
+      bulletsAi.push(new Bullet(this.x+(17 * Math.sin(this.angleT)),
+      this.y-(17 * Math.cos(this.angleT)),
       this.angleT+( (Math.round(Math.random() * (40)) - 20) * Math.PI / 180),
       this.type));
       this.reloadTime=150;
@@ -548,8 +548,8 @@ function AiTank2(x,y) {
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
-      bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
-      this.y-(40 * Math.cos(this.angleT)),
+      bulletsAi.push(new Bullet(this.x+(30 * Math.sin(this.angleT)),
+      this.y-(30 * Math.cos(this.angleT)),
       this.angleT+( (Math.round(Math.random() * (30)) - 15) * Math.PI / 180),
       this.type));
       this.reloadTime=250;
@@ -909,8 +909,8 @@ function AiTank3(x,y) {
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
-      bulletsAi.push(new Bullet(this.x+(40 * Math.sin(this.angleT)),
-      this.y-(40 * Math.cos(this.angleT)),
+      bulletsAi.push(new Bullet(this.x+(37 * Math.sin(this.angleT)),
+      this.y-(37 * Math.cos(this.angleT)),
       this.angleT+( (Math.round(Math.random() * (20)) - 10) * Math.PI / 180),
       this.type));
       this.reloadTime=250;

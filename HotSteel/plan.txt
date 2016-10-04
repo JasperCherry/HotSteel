@@ -4,6 +4,20 @@ to do:
 
 
 
+
+
+
+upgrades, achievements and cash as cookie
+
+
+
+tanks ai collsion with rocks avoidance, tanks slows down and turns, if no rock tank moves and turns
+
+
+
+
+
+
 ///////////////////////////////////////////////////////////////
 
 artillery 3xupgrades after campaign
@@ -14,17 +28,8 @@ sounds for menu acctions
 
 more interesting menu graphics, shadow or sth
 
-upgrades, achievements and cash as cookie
-
-tanks ai collsion with rocks avoidance
-
 when player is killed, waiting few seconds
 
-better cannon bullet detection, so it cannot shoot over rocks / tanks from small distance.
-- bullet doesnt show its flame, move flame back,
- only after some time of leaving barrel bullet shows flame
-- bullet position is being moved and checked by the loop in bullet control,
- or by bullet update function in it, with smaller distance, closer detection
 
 
 
@@ -36,14 +41,6 @@ better cannon bullet detection, so it cannot shoot over rocks / tanks from small
 counting web visits
 
 
-controls might be overcomplicated 
-(maybe switching weapons? can reduce controls and help in multiplayer)
 
 ////////////////// point of the game
-
-to finish campaign to unlock extra stuff
-
-30% - extras
-
-70% - artillery
 

@@ -64,6 +64,10 @@ function gameDrawing() {
   // drawing
   pTank.update();
 
+  // bullet control and some other map objects
+  // has to be here becouse tanks updates are creating bullets
+  bulletsControl();
+
   //////////////////////////////////////////////////////////////// drawing bullets
 
   //////////////////////////// ai
@@ -81,7 +85,7 @@ function gameDrawing() {
     mgBulletsAi[i].update();
     if(mgBulletsAi[i].liveTime==0){
       mgBulletsAi.splice(i,1);
-    }else if(mgBulletsAi[i].rico==4){
+    }else if(mgBulletsAi[i].rico>=4){
       mgBulletsAi.splice(i,1);
     }
   }
@@ -109,7 +113,7 @@ function gameDrawing() {
     mgBulletsP[i].update();
     if(mgBulletsP[i].liveTime==0){
       mgBulletsP.splice(i,1);
-    }else if(mgBulletsP[i].rico==4){
+    }else if(mgBulletsP[i].rico>=4){
       mgBulletsP.splice(i,1);
     }
   }

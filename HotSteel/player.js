@@ -299,16 +299,16 @@ this.reloadTimeM=this.mgSpeed;
         if(this.ammoType==1 && this.numBullet>0){
           this.numBullet--;
           bulletsP.push(new Bullet(
-          this.x+(40 * Math.sin(this.angleT)),
-          this.y-(40 * Math.cos(this.angleT)),
+          this.x+(27 * Math.sin(this.angleT)),
+          this.y-(27 * Math.cos(this.angleT)),
           this.angleT,
           this.ammoType));
           this.reloadTime=this.gunSpeed;
         }else if(this.ammoType==2 && this.numBullet2>0){
           this.numBullet2--;
           bulletsP.push(new Bullet2(
-          this.x+(40 * Math.sin(this.angleT)),
-          this.y-(40 * Math.cos(this.angleT)),
+          this.x+(27 * Math.sin(this.angleT)),
+          this.y-(27 * Math.cos(this.angleT)),
           this.angleT,
           this.ammoType));
           this.reloadTime=this.gunSpeed;

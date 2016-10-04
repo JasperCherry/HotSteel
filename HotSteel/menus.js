@@ -1131,7 +1131,6 @@ function menus(){
 
 
   if(pTank.alive){
-  bulletsControl();
   gameDrawing();
   }else{
     clearLevel();
