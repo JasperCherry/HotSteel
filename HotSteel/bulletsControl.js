@@ -40,6 +40,7 @@ function bulletsControl() {
           // losing tower , 25% possible when 50 or less hp after shot
           if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) ){
             aiTanks[t].towerLoose=true;
+            explosionsH.push(new ExplosionH(aiTanks[t].x, aiTanks[t].y));
           }
         }
        }
@@ -300,11 +301,14 @@ function bulletsControl() {
 
   // player kill detection
   if(pTank.hp<=0&&pTank.alive){
+     /*
      if(terrain==0){
        kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, rusaw, rusbw, pTank.towerLoose, pTank.id));
      }else if(terrain==1){
        kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, srusaw, srusbw, pTank.towerLoose, pTank.id));
      }
+     */
+     pTank.hp=0;
      pTank.flame.pause();
      pTank.move.pause();
      pTank.moveT.pause();

@@ -157,6 +157,14 @@ function gameDrawing() {
     }
   }
 
+  // artillery explosions
+  for(var i = 0; i < explosionsA.length; i++) {
+    explosionsA[i].update();
+    if(explosionsA[i].exLoop==90){
+      explosionsA.splice(i,1);
+    }
+  }
+
   // smoke covers
   for(var i = 0; i < smoke.length; i++) {
     smoke[i].update();

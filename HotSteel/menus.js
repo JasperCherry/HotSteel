@@ -22,7 +22,8 @@ function menus(){
 
 
   if(level==1){ // level 1 // menu
-
+    levelCreator=true;
+    endLevel=150;
     // playing sound of the tanks in the menu
     if(sound){
       menuTanks.play();
@@ -41,26 +42,26 @@ function menus(){
 
     if(cButton==0){
       ctx.fillStyle = "red";
-      ctx.fillText("Campaign",630,190);
+      ctx.fillText("Play",630,190);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Campaign",630,190);
+      ctx.fillText("Play",630,190);
     }
 
     if(cButton==1){
       ctx.fillStyle = "red";
-      ctx.fillText("Survival Mode",630,270);
+      ctx.fillText("Upgrades",630,270);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Survival Mode",630,270);
+      ctx.fillText("Upgrades",630,270);
     }
 
     if(cButton==2){
       ctx.fillStyle = "red";
-      ctx.fillText("Upgrades",630,350);
+      ctx.fillText("Manual",630,350);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Upgrades",630,350);
+      ctx.fillText("Manual",630,350);
     }
 
     if(sound){
@@ -108,7 +109,7 @@ function menus(){
 
 
     // using main menu options
-    if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==1){
+    if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==0){
       cTimer=20;
       cButton=0;
       level=100;
@@ -116,15 +117,12 @@ function menus(){
       menuTanks.load();
     }
 
-    if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==2){
+    if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==1){
       cTimer=20;
       cButton=0;
       level=2;
       clearLevel();
       menuTanks.load();
-
-
-
     }
 
     if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==3){
@@ -862,18 +860,30 @@ function menus(){
     if(hpG==80&&totalPoints>=200){
       hpG=120;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(hpG==120&&totalPoints>=300){
       hpG=180;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(hpG==180&&totalPoints>=400){
       hpG=240;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(hpG==240&&totalPoints>=500){
       hpG=300;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // engine
@@ -882,18 +892,30 @@ function menus(){
     if(vMaxG==0.8&&totalPoints>=200){
       vMaxG=1.0;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(vMaxG==1.0&&totalPoints>=300){
       vMaxG=1.2;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(vMaxG==1.2&&totalPoints>=400){
       vMaxG=1.4;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(vMaxG==1.4&&totalPoints>=500){
       vMaxG=1.6;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // cannon reload time
@@ -902,18 +924,30 @@ function menus(){
     if(gunSpeedG==300&&totalPoints>=200){
       gunSpeedG=250;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(gunSpeedG==250&&totalPoints>=300){
       gunSpeedG=200;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(gunSpeedG==200&&totalPoints>=400){
       gunSpeedG=150;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(gunSpeedG==150&&totalPoints>=500){
       gunSpeedG=100;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // mg reload time
@@ -922,18 +956,30 @@ function menus(){
     if(mgSpeedG==10&&totalPoints>=200){
       mgSpeedG=8;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(mgSpeedG==8&&totalPoints>=300){
       mgSpeedG=6;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(mgSpeedG==6&&totalPoints>=400){
       mgSpeedG=5;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(mgSpeedG==5&&totalPoints>=500){
       mgSpeedG=4;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // HEAT ammo
@@ -942,18 +988,30 @@ function menus(){
     if(numBulletG==12&&totalPoints>=200){
       numBulletG=24;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBulletG==24&&totalPoints>=300){
       numBulletG=36;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBulletG==36&&totalPoints>=400){
       numBulletG=48;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBulletG==48&&totalPoints>=500){
       numBulletG=60;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // SABOT ammo
@@ -962,22 +1020,37 @@ function menus(){
     if(numBullet2G==0&&totalPoints>=100){
       numBullet2G=8;
       totalPoints-=100;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBullet2G==8&&totalPoints>=200){
       numBullet2G=16;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBullet2G==16&&totalPoints>=300){
       numBullet2G=24;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBullet2G==24&&totalPoints>=400){
       numBullet2G=32;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numBullet2G==32&&totalPoints>=500){
       numBullet2G=40;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // Mg ammo
@@ -986,18 +1059,30 @@ function menus(){
     if(numMgBulletsG==150&&totalPoints>=200){
       numMgBulletsG=300;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMgBulletsG==300&&totalPoints>=300){
       numMgBulletsG=450;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMgBulletsG==450&&totalPoints>=400){
       numMgBulletsG=600;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMgBulletsG==600&&totalPoints>=500){
       numMgBulletsG=750;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // mines ammo
@@ -1006,22 +1091,37 @@ function menus(){
     if(numMinesG==0&&totalPoints>=100){
       numMinesG=6;
       totalPoints-=100;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMinesG==6&&totalPoints>=200){
       numMinesG=12;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMinesG==12&&totalPoints>=300){
       numMinesG=18;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMinesG==18&&totalPoints>=400){
       numMinesG=24;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numMinesG==24&&totalPoints>=500){
       numMinesG=30;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // smoke ammo
@@ -1030,22 +1130,37 @@ function menus(){
     if(numSmokeG==0&&totalPoints>=100){
       numSmokeG=1;
       totalPoints-=100;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numSmokeG==1&&totalPoints>=200){
       numSmokeG=2;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numSmokeG==2&&totalPoints>=300){
       numSmokeG=3;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numSmokeG==3&&totalPoints>=400){
       numSmokeG=4;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numSmokeG==4&&totalPoints>=500){
       numSmokeG=5;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // fuel ammo
@@ -1054,22 +1169,37 @@ function menus(){
     if(numFlamesG==0&&totalPoints>=100){
       numFlamesG=200;
       totalPoints-=100;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numFlamesG==200&&totalPoints>=200){
       numFlamesG=400;
       totalPoints-=200;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numFlamesG==400&&totalPoints>=300){
       numFlamesG=600;
       totalPoints-=300;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numFlamesG==600&&totalPoints>=400){
       numFlamesG=800;
       totalPoints-=400;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(numFlamesG==800&&totalPoints>=500){
       numFlamesG=1000;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // sights
@@ -1078,10 +1208,16 @@ function menus(){
     if(sightsG==1&&totalPoints>=500){
       sightsG=2;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }else
     if(sightsG==2&&totalPoints>=500){
       sightsG=3;
       totalPoints-=500;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // tower mg
@@ -1090,6 +1226,9 @@ function menus(){
     if(secondMgG==false&&totalPoints>=2000){
       secondMgG=true;
       totalPoints-=2000;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
   // flamethrower
@@ -1098,6 +1237,9 @@ function menus(){
     if(flamethrowerG==false&&totalPoints>=2000){
       flamethrowerG=true;
       totalPoints-=2000;
+      if(sound){
+        cashSound.play();
+      }
     }
   }
 
@@ -1109,7 +1251,7 @@ function menus(){
 
   if(level==100){ // level 100 // survival mode
 
-
+if(levelCreator){
     obstacles[0] = new Obstacle(800,150,1);
     obstacles[1] = new Obstacle(220,110,2);
     obstacles[2] = new Obstacle(230,160,1);
@@ -1117,6 +1259,10 @@ function menus(){
     obstacles[4] = new Obstacle(100,300,3);
     obstacles[5] = new Obstacle(210,330,1);
     obstacles[6] = new Obstacle(170,540,3);
+
+    levelCreator=false;
+}
+
 
   if(aiTanks.length==0){
     aiTanks[0] = new AiTank(600,-100);
@@ -1133,6 +1279,11 @@ function menus(){
   if(pTank.alive){
   gameDrawing();
   }else{
+    gameDrawing();
+    endLevel--;
+  }
+
+  if(endLevel==0){
     clearLevel();
     level=1;
     createMenuTanks=true;

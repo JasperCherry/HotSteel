@@ -3,40 +3,28 @@
 to do:
 
 
-
-
-
-
-upgrades, achievements and cash as cookie
-
-
-
-tanks ai collsion with rocks avoidance, tanks slows down and turns, if no rock tank moves and turns
-
-
+artillery 3xupgrades after campaign
+- shots in tanks on map far from player, if no tanks, random points far from player.
+- can randomly destroy dead tank
 
 
 
 
 ///////////////////////////////////////////////////////////////
 
-artillery 3xupgrades after campaign
-- shots in tanks on map far from player, if no tanks, random points far from player.
-- can randomly destroy dead tank
 
-sounds for menu acctions
+dynamicly created random games
 
-more interesting menu graphics, shadow or sth
+upgrades, achievements and cash as cookie
 
-when player is killed, waiting few seconds
-
+manual picture
 
 
 
 
 /////////////////extra :
 
-
+check if any of the arrays have problem with destruction of objects during the game
 
 counting web visits
 

@@ -21,6 +21,7 @@ function PTank(x,y) {
   }
 
   // upgrades
+  this.numArt=artCalls;
   this.gunSpeed=gunSpeedG; // 300,250,200,150,100
   this.mgSpeed=mgSpeedG; // 10,8,6,5,4
   this.sights=sightsG;  // 1,2,3
@@ -36,6 +37,10 @@ function PTank(x,y) {
   this.secondMg=secondMgG; // or false if not mounted
   this.flamethrower=flamethrowerG; // or false if not mounted
 
+  this.artBusy=false;
+  this.artSpeed=0;
+  this.artShots=0;
+  this.artRate=artRate;
 
   this.mineSpeed=40;
   this.ammoType = 1;
@@ -262,6 +267,64 @@ this.reloadTimeM=this.mgSpeed;
 
       // weapons
 
+      // calling artillery, will be working after tank death
+      if (myGameArea.keys && myGameArea.keys[71] && this.numArt>0 && this.artBusy==false){
+        this.artBusy=true;
+        this.numArt--;
+      }
+
+      if(this.artBusy==true){
+
+        if(this.artSpeed<this.artRate){
+          this.artSpeed++;
+
+        }else{
+
+          var artX=Math.round(Math.random()*fieldMapX);
+          var artY=Math.round(Math.random()*fieldMapY);
+          var inTanks = new Array();
+          var chooseTank;
+          var ifHit=Math.floor(Math.random()*artEffect);
+          // chosing tanks inside the map
+          // then shooting with 50% acuracy, tank or not ground
+          // can hit dead tanks as well by accident !!
+          for(var g=0; g<aiTanks.length; g++){
+            if(aiTanks[g].x>0&&aiTanks[g].x<fieldMapX&&aiTanks[g].y>0&&aiTanks[g].y<fieldMapY){
+              inTanks.push(g);
+            }
+          }
+
+          // if hitting tanks
+          if(ifHit==0&&inTanks.length>0){
+            chooseTank=Math.floor(Math.random()*inTanks.length);
+            artX=aiTanks[inTanks[chooseTank]].x;
+            artY=aiTanks[inTanks[chooseTank]].y;
+            aiTanks[chooseTank].hp=0;
+          }else{
+          // if random shot
+            if(Math.abs(artX-this.x)<100&&Math.abs(artY-this.y)<100){
+              do{
+                artX=Math.round(Math.random()*fieldMapX);
+                artY=Math.round(Math.random()*fieldMapY);
+              }while(Math.abs(artX-this.x)<100&&Math.abs(artY-this.y)<100)
+            }
+          }
+          explosionsA.push(new ExplosionA(artX,artY));
+          this.artSpeed=0;
+          this.artShots++;
+        }
+      }
+
+      if(this.artShots==artShots){
+        this.artShots=0;
+        this.artBusy=false;
+      }
+
+
+
+
+
+
       // setting up smoke
       if(this.reloadTimeSmoke>0){
         this.reloadTimeSmoke--;
@@ -276,7 +339,7 @@ this.reloadTimeM=this.mgSpeed;
       if(this.reloadTimeMine>0){
         this.reloadTimeMine--;
       }
-      if (myGameArea.keys && myGameArea.keys[71] && this.numMines>0 && this.reloadTimeMine==0){
+      if (myGameArea.keys && myGameArea.keys[70] && this.numMines>0 && this.reloadTimeMine==0){
         mines.push(new Mine(
         this.x-(35 * Math.sin(this.angleB)),
         this.y+(35 * Math.cos(this.angleB))
@@ -402,6 +465,22 @@ this.reloadTimeM=this.mgSpeed;
 
 
   this.update = function() {
+  if(!this.alive){
+    // drawing the body
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angleB);
+    ctx.drawImage(rusaw, -20, -30);
+    ctx.restore();
+    // drawing the tower
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angleT);
+    ctx.drawImage(rusbw, -20, -30);
+    ctx.restore();
+  }
   if(this.alive){
       // drawing the body
       ctx = myGameArea.context;

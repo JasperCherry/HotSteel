@@ -209,13 +209,6 @@ function Flame(x, y, angle) {
     this.delayTime=0;
     this.size=0.1;
 
-    if(sound){
-      if(this.playSound){
-        this.mg.play();
-        this.playSound=false;
-      }
-    }
-
     this.update = function() {
         this.liveTime--;
 
@@ -348,6 +341,39 @@ function Obstacle(x, y, type) {
 
         ctx.restore();
     }
+
+}
+
+function ExplosionA(x, y) {
+
+    this.x = x;
+    this.y = y;
+    this.exLoop=0;
+    this.delayTime=0;
+
+    this.art1 = new Audio('sounds/art1.mp3');
+    this.playSound=true;
+
+        this.update = function() {
+          if(this.playSound){
+            if(sound){
+              this.art1.play();
+              this.playSound=false;
+            }
+          }
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          this.delayTime++;
+          if(this.exLoop!=90){
+            ctx.drawImage(document.getElementById("art"+this.exLoop), -80*1, -60*1, 160*1, 120*1);
+            if(this.delayTime==1){
+              this.exLoop++;
+              this.delayTime=0;
+            }
+          }
+          ctx.restore();
+        }
 
 }
 
