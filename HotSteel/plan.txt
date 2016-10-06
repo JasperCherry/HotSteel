@@ -16,7 +16,9 @@ upgrades, achievements and cash as cookie
 
 dynamicly created random games
 
+tanks can attack from -50pix outside map
 
+make artillery less powerfull??
 
 
 
