@@ -6,7 +6,6 @@ to do:
 
 ///////////////////////////////////////////////////////////////
 
-artilery in menu during game
 
 extras and artilery to unlock
 
@@ -18,7 +17,10 @@ dynamicly created random games
 
 tanks can attack from -50pix outside map
 
-make artillery less powerfull??
+
+
+
+artillery bug?? tank was killed outside at the border, some tanks survive attack
 
 
 
