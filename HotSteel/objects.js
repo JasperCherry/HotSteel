@@ -543,6 +543,7 @@ function clearLevel() {
   tanksFire = new Array();
   flames = new Array();
   mines = new Array();
+  explosionsA = new Array();
   explosionsM = new Array();
   explosionsH = new Array();
   explosionsDead = new Array();

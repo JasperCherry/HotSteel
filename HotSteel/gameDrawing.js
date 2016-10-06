@@ -234,8 +234,13 @@ function gameDrawing() {
   ctx.fillText(pTank.numFlames,670,645);
   }
 
-  ctx.fillText("Cash earned",840,620);
-  ctx.fillText(points,840,645);
+  if(artCalls>0){
+  ctx.fillText("Artillery",740,620);
+  ctx.fillText(pTank.numArt,740,645);
+  }
+
+  ctx.fillText("Cash",910,620);
+  ctx.fillText(points,910,645);
 
 
 

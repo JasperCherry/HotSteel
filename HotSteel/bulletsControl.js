@@ -38,7 +38,7 @@ function bulletsControl() {
              }
           }
           // losing tower , 25% possible when 50 or less hp after shot
-          if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) ){
+          if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) && !aiTanks[t].towerLoose ){
             aiTanks[t].towerLoose=true;
             explosionsH.push(new ExplosionH(aiTanks[t].x, aiTanks[t].y));
           }
@@ -356,4 +356,57 @@ function bulletsControl() {
 
   }
 
-}
+  // artilery calling
+  if(pTank.artBusy==true){
+
+    if(pTank.artSpeed<pTank.artRate){
+      pTank.artSpeed++;
+
+    }else{
+
+      var artX=Math.round(Math.random()*fieldMapX);
+      var artY=Math.round(Math.random()*fieldMapY);
+      var inTanks = new Array();
+      var chooseTank;
+      var ifHit=Math.floor(Math.random()*artEffect);
+      for(var g=0; g<aiTanks.length; g++){
+        if(aiTanks[g].x>0&&aiTanks[g].x<fieldMapX&&aiTanks[g].y>0&&aiTanks[g].y<fieldMapY){
+          inTanks.push(g);
+        }
+      }
+
+      // if hitting ai tank
+      if(ifHit==0&&inTanks.length>0){
+        chooseTank=Math.floor(Math.random()*inTanks.length);
+        artX=aiTanks[inTanks[chooseTank]].x;
+        artY=aiTanks[inTanks[chooseTank]].y;
+        aiTanks[chooseTank].hp=0;
+      }else{
+      // if random shot
+        if(Math.abs(artX-pTank.x)<100&&Math.abs(artY-pTank.y)<100){
+          do{
+            artX=Math.round(Math.random()*fieldMapX);
+            artY=Math.round(Math.random()*fieldMapY);
+          }while(Math.abs(artX-pTank.x)<100&&Math.abs(artY-pTank.y)<100)
+        }
+      }
+      // if hits dead tank
+      for(var g=0; g<kills.length; g++){
+        if(Math.abs(artX-kills[g].x)<15&&Math.abs(artY-kills[g].y)<15){
+          kills[g].hp=0;
+        }
+      }
+      // hit effect
+      explosionsA.push(new ExplosionA(artX,artY));
+      pTank.artSpeed=0;
+      pTank.artShots++;
+    }
+  }
+
+  if(pTank.artShots==artShots){
+    pTank.artShots=0;
+    pTank.artSpeed=-100;
+    pTank.artBusy=false;
+  }
+
+}// end of main function

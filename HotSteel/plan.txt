@@ -3,21 +3,21 @@
 to do:
 
 
-artillery 3xupgrades after campaign
-- shots in tanks on map far from player, if no tanks, random points far from player.
-- can randomly destroy dead tank
-
-
-
 
 ///////////////////////////////////////////////////////////////
 
+artilery in menu during game
 
-dynamicly created random games
+extras and artilery to unlock
+
+manual picture
 
 upgrades, achievements and cash as cookie
 
-manual picture
+dynamicly created random games
+
+
+
 
 
 
@@ -28,6 +28,9 @@ check if any of the arrays have problem with destruction of objects during the g
 
 counting web visits
 
+
+
+polishing
 
 
 ////////////////// point of the game

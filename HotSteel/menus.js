@@ -6,13 +6,12 @@ function menus(){
       cTimer--;
     }
 
-
   if(level==0){ // level 0 // first screen
     ctx = myGameArea.context;
     ctx.drawImage(wall, 0, 0);
     ctx.font = "bold 50px Courier New";
     ctx.fillStyle = "black";
-    ctx.fillText("Press enter to start",140,110);
+    ctx.fillText("Press enter",140,110);
     if (myGameArea.keys && myGameArea.keys[13]){
       cTimer=20;
       level=1;
@@ -824,20 +823,159 @@ function menus(){
     ctx.fillText("Flamethrower",470,560);
 
 
+    ctx.fillStyle = "white";
+    ctx.fillText("Artillery:",790,440);
+
+
+    if(cButton==13){
+      ctx.fillStyle = "red";
+      if(artCalls==0){
+        ctx.fillText("0/5",910,480);
+        upgradePrice=600;
+      }
+      if(artCalls==1){
+        ctx.fillText("1/5",910,480);
+        upgradePrice=700;
+      }
+      if(artCalls==2){
+        ctx.fillText("2/5",910,480);
+        upgradePrice=800;
+      }
+      if(artCalls==3){
+        ctx.fillText("3/5",910,480);
+        upgradePrice=900;
+      }
+      if(artCalls==4){
+        ctx.fillText("4/5",910,480);
+        upgradePrice=1000;
+      }
+      if(artCalls==5){
+        ctx.fillText("5/5",910,480);
+        upgradePrice="Max";
+      }
+    }else{
+      ctx.fillStyle = "white";
+      if(artCalls==0){
+        ctx.fillText("0/5",910,480);
+      }
+      if(artCalls==1){
+        ctx.fillText("1/5",910,480);
+      }
+      if(artCalls==2){
+        ctx.fillText("2/5",910,480);
+      }
+      if(artCalls==3){
+        ctx.fillText("3/5",910,480);
+      }
+      if(artCalls==4){
+        ctx.fillText("4/5",910,480);
+      }
+      if(artCalls==5){
+        ctx.fillText("5/5",910,480);
+      }
+    }
+    ctx.fillText("Calls",740,480);
+
+
+    if(cButton==14){
+      ctx.fillStyle = "red";
+      if(artShots==3){
+        ctx.fillText("1/5",910,520);
+        upgradePrice=700;
+      }
+      if(artShots==5){
+        ctx.fillText("2/5",910,520);
+        upgradePrice=800;
+      }
+      if(artShots==7){
+        ctx.fillText("3/5",910,520);
+        upgradePrice=900;
+      }
+      if(artShots==10){
+        ctx.fillText("4/5",910,520);
+        upgradePrice=1000;
+      }
+      if(artShots==12){
+        ctx.fillText("5/5",910,520);
+        upgradePrice="Max";
+      }
+    }else{
+      ctx.fillStyle = "white";
+      if(artShots==3){
+        ctx.fillText("1/5",910,520);
+      }
+      if(artShots==5){
+        ctx.fillText("2/5",910,520);
+      }
+      if(artShots==7){
+        ctx.fillText("3/5",910,520);
+      }
+      if(artShots==10){
+        ctx.fillText("4/5",910,520);
+      }
+      if(artShots==12){
+        ctx.fillText("5/5",910,520);
+      }
+    }
+    ctx.fillText("Rounds",740,520);
+
+
+    if(cButton==15){
+      ctx.fillStyle = "red";
+      if(artRate==80){
+        ctx.fillText("1/5",910,560);
+        upgradePrice=700;
+      }
+      if(artRate==60){
+        ctx.fillText("2/5",910,560);
+        upgradePrice=800;
+      }
+      if(artRate==40){
+        ctx.fillText("3/5",910,560);
+        upgradePrice=900;
+      }
+      if(artRate==20){
+        ctx.fillText("4/5",910,560);
+        upgradePrice=1000;
+      }
+      if(artRate==10){
+        ctx.fillText("5/5",910,560);
+        upgradePrice="Max";
+      }
+    }else{
+      ctx.fillStyle = "white";
+      if(artRate==80){
+        ctx.fillText("1/5",910,560);
+      }
+      if(artRate==60){
+        ctx.fillText("2/5",910,560);
+      }
+      if(artRate==40){
+        ctx.fillText("3/5",910,560);
+      }
+      if(artRate==20){
+        ctx.fillText("4/5",910,560);
+      }
+      if(artRate==10){
+        ctx.fillText("5/5",910,560);
+      }
+    }
+    ctx.fillText("Rate of fire",740,560);
+
 
   // control
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
       cTimer=10;
       cButton--;
       if(cButton==-1){
-        cButton=12;
+        cButton=15;
       }
     }
 
     if(myGameArea.keys && myGameArea.keys[40] && cTimer==0){
       cTimer=10;
       cButton++;
-      if(cButton==13){
+      if(cButton==16){
         cButton=0;
       }
     }
@@ -860,30 +998,18 @@ function menus(){
     if(hpG==80&&totalPoints>=200){
       hpG=120;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(hpG==120&&totalPoints>=300){
       hpG=180;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(hpG==180&&totalPoints>=400){
       hpG=240;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(hpG==240&&totalPoints>=500){
       hpG=300;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // engine
@@ -892,30 +1018,18 @@ function menus(){
     if(vMaxG==0.8&&totalPoints>=200){
       vMaxG=1.0;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(vMaxG==1.0&&totalPoints>=300){
       vMaxG=1.2;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(vMaxG==1.2&&totalPoints>=400){
       vMaxG=1.4;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(vMaxG==1.4&&totalPoints>=500){
       vMaxG=1.6;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // cannon reload time
@@ -924,30 +1038,18 @@ function menus(){
     if(gunSpeedG==300&&totalPoints>=200){
       gunSpeedG=250;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(gunSpeedG==250&&totalPoints>=300){
       gunSpeedG=200;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(gunSpeedG==200&&totalPoints>=400){
       gunSpeedG=150;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(gunSpeedG==150&&totalPoints>=500){
       gunSpeedG=100;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // mg reload time
@@ -956,30 +1058,18 @@ function menus(){
     if(mgSpeedG==10&&totalPoints>=200){
       mgSpeedG=8;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(mgSpeedG==8&&totalPoints>=300){
       mgSpeedG=6;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(mgSpeedG==6&&totalPoints>=400){
       mgSpeedG=5;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(mgSpeedG==5&&totalPoints>=500){
       mgSpeedG=4;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // HEAT ammo
@@ -988,30 +1078,18 @@ function menus(){
     if(numBulletG==12&&totalPoints>=200){
       numBulletG=24;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBulletG==24&&totalPoints>=300){
       numBulletG=36;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBulletG==36&&totalPoints>=400){
       numBulletG=48;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBulletG==48&&totalPoints>=500){
       numBulletG=60;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // SABOT ammo
@@ -1020,37 +1098,22 @@ function menus(){
     if(numBullet2G==0&&totalPoints>=100){
       numBullet2G=8;
       totalPoints-=100;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBullet2G==8&&totalPoints>=200){
       numBullet2G=16;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBullet2G==16&&totalPoints>=300){
       numBullet2G=24;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBullet2G==24&&totalPoints>=400){
       numBullet2G=32;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numBullet2G==32&&totalPoints>=500){
       numBullet2G=40;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // Mg ammo
@@ -1059,30 +1122,18 @@ function menus(){
     if(numMgBulletsG==150&&totalPoints>=200){
       numMgBulletsG=300;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMgBulletsG==300&&totalPoints>=300){
       numMgBulletsG=450;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMgBulletsG==450&&totalPoints>=400){
       numMgBulletsG=600;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMgBulletsG==600&&totalPoints>=500){
       numMgBulletsG=750;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // mines ammo
@@ -1091,37 +1142,22 @@ function menus(){
     if(numMinesG==0&&totalPoints>=100){
       numMinesG=6;
       totalPoints-=100;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMinesG==6&&totalPoints>=200){
       numMinesG=12;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMinesG==12&&totalPoints>=300){
       numMinesG=18;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMinesG==18&&totalPoints>=400){
       numMinesG=24;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numMinesG==24&&totalPoints>=500){
       numMinesG=30;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // smoke ammo
@@ -1130,37 +1166,22 @@ function menus(){
     if(numSmokeG==0&&totalPoints>=100){
       numSmokeG=1;
       totalPoints-=100;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numSmokeG==1&&totalPoints>=200){
       numSmokeG=2;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numSmokeG==2&&totalPoints>=300){
       numSmokeG=3;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numSmokeG==3&&totalPoints>=400){
       numSmokeG=4;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numSmokeG==4&&totalPoints>=500){
       numSmokeG=5;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // fuel ammo
@@ -1169,37 +1190,22 @@ function menus(){
     if(numFlamesG==0&&totalPoints>=100){
       numFlamesG=200;
       totalPoints-=100;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numFlamesG==200&&totalPoints>=200){
       numFlamesG=400;
       totalPoints-=200;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numFlamesG==400&&totalPoints>=300){
       numFlamesG=600;
       totalPoints-=300;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numFlamesG==600&&totalPoints>=400){
       numFlamesG=800;
       totalPoints-=400;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(numFlamesG==800&&totalPoints>=500){
       numFlamesG=1000;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // sights
@@ -1208,16 +1214,10 @@ function menus(){
     if(sightsG==1&&totalPoints>=500){
       sightsG=2;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }else
     if(sightsG==2&&totalPoints>=500){
       sightsG=3;
       totalPoints-=500;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // tower mg
@@ -1226,9 +1226,6 @@ function menus(){
     if(secondMgG==false&&totalPoints>=2000){
       secondMgG=true;
       totalPoints-=2000;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
   // flamethrower
@@ -1237,13 +1234,75 @@ function menus(){
     if(flamethrowerG==false&&totalPoints>=2000){
       flamethrowerG=true;
       totalPoints-=2000;
-      if(sound){
-        cashSound.play();
-      }
     }
   }
 
+  // artillery
 
+  // calls
+  if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==13){
+    cTimer=20;
+    if(artCalls==0&&totalPoints>=600){
+      artCalls=1;
+      totalPoints-=600;
+    }else
+    if(artCalls==1&&totalPoints>=700){
+      artCalls=2;
+      totalPoints-=700;
+    }else
+    if(artCalls==2&&totalPoints>=800){
+      artCalls=3;
+      totalPoints-=800;
+    }else
+    if(artCalls==3&&totalPoints>=900){
+      artCalls=4;
+      totalPoints-=900;
+    }else
+    if(artCalls==4&&totalPoints>=1000){
+      artCalls=5;
+      totalPoints-=1000;
+    }
+  }
+  // shots
+  if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==14){
+    cTimer=20;
+    if(artShots==3&&totalPoints>=700){
+      artShots=5;
+      totalPoints-=700;
+    }else
+    if(artShots==5&&totalPoints>=800){
+      artShots=7;
+      totalPoints-=800;
+    }else
+    if(artShots==7&&totalPoints>=900){
+      artShots=10;
+      totalPoints-=900;
+    }else
+    if(artShots==10&&totalPoints>=1000){
+      artShots=12;
+      totalPoints-=1000;
+    }
+  }
+  // rate of fire
+  if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==15){
+    cTimer=20;
+    if(artRate==80&&totalPoints>=700){
+      artRate=60;
+      totalPoints-=700;
+    }else
+    if(artRate==60&&totalPoints>=800){
+      artRate=40;
+      totalPoints-=800;
+    }else
+    if(artRate==40&&totalPoints>=900){
+      artRate=20;
+      totalPoints-=900;
+    }else
+    if(artRate==20&&totalPoints>=1000){
+      artRate=10;
+      totalPoints-=1000;
+    }
+  }
 
   }// end of level 2 // garage
 

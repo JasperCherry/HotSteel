@@ -38,7 +38,7 @@ function PTank(x,y) {
   this.flamethrower=flamethrowerG; // or false if not mounted
 
   this.artBusy=false;
-  this.artSpeed=0;
+  this.artSpeed=-100;
   this.artShots=0;
   this.artRate=artRate;
 
@@ -65,6 +65,10 @@ function PTank(x,y) {
   this.flame = new Audio('sounds/flame.mp3');
   this.move = new Audio('sounds/move.mp3');
   this.moveT = new Audio('sounds/moveT.mp3');
+  this.radio= new Array();
+  this.radio[0] = new Audio('sounds/radio1.mp3');
+  this.radio[1] = new Audio('sounds/radio2.mp3');
+  this.radio[2] = new Audio('sounds/radio3.mp3');
 
   this.newPos = function() {
   if(this.alive){
@@ -268,61 +272,13 @@ this.reloadTimeM=this.mgSpeed;
       // weapons
 
       // calling artillery, will be working after tank death
-      if (myGameArea.keys && myGameArea.keys[71] && this.numArt>0 && this.artBusy==false){
+      if (myGameArea.keys && myGameArea.keys[82] && this.numArt>0 && this.artBusy==false){
         this.artBusy=true;
         this.numArt--;
-      }
-
-      if(this.artBusy==true){
-
-        if(this.artSpeed<this.artRate){
-          this.artSpeed++;
-
-        }else{
-
-          var artX=Math.round(Math.random()*fieldMapX);
-          var artY=Math.round(Math.random()*fieldMapY);
-          var inTanks = new Array();
-          var chooseTank;
-          var ifHit=Math.floor(Math.random()*artEffect);
-          // chosing tanks inside the map
-          // then shooting with 50% acuracy, tank or not ground
-          // can hit dead tanks as well by accident !!
-          for(var g=0; g<aiTanks.length; g++){
-            if(aiTanks[g].x>0&&aiTanks[g].x<fieldMapX&&aiTanks[g].y>0&&aiTanks[g].y<fieldMapY){
-              inTanks.push(g);
-            }
-          }
-
-          // if hitting tanks
-          if(ifHit==0&&inTanks.length>0){
-            chooseTank=Math.floor(Math.random()*inTanks.length);
-            artX=aiTanks[inTanks[chooseTank]].x;
-            artY=aiTanks[inTanks[chooseTank]].y;
-            aiTanks[chooseTank].hp=0;
-          }else{
-          // if random shot
-            if(Math.abs(artX-this.x)<100&&Math.abs(artY-this.y)<100){
-              do{
-                artX=Math.round(Math.random()*fieldMapX);
-                artY=Math.round(Math.random()*fieldMapY);
-              }while(Math.abs(artX-this.x)<100&&Math.abs(artY-this.y)<100)
-            }
-          }
-          explosionsA.push(new ExplosionA(artX,artY));
-          this.artSpeed=0;
-          this.artShots++;
+        if(sound){
+          this.radio[Math.floor(Math.random()*3)].play();
         }
       }
-
-      if(this.artShots==artShots){
-        this.artShots=0;
-        this.artBusy=false;
-      }
-
-
-
-
 
 
       // setting up smoke

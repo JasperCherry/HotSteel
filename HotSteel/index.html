@@ -412,7 +412,7 @@ var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram",
 "Icebreaker", "Lucifer", "Archangel"];
 
 // general game variables
-var totalPoints=10000;
+var totalPoints=20000;
 var points=0;
 var level=0;
 var levelCreator=true;
@@ -422,7 +422,6 @@ var menuTanks=new Audio('sounds/menuTanks.mp3')
 var tankId=0;
 var terrain=0;  // 0 - grass, 1 - sand   // ai tanks camo
 
-var cashSound=new Audio('sounds/cash.mp3')
 var cButton=0;
 var cTimer=0;
 var createMenuTanks=true;
@@ -444,10 +443,11 @@ var vMaxG=0.8; // 0.8, 1, 1.2, 1.4, 1.6
 var secondMgG=false; // or false if not mounted
 var flamethrowerG=false; // or false if not mounted
 // artillery
-var artShots=5; //
-var artCalls=5; //
-var artEffect=2; //
-var artRate=25; //
+var artCalls=0; // 5, 4, 3, 2, 1
+var artShots=3; // 12, 10, 7, 5, 3
+var artRate=80; // 10, 20, 40, 60, 80
+var artEffect=2;
+
 
 var upgradePrice=0;
 
@@ -475,7 +475,7 @@ function updateGameArea() {
 
 <center>
   <p style="color:white;">MANUAL : ARROWS-move, A,D-turning turrent, SPACE-gun, 1,2-ammo type
-     W-body mg/flames, S-turrent mg, E-smoke, F-mines, G-artillery</p>
+     W-body mg/flames, S-turrent mg, E-smoke, F-mines, R-artillery</p>
 </center>
 
 </body>
