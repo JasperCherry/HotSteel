@@ -727,9 +727,19 @@ function menus(){
     }
     ctx.fillText("Flamethrower fuel",100,560);
 
-
     ctx.fillStyle = "white";
     ctx.fillText("Extras:",540,440);
+
+    if(!extUnlock){
+      if(cButton==10){
+        ctx.fillStyle = "red";
+        upgradePrice=1000;
+      }else{
+        ctx.fillStyle = "white";
+      }
+      ctx.fillText("UNLOCK",540,520);
+
+    }else{
 
     if(cButton==10){
       ctx.fillStyle = "red";
@@ -822,32 +832,43 @@ function menus(){
     }
     ctx.fillText("Flamethrower",470,560);
 
+    }// end of extras unlock
 
     ctx.fillStyle = "white";
     ctx.fillText("Artillery:",790,440);
 
+    if(!artUnlock){
+      if(cButton==13){
+        ctx.fillStyle = "red";
+        upgradePrice=1000;
+      }else{
+        ctx.fillStyle = "white";
+      }
+      ctx.fillText("UNLOCK",790,520);
+
+    }else{
 
     if(cButton==13){
       ctx.fillStyle = "red";
       if(artCalls==0){
         ctx.fillText("0/5",910,480);
-        upgradePrice=600;
+        upgradePrice=100;
       }
       if(artCalls==1){
         ctx.fillText("1/5",910,480);
-        upgradePrice=700;
+        upgradePrice=200;
       }
       if(artCalls==2){
         ctx.fillText("2/5",910,480);
-        upgradePrice=800;
+        upgradePrice=300;
       }
       if(artCalls==3){
         ctx.fillText("3/5",910,480);
-        upgradePrice=900;
+        upgradePrice=400;
       }
       if(artCalls==4){
         ctx.fillText("4/5",910,480);
-        upgradePrice=1000;
+        upgradePrice=500;
       }
       if(artCalls==5){
         ctx.fillText("5/5",910,480);
@@ -876,24 +897,23 @@ function menus(){
     }
     ctx.fillText("Calls",740,480);
 
-
     if(cButton==14){
       ctx.fillStyle = "red";
       if(artShots==3){
         ctx.fillText("1/5",910,520);
-        upgradePrice=700;
+        upgradePrice=200;
       }
       if(artShots==5){
         ctx.fillText("2/5",910,520);
-        upgradePrice=800;
+        upgradePrice=300;
       }
       if(artShots==7){
         ctx.fillText("3/5",910,520);
-        upgradePrice=900;
+        upgradePrice=400;
       }
       if(artShots==10){
         ctx.fillText("4/5",910,520);
-        upgradePrice=1000;
+        upgradePrice=500;
       }
       if(artShots==12){
         ctx.fillText("5/5",910,520);
@@ -922,51 +942,59 @@ function menus(){
 
     if(cButton==15){
       ctx.fillStyle = "red";
-      if(artRate==80){
+      if(artEffect==3.6){
         ctx.fillText("1/5",910,560);
-        upgradePrice=700;
+        upgradePrice=200;
       }
-      if(artRate==60){
+      if(artEffect==3.2){
         ctx.fillText("2/5",910,560);
-        upgradePrice=800;
+        upgradePrice=300;
       }
-      if(artRate==40){
+      if(artEffect==2.8){
         ctx.fillText("3/5",910,560);
-        upgradePrice=900;
+        upgradePrice=400;
       }
-      if(artRate==20){
+      if(artEffect==2.4){
         ctx.fillText("4/5",910,560);
-        upgradePrice=1000;
+        upgradePrice=500;
       }
-      if(artRate==10){
+      if(artEffect==2){
         ctx.fillText("5/5",910,560);
         upgradePrice="Max";
       }
     }else{
       ctx.fillStyle = "white";
-      if(artRate==80){
+      if(artEffect==3.6){
         ctx.fillText("1/5",910,560);
       }
-      if(artRate==60){
+      if(artEffect==3.2){
         ctx.fillText("2/5",910,560);
       }
-      if(artRate==40){
+      if(artEffect==2.8){
         ctx.fillText("3/5",910,560);
       }
-      if(artRate==20){
+      if(artEffect==2.4){
         ctx.fillText("4/5",910,560);
       }
-      if(artRate==10){
+      if(artEffect==2){
         ctx.fillText("5/5",910,560);
       }
     }
-    ctx.fillText("Rate of fire",740,560);
+    ctx.fillText("Accuracy",740,560);
+
+    }// end of artillery unlock
 
 
   // control
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
       cTimer=10;
       cButton--;
+      if(!artUnlock&&cButton==-1){
+        cButton=13;
+      }
+      if(!artUnlock&&cButton==12){
+        cButton=10;
+      }
       if(cButton==-1){
         cButton=15;
       }
@@ -975,6 +1003,12 @@ function menus(){
     if(myGameArea.keys && myGameArea.keys[40] && cTimer==0){
       cTimer=10;
       cButton++;
+      if(!extUnlock&&cButton==11){
+        cButton=13;
+      }
+      if(!artUnlock&&cButton==14){
+        cButton=16;
+      }
       if(cButton==16){
         cButton=0;
       }
@@ -1208,9 +1242,16 @@ function menus(){
       totalPoints-=500;
     }
   }
+
+  // extras
+
   // sights
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==10){
     cTimer=20;
+    if(!extUnlock&&totalPoints>=1000){
+      totalPoints-=1000;
+      extUnlock=true;
+    }else{
     if(sightsG==1&&totalPoints>=500){
       sightsG=2;
       totalPoints-=500;
@@ -1218,6 +1259,7 @@ function menus(){
     if(sightsG==2&&totalPoints>=500){
       sightsG=3;
       totalPoints-=500;
+    }
     }
   }
   // tower mg
@@ -1242,65 +1284,70 @@ function menus(){
   // calls
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==13){
     cTimer=20;
-    if(artCalls==0&&totalPoints>=600){
-      artCalls=1;
-      totalPoints-=600;
-    }else
-    if(artCalls==1&&totalPoints>=700){
-      artCalls=2;
-      totalPoints-=700;
-    }else
-    if(artCalls==2&&totalPoints>=800){
-      artCalls=3;
-      totalPoints-=800;
-    }else
-    if(artCalls==3&&totalPoints>=900){
-      artCalls=4;
-      totalPoints-=900;
-    }else
-    if(artCalls==4&&totalPoints>=1000){
-      artCalls=5;
+    if(!artUnlock&&totalPoints>=1000){
       totalPoints-=1000;
+      artUnlock=true;
+    }else{
+    if(artCalls==0&&totalPoints>=100){
+      artCalls=1;
+      totalPoints-=100;
+    }else
+    if(artCalls==1&&totalPoints>=200){
+      artCalls=2;
+      totalPoints-=200;
+    }else
+    if(artCalls==2&&totalPoints>=300){
+      artCalls=3;
+      totalPoints-=300;
+    }else
+    if(artCalls==3&&totalPoints>=400){
+      artCalls=4;
+      totalPoints-=400;
+    }else
+    if(artCalls==4&&totalPoints>=500){
+      artCalls=5;
+      totalPoints-=500;
+    }
     }
   }
   // shots
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==14){
     cTimer=20;
-    if(artShots==3&&totalPoints>=700){
+    if(artShots==3&&totalPoints>=200){
       artShots=5;
-      totalPoints-=700;
+      totalPoints-=200;
     }else
-    if(artShots==5&&totalPoints>=800){
+    if(artShots==5&&totalPoints>=300){
       artShots=7;
-      totalPoints-=800;
+      totalPoints-=300;
     }else
-    if(artShots==7&&totalPoints>=900){
+    if(artShots==7&&totalPoints>=400){
       artShots=10;
-      totalPoints-=900;
+      totalPoints-=400;
     }else
-    if(artShots==10&&totalPoints>=1000){
+    if(artShots==10&&totalPoints>=500){
       artShots=12;
-      totalPoints-=1000;
+      totalPoints-=500;
     }
   }
   // rate of fire
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==15){
     cTimer=20;
-    if(artRate==80&&totalPoints>=700){
-      artRate=60;
-      totalPoints-=700;
+    if(artEffect==3.6&&totalPoints>=200){
+      artEffect=3.2;
+      totalPoints-=200;
     }else
-    if(artRate==60&&totalPoints>=800){
-      artRate=40;
-      totalPoints-=800;
+    if(artEffect==3.2&&totalPoints>=300){
+      artEffect=2.8;
+      totalPoints-=300;
     }else
-    if(artRate==40&&totalPoints>=900){
-      artRate=20;
-      totalPoints-=900;
+    if(artEffect==2.8&&totalPoints>=400){
+      artEffect=2.4;
+      totalPoints-=400;
     }else
-    if(artRate==20&&totalPoints>=1000){
-      artRate=10;
-      totalPoints-=1000;
+    if(artEffect==2.4&&totalPoints>=500){
+      artEffect=2;
+      totalPoints-=500;
     }
   }
 

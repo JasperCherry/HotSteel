@@ -414,7 +414,7 @@ var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram",
 // general game variables
 var totalPoints=20000;
 var points=0;
-var level=0;
+var level=2;
 var levelCreator=true;
 var endLevel=150;
 var sound=true; // sound in the game
@@ -443,10 +443,12 @@ var vMaxG=0.8; // 0.8, 1, 1.2, 1.4, 1.6
 var secondMgG=false; // or false if not mounted
 var flamethrowerG=false; // or false if not mounted
 // artillery
-var artCalls=0; // 5, 4, 3, 2, 1
+var artCalls=1; // 5, 4, 3, 2, 1
 var artShots=3; // 12, 10, 7, 5, 3
-var artRate=80; // 10, 20, 40, 60, 80
-var artEffect=2;
+var artEffect=3.6; // 3.6, 3.2, 2.8, 2.4, 2
+// unlocks
+var artUnlock=false;
+var extUnlock=false;
 
 
 var upgradePrice=0;

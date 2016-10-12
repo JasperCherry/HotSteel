@@ -3,24 +3,22 @@
 to do:
 
 
+main logo
+
+extras and artilery to unlock
 
 ///////////////////////////////////////////////////////////////
 
 
-extras and artilery to unlock
 
-manual picture
+
+manual site
 
 upgrades, achievements and cash as cookie
 
 dynamicly created random games
 
-tanks can attack from -50pix outside map
 
-
-
-
-artillery bug?? tank was killed outside at the border, some tanks survive attack
 
 
 

@@ -189,8 +189,10 @@ function AiTank(x,y) {
     }
 
     // shooting
+    // in map check
+    if(this.x>-50&&this.x<fieldMapX+50&&this.y>-50&&this.y<fieldMapY+50){
     // main gun
-    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+    if(this.reloadTime>0){
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
@@ -212,6 +214,7 @@ function AiTank(x,y) {
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
     }
+    }// distance check
 
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
@@ -543,8 +546,10 @@ function AiTank2(x,y) {
     }
 
     // shooting
+    // in map check
+    if(this.x>-50&&this.x<fieldMapX+50&&this.y>-50&&this.y<fieldMapY+50){
     // main gun
-    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+    if(this.reloadTime>0){
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
@@ -566,6 +571,7 @@ function AiTank2(x,y) {
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
     }
+    }// distance check
 
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////
@@ -904,8 +910,10 @@ function AiTank3(x,y) {
     }
 
     // shooting
+    // in map check
+    if(this.x>-50&&this.x<fieldMapX+50&&this.y>-50&&this.y<fieldMapY+50){
     // main gun
-    if(this.reloadTime>0&&this.x>0&&this.x<fieldMapX&&this.y>0&&this.y<fieldMapY){
+    if(this.reloadTime>0){
       this.reloadTime--;
     }
     if (this.reloadTime==0&&this.shotReady&&!this.towerLoose){
@@ -927,6 +935,7 @@ function AiTank3(x,y) {
     if(this.reloadTimeM>0){
       this.reloadTimeM--;
     }
+    }// distance check
 
 
     // interactions with other ai tanks /////////////////////////////////////////////////////////////////////////

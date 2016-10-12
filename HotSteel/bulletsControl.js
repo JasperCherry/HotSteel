@@ -359,7 +359,7 @@ function bulletsControl() {
   // artilery calling
   if(pTank.artBusy==true){
 
-    if(pTank.artSpeed<pTank.artRate){
+    if(pTank.artSpeed<20){
       pTank.artSpeed++;
 
     }else{

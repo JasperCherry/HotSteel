@@ -37,10 +37,10 @@ function PTank(x,y) {
   this.secondMg=secondMgG; // or false if not mounted
   this.flamethrower=flamethrowerG; // or false if not mounted
 
+  // artilery
   this.artBusy=false;
   this.artSpeed=-100;
   this.artShots=0;
-  this.artRate=artRate;
 
   this.mineSpeed=40;
   this.ammoType = 1;
@@ -243,6 +243,7 @@ this.reloadTimeM=this.mgSpeed;
             if((Math.abs(kills[i].x-this.x)<30)&&(Math.abs(kills[i].y-this.y)<30)){
               this.x=this.previousX;
               this.y=this.previousY;
+              this.speed=0;
             }
       }
 
@@ -256,6 +257,7 @@ this.reloadTimeM=this.mgSpeed;
           ){
             this.x=this.previousX;
             this.y=this.previousY;
+            this.speed=0;
           }
       }
 
@@ -264,6 +266,7 @@ this.reloadTimeM=this.mgSpeed;
         if((Math.abs(aiTanks[t].x-pTank.x)<30)&&(Math.abs(aiTanks[t].y-pTank.y)<30)){
           pTank.x=pTank.previousX;
           pTank.y=pTank.previousY;
+          this.speed=0;
         }
       }
 
