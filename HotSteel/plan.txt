@@ -15,16 +15,15 @@ to do:
 ///////////////////////////////////////////////////////////////
 
 
-author site
+author and references site
 
 upgrades, achievements and cash as cookie
 
 target of the game, waves number
 
 
-
-
-
+change price of tower mg and flamethrower to 1000
+stones should be + 40 px inside the map
 
 
 
