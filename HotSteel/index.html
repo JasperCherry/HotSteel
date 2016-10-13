@@ -328,6 +328,7 @@ canvas {
 
 <img src="tanks/track.png" id="track" style="display: none;">
 
+<img src="menus/logo.png" id="logo" style="display: none;">
 <img src="menus/wall.jpg" id="wall" style="display: none;">
 <img src="menus/menu.jpg" id="menu" style="display: none;">
 <img src="menus/garage.jpg" id="garage" style="display: none;">
@@ -412,22 +413,25 @@ var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram",
 "Icebreaker", "Lucifer", "Archangel"];
 
 // general game variables
-var totalPoints=20000;
+var gameMap=map1;
+var terrain=0;  // 0 - grass, 1 - sand   // ai tanks camo
 var points=0;
-var level=2;
+var gameKills=0;
+var level=0;
 var levelCreator=true;
 var endLevel=150;
 var sound=true; // sound in the game
 var menuTanks=new Audio('sounds/menuTanks.mp3')
 var tankId=0;
-var terrain=0;  // 0 - grass, 1 - sand   // ai tanks camo
+
 
 var cButton=0;
 var cTimer=0;
 var createMenuTanks=true;
 
 
-// player upgrades
+// player upgrades / COOKIES
+var totalPoints=10000;
 var gunSpeedG=300; // 300,250,200,150,100
 var mgSpeedG=10; // 10,8,6,5,4
 var sightsG=1;  // 1,2,3
@@ -443,7 +447,7 @@ var vMaxG=0.8; // 0.8, 1, 1.2, 1.4, 1.6
 var secondMgG=false; // or false if not mounted
 var flamethrowerG=false; // or false if not mounted
 // artillery
-var artCalls=1; // 5, 4, 3, 2, 1
+var artCalls=0; // 5, 4, 3, 2, 1
 var artShots=3; // 12, 10, 7, 5, 3
 var artEffect=3.6; // 3.6, 3.2, 2.8, 2.4, 2
 // unlocks
@@ -471,14 +475,6 @@ function updateGameArea() {
 
 </script>
 
-
-
-
-
-<center>
-  <p style="color:white;">MANUAL : ARROWS-move, A,D-turning turrent, SPACE-gun, 1,2-ammo type
-     W-body mg/flames, S-turrent mg, E-smoke, F-mines, R-artillery</p>
-</center>
 
 </body>
 </html>

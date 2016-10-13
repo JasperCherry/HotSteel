@@ -3,20 +3,20 @@
 to do:
 
 
-main logo
 
-extras and artilery to unlock
+
 
 ///////////////////////////////////////////////////////////////
 
 
-
-
-manual site
+author site
 
 upgrades, achievements and cash as cookie
 
-dynamicly created random games
+target of the game, waves number
+
+
+
 
 
 

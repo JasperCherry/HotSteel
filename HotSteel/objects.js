@@ -129,6 +129,7 @@ function Bullet2(x, y, angle, type) {
     this.update = function() {
 
         this.liveTime--;
+        if(this.liveTime<99){
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -143,6 +144,7 @@ function Bullet2(x, y, angle, type) {
         ctx.fill();
         */
         ctx.restore();
+        }
     }
     this.newPos = function() {
         this.x += this.speed * Math.sin(this.angle);
@@ -538,6 +540,8 @@ function clearLevel() {
   pTank.move.pause();
   pTank.moveT.pause();
 
+  terrain=0;
+
   kills = new Array();
   killsFire = new Array();
   tanksFire = new Array();
@@ -561,5 +565,6 @@ function clearLevel() {
 
   totalPoints+=points;
   points=0;
+  gameKills=0;
 
 }

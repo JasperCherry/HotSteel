@@ -351,6 +351,7 @@ function bulletsControl() {
        }
        points+=150;
      }
+     gameKills++;
      aiTanks.splice(t,1);
    }
 

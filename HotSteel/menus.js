@@ -32,6 +32,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.drawImage(menu, 0, 0);
+    ctx.drawImage(logo, 110, 130, 452*1, 86*0.8);
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
@@ -41,52 +42,52 @@ function menus(){
 
     if(cButton==0){
       ctx.fillStyle = "red";
-      ctx.fillText("Play",630,190);
+      ctx.fillText("Play",660,190);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Play",630,190);
+      ctx.fillText("Play",660,190);
     }
 
     if(cButton==1){
       ctx.fillStyle = "red";
-      ctx.fillText("Upgrades",630,270);
+      ctx.fillText("Upgrades",660,270);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Upgrades",630,270);
+      ctx.fillText("Upgrades",660,270);
     }
 
     if(cButton==2){
       ctx.fillStyle = "red";
-      ctx.fillText("Manual",630,350);
+      ctx.fillText("Manual",660,350);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Manual",630,350);
+      ctx.fillText("Manual",660,350);
     }
 
     if(sound){
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound on",630,430);
+        ctx.fillText("Sound on",660,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound on",630,430);
+        ctx.fillText("Sound on",660,430);
       }
     }else{
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound off",630,430);
+        ctx.fillText("Sound off",660,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound off",630,430);
+        ctx.fillText("Sound off",660,430);
       }
     }
 
     if(cButton==4){
       ctx.fillStyle = "red";
-      ctx.fillText("Author",630,510);
+      ctx.fillText("Author",660,510);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Author",630,510);
+      ctx.fillText("Author",660,510);
     }
 
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
@@ -120,6 +121,14 @@ function menus(){
       cTimer=20;
       cButton=0;
       level=2;
+      clearLevel();
+      menuTanks.load();
+    }
+
+    if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==2){
+      cTimer=20;
+      cButton=0;
+      level=3;
       clearLevel();
       menuTanks.load();
     }
@@ -233,8 +242,8 @@ function menus(){
 
     ctx.fillStyle = "white";
     ctx.font = "bold 30px Courier New";
-    ctx.fillText("Cash:",650,70);
-    ctx.fillText(totalPoints,750,70);
+    ctx.fillText("Cash:",730,70);
+    ctx.fillText(totalPoints,830,70);
 
 
     ctx.font = "bold 20px Courier New";
@@ -992,7 +1001,7 @@ function menus(){
       if(!artUnlock&&cButton==-1){
         cButton=13;
       }
-      if(!artUnlock&&cButton==12){
+      if(!extUnlock&&cButton==12){
         cButton=10;
       }
       if(cButton==-1){
@@ -1287,6 +1296,7 @@ function menus(){
     if(!artUnlock&&totalPoints>=1000){
       totalPoints-=1000;
       artUnlock=true;
+      artCalls=1;
     }else{
     if(artCalls==0&&totalPoints>=100){
       artCalls=1;
@@ -1353,18 +1363,117 @@ function menus(){
 
   }// end of level 2 // garage
 
+  if(level==3){ // level 3 // manual
+    var ctx = myGameArea.context;
 
+    ctx.drawImage(garage, 0, 0);
+
+    ctx.font = "bold 20px Courier New";
+    ctx.fillStyle = "white";
+
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(150, 180);
+    ctx.drawImage(rusa, -20, -30);
+    ctx.drawImage(rusb, -20, -30);
+    ctx.restore();
+
+    ctx.fillText("Press esc to return",400,620);
+
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(350, 180);
+    ctx.rotate(70*Math.PI/180);
+    ctx.drawImage(rusa, -20, -30);
+    ctx.drawImage(rusb, -20, -30);
+    ctx.restore();
+
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(550, 180);
+    ctx.rotate(160*Math.PI/180);
+    ctx.drawImage(rusa, -20, -30);
+    ctx.rotate(70*Math.PI/180);
+    ctx.drawImage(rusb, -20, -30);
+    ctx.restore();
+
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(750, 180);
+    ctx.rotate(210*Math.PI/180);
+    ctx.drawImage(rusa, -20, -30);
+    ctx.rotate(90*Math.PI/180);
+    ctx.drawImage(rusb, -20, -30);
+    ctx.restore();
+
+
+
+    ctx.fillText("Use arrows to move and turn your tank",70,100);
+
+    ctx.fillText("A and D to turn your turent",100,260);
+
+    ctx.fillText("Hit space to fire cannon",650,100);
+
+    ctx.fillText("Press 1 and 2 to switch ammo type",550,260);
+
+    ctx.fillText("W - body machinegun or flamethrower",70,380);
+    ctx.fillText("S - turent machinegun",70,420);
+    ctx.fillText("E - smoke cover",70,460);
+    ctx.fillText("F - mines",70,500);
+    ctx.fillText("R - artillery call",70,540);
+
+    ctx.fillText("SABOT can penetrate multiple tanks",540,420);
+    ctx.fillText("Smoke cover suspends enemy fire",540,460);
+    ctx.fillText("but also and your aiming sights",580,500);
+    ctx.fillText("Flamethrower can set up enemies on fire",480,540);
+
+
+    // exit with esc
+    if(myGameArea.keys && myGameArea.keys[27] && cTimer==0){
+      cTimer=20;
+      clearLevel();
+      level=1;
+      createMenuTanks=true;
+    }
+
+  }// end of level 3 // manual
 
   if(level==100){ // level 100 // survival mode
 
+
+
 if(levelCreator){
-    obstacles[0] = new Obstacle(800,150,1);
-    obstacles[1] = new Obstacle(220,110,2);
-    obstacles[2] = new Obstacle(230,160,1);
-    obstacles[3] = new Obstacle(540,370,2);
-    obstacles[4] = new Obstacle(100,300,3);
-    obstacles[5] = new Obstacle(210,330,1);
-    obstacles[6] = new Obstacle(170,540,3);
+    var mapNumber=Math.floor(Math.random()*4)+1;
+
+    if(mapNumber==1){
+      gameMap=map1;
+    }
+    if(mapNumber==2){
+      gameMap=map2;
+    }
+    if(mapNumber==3){
+      gameMap=map3;
+    }
+    if(mapNumber==4){
+      gameMap=map4;
+    }
+
+    if(mapNumber==1||mapNumber==2){
+      terrain=0;
+    }else{
+      terrain=1;
+    }
+
+    // creating obstacles
+    var numberObstacles=Math.floor(Math.random()*7)+3;
+    for(var x=0; x<numberObstacles; x++){
+      do{
+        var xOb=Math.floor(Math.random()*1000)+1;
+        var yOb=Math.floor(Math.random()*600)+1;
+      }while(Math.abs(xOb-pTank.x)<70||Math.abs(yOb-pTank.y)<70)
+
+      obstacles[x] = new Obstacle(xOb,yOb,(Math.floor(Math.random()*3)+1));
+    }
 
     levelCreator=false;
 }
@@ -1395,6 +1504,7 @@ if(levelCreator){
     createMenuTanks=true;
   }
 
+  // exit with esc
   if(myGameArea.keys && myGameArea.keys[27] && cTimer==0){
     cTimer=20;
     clearLevel();

@@ -5,7 +5,7 @@ function gameDrawing() {
 
   // drawing the map
   var ctx = myGameArea.context;
-  ctx.drawImage(map1, 0, 0);
+  ctx.drawImage(gameMap, 0, 0);
 
 
   // tracks
@@ -53,7 +53,7 @@ function gameDrawing() {
   for(var t = 0; t < aiTanks.length; t++) {
     aiTanks[t].update();
     ctx.fillStyle = "white";
-    ctx.font = "12px Arial";
+    ctx.font = "13px Arial";
     ctx.fillText(aiTanks[t].name ,aiTanks[t].x-10,aiTanks[t].y-35);
     ctx.fillText(aiTanks[t].hp,aiTanks[t].x-10,aiTanks[t].y-20);
   }
@@ -178,7 +178,7 @@ function gameDrawing() {
 
   ctx.drawImage(stat, 0, 600);
   ctx.fillStyle ="black";
-  ctx.fillRect( 0, 600, 1000, 4);
+  ctx.fillRect( 0, 600, 1000, 2);
 
   ctx.font = "bold 20px Courier New";
   ctx.fillStyle = "white";
@@ -235,12 +235,15 @@ function gameDrawing() {
   }
 
   if(artCalls>0){
-  ctx.fillText("Artillery",740,620);
+  ctx.fillText("Calls",740,620);
   ctx.fillText(pTank.numArt,740,645);
   }
 
-  ctx.fillText("Cash",910,620);
-  ctx.fillText(points,910,645);
+  ctx.fillText("Kills",840,620);
+  ctx.fillText(gameKills,840,645);
+
+  ctx.fillText("Cash",920,620);
+  ctx.fillText(points,920,645);
 
 
 
