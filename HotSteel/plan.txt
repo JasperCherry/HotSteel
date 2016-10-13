@@ -6,6 +6,12 @@ to do:
 
 
 
+
+
+
+
+
+
 ///////////////////////////////////////////////////////////////
 
 
@@ -26,7 +32,6 @@ target of the game, waves number
 
 /////////////////extra :
 
-check if any of the arrays have problem with destruction of objects during the game
 
 counting web visits
 
