@@ -71,6 +71,7 @@ function bulletsControl() {
         if(Math.abs(flames[i].x-aiTanks[t].x)<15 && Math.abs(flames[i].y-aiTanks[t].y)<15){
           flames.splice(i,1);
           aiTanks[t].fireProtect--;
+          aiTanks[t].hp--;
           if(aiTanks[t].fireProtect<=0){
             aiTanks[t].onFire=true;
           }
@@ -383,7 +384,7 @@ function bulletsControl() {
         artY=aiTanks[inTanks[chooseTank]].y;
         aiTanks[chooseTank].hp=0;
       }else{
-      // if random shot
+      // if not hitting ai tanks
         if(Math.abs(artX-pTank.x)<100&&Math.abs(artY-pTank.y)<100){
           do{
             artX=Math.round(Math.random()*fieldMapX);
@@ -391,10 +392,16 @@ function bulletsControl() {
           }while(Math.abs(artX-pTank.x)<100&&Math.abs(artY-pTank.y)<100)
         }
       }
-      // if hits dead tank
+      // if accidentaly hits dead tank
       for(var g=0; g<kills.length; g++){
         if(Math.abs(artX-kills[g].x)<15&&Math.abs(artY-kills[g].y)<15){
           kills[g].hp=0;
+        }
+      }
+      // if accidentaly hits ai tank
+      for(var g=0; g<aiTanks.length; g++){
+        if(Math.abs(artX-aiTanks[g].x)<15&&Math.abs(artY-aiTanks[g].y)<15){
+          aiTanks[g].hp=0;
         }
       }
       // hit effect

@@ -10,7 +10,12 @@ function PTank(x,y) {
 
   this.x=x;
   this.y=y;
+
+  if(terrain==0){
   this.imgP=pointer;
+  }else{
+  this.imgP=pointer2;
+  }
 
   if(terrain==0){
     this.imgB=rusa;
@@ -468,8 +473,12 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
-      ctx.strokeStyle = "red";
       ctx = myGameArea.context;
+      if(terrain==0){
+      ctx.strokeStyle = "red";
+      }else{
+      ctx.strokeStyle = "black";
+      }
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
@@ -493,8 +502,12 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -270, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
-      ctx.strokeStyle = "red";
       ctx = myGameArea.context;
+      if(terrain==0){
+      ctx.strokeStyle = "red";
+      }else{
+      ctx.strokeStyle = "black";
+      }
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
@@ -518,8 +531,12 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -420, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
-      ctx.strokeStyle = "red";
       ctx = myGameArea.context;
+      if(terrain==0){
+      ctx.strokeStyle = "red";
+      }else{
+      ctx.strokeStyle = "black";
+      }
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);

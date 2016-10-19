@@ -686,7 +686,7 @@ function menus(){
     }
     ctx.fillText("Smoke",100,520);
 
-
+    if(flamethrowerG){
     if(cButton==9){
       ctx.fillStyle = "red";
       if(numFlamesG==0){
@@ -735,6 +735,7 @@ function menus(){
       }
     }
     ctx.fillText("Flamethrower fuel",100,560);
+    }
 
     ctx.fillStyle = "white";
     ctx.fillText("Extras:",540,440);
@@ -746,7 +747,7 @@ function menus(){
       }else{
         ctx.fillStyle = "white";
       }
-      ctx.fillText("UNLOCK",540,520);
+      ctx.fillText("UNLOCK",543,520);
 
     }else{
 
@@ -800,7 +801,7 @@ function menus(){
       ctx.closePath();
       if(!secondMgG){
         ctx.fillText("Mount",640,520);
-        upgradePrice=2000;
+        upgradePrice=1000;
       }else{
         ctx.fillText("Mounted",640,520);
         upgradePrice="Max";
@@ -826,7 +827,7 @@ function menus(){
       ctx.closePath();
       if(!flamethrowerG){
         ctx.fillText("Mount",640,560);
-        upgradePrice=2000;
+        upgradePrice=1000;
       }else{
         ctx.fillText("Mounted",640,560);
         upgradePrice="Max";
@@ -849,11 +850,11 @@ function menus(){
     if(!artUnlock){
       if(cButton==13){
         ctx.fillStyle = "red";
-        upgradePrice=1000;
+        upgradePrice=1500;
       }else{
         ctx.fillStyle = "white";
       }
-      ctx.fillText("UNLOCK",790,520);
+      ctx.fillText("UNLOCK",810,520);
 
     }else{
 
@@ -998,6 +999,9 @@ function menus(){
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
       cTimer=10;
       cButton--;
+      if(!flamethrowerG&&cButton==9){
+        cButton=8;
+      }
       if(!artUnlock&&cButton==-1){
         cButton=13;
       }
@@ -1012,6 +1016,9 @@ function menus(){
     if(myGameArea.keys && myGameArea.keys[40] && cTimer==0){
       cTimer=10;
       cButton++;
+      if(!flamethrowerG&&cButton==9){
+        cButton=10;
+      }
       if(!extUnlock&&cButton==11){
         cButton=13;
       }
@@ -1274,17 +1281,17 @@ function menus(){
   // tower mg
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==11){
     cTimer=20;
-    if(secondMgG==false&&totalPoints>=2000){
+    if(secondMgG==false&&totalPoints>=1000){
       secondMgG=true;
-      totalPoints-=2000;
+      totalPoints-=1000;
     }
   }
   // flamethrower
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==12){
     cTimer=20;
-    if(flamethrowerG==false&&totalPoints>=2000){
+    if(flamethrowerG==false&&totalPoints>=1000){
       flamethrowerG=true;
-      totalPoints-=2000;
+      totalPoints-=1000;
     }
   }
 
@@ -1293,8 +1300,8 @@ function menus(){
   // calls
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==13){
     cTimer=20;
-    if(!artUnlock&&totalPoints>=1000){
-      totalPoints-=1000;
+    if(!artUnlock&&totalPoints>=1500){
+      totalPoints-=1500;
       artUnlock=true;
       artCalls=1;
     }else{
@@ -1412,20 +1419,21 @@ function menus(){
 
     ctx.fillText("A and D to turn your turent",100,260);
 
-    ctx.fillText("Hit space to fire cannon",650,100);
+    ctx.fillText("Hit SPACE to fire cannon",650,100);
 
     ctx.fillText("Press 1 and 2 to switch ammo type",550,260);
 
-    ctx.fillText("W - body machinegun or flamethrower",70,380);
+    ctx.fillText("W - body machinegun / flamethrower",70,380);
     ctx.fillText("S - turent machinegun",70,420);
     ctx.fillText("E - smoke cover",70,460);
     ctx.fillText("F - mines",70,500);
     ctx.fillText("R - artillery call",70,540);
 
-    ctx.fillText("SABOT can penetrate multiple tanks",540,420);
-    ctx.fillText("Smoke cover suspends enemy fire",540,460);
-    ctx.fillText("but also and your aiming sights",580,500);
-    ctx.fillText("Flamethrower can set up enemies on fire",480,540);
+    ctx.fillText("SABOT can penetrate multiple tanks",540,380);
+    ctx.fillText("Smoke cover suspends enemy fire",540,420);
+    ctx.fillText("but also and your aiming sights",580,460);
+    ctx.fillText("Flamethrower can set up enemies on fire",480,500);
+    ctx.fillText("but is replacing body machinegun",570,540);
 
 
     // exit with esc
@@ -1464,13 +1472,16 @@ if(levelCreator){
       terrain=1;
     }
 
+    // creating player tank
+    pTank = new PTank(500,300);
+
     // creating obstacles
     var numberObstacles=Math.floor(Math.random()*7)+3;
     for(var x=0; x<numberObstacles; x++){
       do{
-        var xOb=Math.floor(Math.random()*1000)+1;
-        var yOb=Math.floor(Math.random()*600)+1;
-      }while(Math.abs(xOb-pTank.x)<70||Math.abs(yOb-pTank.y)<70)
+        var xOb=Math.floor(Math.random()*880)+30;
+        var yOb=Math.floor(Math.random()*480)+30;
+      }while(Math.abs(xOb-pTank.x)<70&&Math.abs(yOb-pTank.y)<70)
 
       obstacles[x] = new Obstacle(xOb,yOb,(Math.floor(Math.random()*3)+1));
     }

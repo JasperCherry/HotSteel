@@ -1,12 +1,5 @@
  ////single player only
-
 to do:
-
-
-
-
-
-
 
 
 
@@ -15,15 +8,17 @@ to do:
 ///////////////////////////////////////////////////////////////
 
 
+
+artillery animation of explosion
+
 author and references site
 
 upgrades, achievements and cash as cookie
 
 target of the game, waves number
+information about the wave
+tanks are comming after previous ones were killed
 
-
-change price of tower mg and flamethrower to 1000
-stones should be + 40 px inside the map
 
 
 
@@ -34,7 +29,7 @@ stones should be + 40 px inside the map
 
 counting web visits
 
-
+share on fb to get more poitns
 
 polishing
 

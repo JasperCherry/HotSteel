@@ -325,7 +325,6 @@ function Obstacle(x, y, type) {
         ctx = myGameArea.context;
         ctx.save();
         //ctx.fillStyle = "black";
-
         if(this.type==1){
           //ctx.fillRect(this.x, this.y, this.width, this.height);
           ctx.drawImage(this.img, this.x-10, this.y-10, 84, 70);
@@ -340,7 +339,7 @@ function Obstacle(x, y, type) {
           //ctx.fillRect(this.x, this.y, this.width, this.height);
           ctx.drawImage(this.img, this.x-15, this.y-10, 84, 70);
         }
-
+        //ctx.fillRect(this.x, this.y, 10, 10);
         ctx.restore();
     }
 
