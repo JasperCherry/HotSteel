@@ -2,34 +2,25 @@
 to do:
 
 
+bonus weapon
 
-
+move manual tanks towards left
 
 ///////////////////////////////////////////////////////////////
 
 
 
-artillery animation of explosion
-
-author and references site
 
 upgrades, achievements and cash as cookie
 
-target of the game, waves number
-information about the wave
-tanks are comming after previous ones were killed
 
-
-
-
+railgun as main award
 
 
 /////////////////extra :
 
 
 counting web visits
-
-share on fb to get more poitns
 
 polishing
 

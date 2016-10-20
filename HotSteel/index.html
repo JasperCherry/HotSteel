@@ -334,6 +334,8 @@ canvas {
 <img src="menus/menu.jpg" id="menu" style="display: none;">
 <img src="menus/garage.jpg" id="garage" style="display: none;">
 <img src="menus/garage2.png" id="garage2" style="display: none;">
+<img src="menus/manual.jpg" id="manual" style="display: none;">
+<img src="menus/author.jpg" id="author" style="display: none;">
 
 <img src="menus/stat.jpg" id="stat" style="display: none;">
 
@@ -424,7 +426,9 @@ var endLevel=150;
 var sound=true; // sound in the game
 var menuTanks=new Audio('sounds/menuTanks.mp3')
 var tankId=0;
-
+var infoTime=0;
+var wave=0;
+var createWave=false;
 
 var cButton=0;
 var cTimer=0;
@@ -432,7 +436,7 @@ var createMenuTanks=true;
 
 
 // player upgrades / COOKIES
-var totalPoints=10000;
+var totalPoints=30000;
 var gunSpeedG=300; // 300,250,200,150,100
 var mgSpeedG=10; // 10,8,6,5,4
 var sightsG=1;  // 1,2,3

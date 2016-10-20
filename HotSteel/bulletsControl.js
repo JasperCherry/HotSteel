@@ -372,7 +372,7 @@ function bulletsControl() {
       var chooseTank;
       var ifHit=Math.floor(Math.random()*artEffect);
       for(var g=0; g<aiTanks.length; g++){
-        if(aiTanks[g].x>0&&aiTanks[g].x<fieldMapX&&aiTanks[g].y>0&&aiTanks[g].y<fieldMapY){
+        if(aiTanks[g].x>-50&&aiTanks[g].x<fieldMapX+50&&aiTanks[g].y>-50&&aiTanks[g].y<fieldMapY+50){
           inTanks.push(g);
         }
       }
