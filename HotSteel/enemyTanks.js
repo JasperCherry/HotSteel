@@ -13,7 +13,7 @@ function AiTank(x,y) {
   this.towerLoose=false;
 
   // tank on fire
-  this.fireProtect=50;
+  this.fireProtect=30;
   this.onFire=false;
   this.fireHurtDelay=0;
   this.delayTime=0;
@@ -371,7 +371,7 @@ function AiTank2(x,y) {
   this.towerLoose=false;
 
   // tank on fire
-  this.fireProtect=50;
+  this.fireProtect=30;
   this.onFire=false;
   this.fireHurtDelay=0;
   this.delayTime=0;
@@ -734,7 +734,7 @@ function AiTank3(x,y) {
   this.towerLoose=false;
 
   // tank on fire
-  this.fireProtect=50;
+  this.fireProtect=30;
   this.onFire=false;
   this.fireHurtDelay=0;
   this.delayTime=0;

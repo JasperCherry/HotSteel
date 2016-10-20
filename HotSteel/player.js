@@ -27,7 +27,10 @@ function PTank(x,y) {
 
   // upgrades
   this.numArt=artCalls;
-  this.gunSpeed=gunSpeedG; // 300,250,200,150,100
+  this.gunSpeed=gunSpeedG;// 300,250,200,150,100
+  if(bonus){
+    this.gunSpeed=7;
+  }
   this.mgSpeed=mgSpeedG; // 10,8,6,5,4
   this.sights=sightsG;  // 1,2,3
   this.numBullet=numBulletG; // 12, 24, 36, 48, 60
@@ -323,6 +326,14 @@ this.reloadTimeM=this.mgSpeed;
 
       // main gun
       if (myGameArea.keys && myGameArea.keys[32] && this.reloadTime==0){
+        if(bonus){
+          bulletsP.push(new Bullet3(
+          this.x+(27 * Math.sin(this.angleT)),
+          this.y-(27 * Math.cos(this.angleT)),
+          this.angleT+((Math.round(Math.random() * (10)) - 5) * Math.PI / 180),
+          this.ammoType));
+          this.reloadTime=this.gunSpeed;
+        }else{
         if(this.ammoType==1 && this.numBullet>0){
           this.numBullet--;
           bulletsP.push(new Bullet(
@@ -339,6 +350,7 @@ this.reloadTimeM=this.mgSpeed;
           this.angleT,
           this.ammoType));
           this.reloadTime=this.gunSpeed;
+        }
         }
       }
       //reloading
@@ -473,6 +485,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
+      if(!bonus){
       ctx = myGameArea.context;
       if(terrain==0){
       ctx.strokeStyle = "red";
@@ -491,6 +504,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.closePath();
       ctx.restore();
       }
+      }
     }
     if(this.sights==2||this.sights==3){
       // drawing the pointer
@@ -502,6 +516,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -270, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
+      if(!bonus){
       ctx = myGameArea.context;
       if(terrain==0){
       ctx.strokeStyle = "red";
@@ -520,6 +535,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.closePath();
       ctx.restore();
       }
+      }
     }
     if(this.sights==3){
       // drawing the pointer
@@ -531,6 +547,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.drawImage(this.imgP, -64*0.25, -420, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
+      if(!bonus){
       ctx = myGameArea.context;
       if(terrain==0){
       ctx.strokeStyle = "red";
@@ -548,6 +565,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.stroke();
       ctx.closePath();
       ctx.restore();
+      }
       }
     }
     ctx.globalAlpha = 1;

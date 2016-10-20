@@ -2,28 +2,11 @@
 to do:
 
 
-bonus weapon
-
-move manual tanks towards left
-
-///////////////////////////////////////////////////////////////
-
-
 
 
 upgrades, achievements and cash as cookie
 
-
-railgun as main award
-
-
-/////////////////extra :
-
-
 counting web visits
 
 polishing
-
-
-////////////////// point of the game
 

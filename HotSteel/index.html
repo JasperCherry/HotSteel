@@ -56,6 +56,7 @@ canvas {
 <img src="bullets/mgb.png" id="mgb" style="display: none;">
 <img src="bullets/b.png" id="b" style="display: none;">
 <img src="bullets/b2.png" id="b2" style="display: none;">
+<img src="bullets/b3.png" id="b3" style="display: none;">
 
 <img src="fire/loop/l0.png" id="l0" style="display: none;">
 <img src="fire/loop/l1.png" id="l1" style="display: none;">
@@ -436,7 +437,7 @@ var createMenuTanks=true;
 
 
 // player upgrades / COOKIES
-var totalPoints=30000;
+var totalPoints=0;
 var gunSpeedG=300; // 300,250,200,150,100
 var mgSpeedG=10; // 10,8,6,5,4
 var sightsG=1;  // 1,2,3
@@ -458,7 +459,8 @@ var artEffect=3.6; // 3.6, 3.2, 2.8, 2.4, 2
 // unlocks
 var artUnlock=false;
 var extUnlock=false;
-
+// bonus
+var bonus=false;
 
 var upgradePrice=0;
 

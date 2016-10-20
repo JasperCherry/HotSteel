@@ -1387,7 +1387,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.save();
-    ctx.translate(150, 180);
+    ctx.translate(200, 180);
     ctx.drawImage(rusa, -20, -30);
     ctx.drawImage(rusb, -20, -30);
     ctx.restore();
@@ -1396,7 +1396,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.save();
-    ctx.translate(350, 180);
+    ctx.translate(400, 180);
     ctx.rotate(70*Math.PI/180);
     ctx.drawImage(rusa, -20, -30);
     ctx.drawImage(rusb, -20, -30);
@@ -1404,7 +1404,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.save();
-    ctx.translate(550, 180);
+    ctx.translate(600, 180);
     ctx.rotate(160*Math.PI/180);
     ctx.drawImage(rusa, -20, -30);
     ctx.rotate(70*Math.PI/180);
@@ -1413,7 +1413,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.save();
-    ctx.translate(750, 180);
+    ctx.translate(800, 180);
     ctx.rotate(210*Math.PI/180);
     ctx.drawImage(rusa, -20, -30);
     ctx.rotate(90*Math.PI/180);
@@ -1769,6 +1769,8 @@ if(levelCreator){
     if(wave==16){
     ctx.fillText("Congratulations!",320,200);
     ctx.fillText("Bonus weapon unlocked!",240,250);
+    bonus=true;
+    pTank.gunSpeed=7;
     }
   }
 

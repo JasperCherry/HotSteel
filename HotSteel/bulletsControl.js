@@ -330,7 +330,7 @@ function bulletsControl() {
          kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
          sgeraw, sgerbw, aiTanks[t].towerLoose, aiTanks[t].id));
        }
-       points+=50;
+       points+=60;
      }
      if(aiTanks[t].type=='two'){
        if(terrain==0){
@@ -340,7 +340,7 @@ function bulletsControl() {
          kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
          sgeraw2, sgerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
        }
-       points+=80;
+       points+=90;
      }
      if(aiTanks[t].type=='three'){
        if(terrain==0){
@@ -350,7 +350,7 @@ function bulletsControl() {
          kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
          sgeraw3, sgerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
        }
-       points+=150;
+       points+=180;
      }
      gameKills++;
      aiTanks.splice(t,1);

@@ -188,8 +188,13 @@ function gameDrawing() {
 
 
   //////////////// cannon
+  if(!bonus){
   ctx.fillText("Cannon",100,620);
+  }else{
+  ctx.fillText("Blaster",100,620);
+  }
   // loading
+  if(!bonus){
   if(pTank.reloadTime==0){
     ctx.fillStyle = "red";
     ctx.fillText("ready",100,645);
@@ -202,7 +207,9 @@ function gameDrawing() {
       ctx.fillText("no ammo",100,645);
     }
   }
+  }
   // ammo info
+  if(!bonus){
   if(pTank.ammoType==1){
     ctx.fillStyle = "red";
     ctx.fillText("HEAT",230,620);
@@ -217,7 +224,7 @@ function gameDrawing() {
   ctx.fillStyle = "white";
   ctx.fillText(pTank.numBullet,230,645);
   ctx.fillText(pTank.numBullet2,310,645);
-
+  }
 
   ctx.fillStyle = "white";
   ctx.fillText("MG ammo",400,620);

@@ -55,7 +55,6 @@ function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
 
 function Bullet(x, y, angle, type) {
 
-    this.type=type;
     this.gun = new Audio('sounds/gun.mp3');
     this.playSound=true;
 
@@ -103,7 +102,6 @@ function Bullet(x, y, angle, type) {
 
 function Bullet2(x, y, angle, type) {
 
-    this.type=type;
     this.gun = new Audio('sounds/gun.mp3');
     this.playSound=true;
 
@@ -118,6 +116,56 @@ function Bullet2(x, y, angle, type) {
     this.x = x;
     this.y = y;
     this.img = b2;
+
+    if(sound){
+      if(this.playSound){
+        this.gun.play();
+        this.playSound=false;
+      }
+    }
+
+    this.update = function() {
+
+        this.liveTime--;
+        if(this.liveTime<99){
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.translate(0, 0);
+        ctx.drawImage(this.img, -35, -30);
+        /*
+        ctx.fillStyle = "red";
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        */
+        ctx.restore();
+        }
+    }
+    this.newPos = function() {
+        this.x += this.speed * Math.sin(this.angle);
+        this.y -= this.speed * Math.cos(this.angle);
+    }
+}
+
+function Bullet3(x, y, angle, type) {
+
+    this.gun = new Audio('sounds/blast.mp3');
+    this.playSound=true;
+
+    this.hits=new Array();
+    this.hitsDead=new Array();
+
+    this.type=2;
+    this.liveTime=100;
+    this.radius = 2;
+    this.speed = 20;
+    this.angle = angle;
+    this.x = x;
+    this.y = y;
+    this.img = b3;
 
     if(sound){
       if(this.playSound){
