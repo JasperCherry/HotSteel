@@ -1471,9 +1471,10 @@ function menus(){
 
 
 
-    ctx.fillText("It was possible to make this game becouse of:",100,100);
+    ctx.fillText("It was possible to make this game thanks to:",100,100);
     ctx.fillText("opengameart.org",120,160);
     ctx.fillText("youtube.com",120,200);
+    ctx.fillText("w3schools.com",120,240);
     ctx.fillText("Contact author:",600,460);
     ctx.fillText("jasper.cherry7@gmail.com",600,500);
     ctx.fillText("Press esc to return",400,620);

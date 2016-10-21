@@ -38,6 +38,10 @@ function gameDrawing() {
   // drawing killed tanks
   for(var i = 0; i < kills.length; i++) {
     kills[i].update();
+    // destroying dead tanks outside map
+    if(!(kills[i].x>0&&kills[i].x<fieldMapX&&kills[i].y>0&&kills[i].y<fieldMapY)){
+      kills[i].hp--;
+    }
   }
 
 
