@@ -347,6 +347,7 @@ canvas {
 <script src="bulletsControl.js"></script>
 <script src="gameDrawing.js"></script>
 <script src="menus.js"></script>
+<script src="cookie.js"></script>
 
 
 <script>
@@ -461,6 +462,8 @@ var artUnlock=false;
 var extUnlock=false;
 // bonus
 var bonus=false;
+// END of COOKIES
+checkCookies();
 
 var upgradePrice=0;
 
@@ -480,6 +483,203 @@ function updateGameArea() {
   menus();
 }// end of a game update function
 
+function setCookies() {
+  CookieJS.set({name:'totalPoints',value:totalPoints,expires: 30});
+  CookieJS.set({name:'gunSpeedG',value:gunSpeedG,expires: 30});
+  CookieJS.set({name:'mgSpeedG',value:mgSpeedG,expires: 30});
+  CookieJS.set({name:'sightsG',value:sightsG,expires: 30});
+  CookieJS.set({name:'numBulletG',value:numBulletG,expires: 30});
+  CookieJS.set({name:'numBullet2G',value:numBullet2G,expires: 30});
+  CookieJS.set({name:'numFlamesG',value:numFlamesG,expires: 30});
+  CookieJS.set({name:'numMgBulletsG',value:numMgBulletsG,expires: 30});
+  CookieJS.set({name:'numSmokeG',value:numSmokeG,expires: 30});
+  CookieJS.set({name:'numMinesG',value:numMinesG,expires: 30});
+  CookieJS.set({name:'hpG',value:hpG,expires: 30});
+  CookieJS.set({name:'accelerationG',value:accelerationG,expires: 30});
+  CookieJS.set({name:'vMaxG',value:vMaxG,expires: 30});
+  CookieJS.set({name:'secondMgG',value:secondMgG,expires: 30});
+  CookieJS.set({name:'flamethrowerG',value:flamethrowerG,expires: 30});
+  CookieJS.set({name:'artCalls',value:artCalls,expires: 30});
+  CookieJS.set({name:'artShots',value:artShots,expires: 30});
+  CookieJS.set({name:'artEffect',value:artEffect,expires: 30});
+  CookieJS.set({name:'artUnlock',value:artUnlock,expires: 30});
+  CookieJS.set({name:'extUnlock',value:extUnlock,expires: 30});
+  CookieJS.set({name:'bonus',value:bonus,expires: 30});
+}
+
+
+function checkCookies() {
+  if(CookieJS.get('totalPoints')==null){
+    CookieJS.set({name:'totalPoints',value:0,expires: 30});
+  }else{
+    totalPoints=parseFloat(CookieJS.get('totalPoints'));
+  }
+  if(CookieJS.get('gunSpeedG')==null){
+    CookieJS.set({name:'gunSpeedG',value:300,expires: 30});
+  }else{
+    gunSpeedG=parseFloat(CookieJS.get('gunSpeedG'));
+  }
+  if(CookieJS.get('mgSpeedG')==null){
+    CookieJS.set({name:'mgSpeedG',value:10,expires: 30});
+  }else{
+    mgSpeedG=parseFloat(CookieJS.get('mgSpeedG'));
+  }
+  if(CookieJS.get('sightsG')==null){
+    CookieJS.set({name:'sightsG',value:1,expires: 30});
+  }else{
+    sightsG=parseFloat(CookieJS.get('sightsG'));
+  }
+  if(CookieJS.get('numBulletG')==null){
+    CookieJS.set({name:'numBulletG',value:12,expires: 30});
+  }else{
+    numBulletG=parseFloat(CookieJS.get('numBulletG'));
+  }
+  if(CookieJS.get('numBullet2G')==null){
+    CookieJS.set({name:'numBullet2G',value:0,expires: 30});
+  }else{
+    numBullet2G=parseFloat(CookieJS.get('numBullet2G'));
+  }
+  if(CookieJS.get('numFlamesG')==null){
+    CookieJS.set({name:'numFlamesG',value:0,expires: 30});
+  }else{
+    numFlamesG=parseFloat(CookieJS.get('numFlamesG'));
+  }
+  if(CookieJS.get('numMgBulletsG')==null){
+    CookieJS.set({name:'numMgBulletsG',value:150,expires: 30});
+  }else{
+    numMgBulletsG=parseFloat(CookieJS.get('numMgBulletsG'));
+  }
+  if(CookieJS.get('numSmokeG')==null){
+    CookieJS.set({name:'numSmokeG',value:0,expires: 30});
+  }else{
+    numSmokeG=parseFloat(CookieJS.get('numSmokeG'));
+  }
+  if(CookieJS.get('numMinesG')==null){
+    CookieJS.set({name:'numMinesG',value:0,expires: 30});
+  }else{
+    numMinesG=parseFloat(CookieJS.get('numMinesG'));
+  }
+  if(CookieJS.get('hpG')==null){
+    CookieJS.set({name:'hpG',value:80,expires: 30});
+  }else{
+    hpG=parseFloat(CookieJS.get('hpG'));
+  }
+  if(CookieJS.get('accelerationG')==null){
+    CookieJS.set({name:'accelerationG',value:0.06,expires: 30});
+  }else{
+    accelerationG=parseFloat(CookieJS.get('accelerationG'));
+  }
+  if(CookieJS.get('vMaxG')==null){
+    CookieJS.set({name:'vMaxG',value:0.8,expires: 30});
+  }else{
+    vMaxG=parseFloat(CookieJS.get('vMaxG'));
+  }
+  if(CookieJS.get('secondMgG')==null){
+    CookieJS.set({name:'secondMgG',value:false,expires: 30});
+  }else{
+    if(CookieJS.get('secondMgG')=="true"){
+      secondMgG=true;
+    }else{
+      secondMgG=false;
+    }
+  }
+  if(CookieJS.get('flamethrowerG')==null){
+    CookieJS.set({name:'flamethrowerG',value:false,expires: 30});
+  }else{
+    if(CookieJS.get('flamethrowerG')=="true"){
+      flamethrowerG=true;
+    }else{
+      flamethrowerG=false;
+    }
+  }
+  if(CookieJS.get('artCalls')==null){
+    CookieJS.set({name:'artCalls',value:0,expires: 30});
+  }else{
+    artCalls=parseFloat(CookieJS.get('artCalls'));
+  }
+  if(CookieJS.get('artShots')==null){
+    CookieJS.set({name:'artShots',value:3,expires: 30});
+  }else{
+    artShots=parseFloat(CookieJS.get('artShots'));
+  }
+  if(CookieJS.get('artEffect')==null){
+    CookieJS.set({name:'artEffect',value:3.6,expires: 30});
+  }else{
+    artEffect=parseFloat(CookieJS.get('artEffect'));
+  }
+  if(CookieJS.get('artUnlock')==null){
+    CookieJS.set({name:'artUnlock',value:false,expires: 30});
+  }else{
+    if(CookieJS.get('artUnlock')=="true"){
+      artUnlock=true;
+    }else{
+      artUnlock=false;
+    }
+  }
+  if(CookieJS.get('extUnlock')==null){
+    CookieJS.set({name:'extUnlock',value:false,expires: 30});
+  }else{
+    if(CookieJS.get('extUnlock')=="true"){
+      extUnlock=true;
+    }else{
+      extUnlock=false;
+    }
+  }
+  if(CookieJS.get('bonus')==null){
+    CookieJS.set({name:'bonus',value:false,expires: 30});
+  }else{
+    if(CookieJS.get('bonus')=="true"){
+      bonus=true;
+    }else{
+      bonus=false;
+    }
+  }
+}
+
+  function resetCookies() {
+      CookieJS.set({name:'totalPoints',value:0,expires: 30});
+      totalPoints=0;
+      CookieJS.set({name:'gunSpeedG',value:300,expires: 30});
+      gunSpeedG=300;
+      CookieJS.set({name:'mgSpeedG',value:10,expires: 30});
+      mgSpeedG=10;
+      CookieJS.set({name:'sightsG',value:1,expires: 30});
+      sightsG=1;
+      CookieJS.set({name:'numBulletG',value:12,expires: 30});
+      numBulletG=12;
+      CookieJS.set({name:'numBullet2G',value:0,expires: 30});
+      numBullet2G=0;
+      CookieJS.set({name:'numFlamesG',value:0,expires: 30});
+      numFlamesG=0;
+      CookieJS.set({name:'numMgBulletsG',value:150,expires: 30});
+      numMgBulletsG=150;
+      CookieJS.set({name:'numSmokeG',value:0,expires: 30});
+      numSmokeG=0;
+      CookieJS.set({name:'numMinesG',value:0,expires: 30});
+      numMinesG=0;
+      CookieJS.set({name:'hpG',value:80,expires: 30});
+      hpG=80;
+      CookieJS.set({name:'accelerationG',value:0.06,expires: 30});
+      accelerationG=0.06;
+      CookieJS.set({name:'vMaxG',value:0.8,expires: 30});
+      vMaxG=0.8;
+      CookieJS.set({name:'secondMgG',value:false,expires: 30});
+      secondMgG=false;
+      CookieJS.set({name:'flamethrowerG',value:false,expires: 30});
+      flamethrowerG=false;
+      CookieJS.set({name:'artCalls',value:0,expires: 30});
+      artCalls=0;
+      CookieJS.set({name:'artShots',value:3,expires: 30});
+      artShots=3;
+      CookieJS.set({name:'artEffect',value:3.6,expires: 30});
+      artEffect=3.6;
+      CookieJS.set({name:'artUnlock',value:false,expires: 30});
+      artUnlock=false;
+      CookieJS.set({name:'extUnlock',value:false,expires: 30});
+      extUnlock=false;
+      CookieJS.set({name:'bonus',value:false,expires: 30});
+      bonus=false;
+}
 </script>
 
 

@@ -20,6 +20,7 @@ function menus(){
 
 
   if(level==1){ // level 1 // menu
+    setCookies();
     levelCreator=true;
     endLevel=150;
     // playing sound of the tanks in the menu
@@ -242,6 +243,10 @@ function menus(){
     ctx.fillStyle = "white";
     ctx.fillText("Press esc to return",20,40);
 
+    ctx.font = "bold 20px Courier New";
+    ctx.fillStyle = "white";
+    ctx.fillText("Press R to reset game",20,630);
+
     ctx.fillStyle = "white";
     ctx.font = "bold 30px Courier New";
     ctx.fillText("Price:",450,70);
@@ -251,7 +256,6 @@ function menus(){
     ctx.font = "bold 30px Courier New";
     ctx.fillText("Cash:",730,70);
     ctx.fillText(totalPoints,830,70);
-
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
@@ -1001,6 +1005,10 @@ function menus(){
 
     }// end of artillery unlock
 
+  // reset
+  if(myGameArea.keys && myGameArea.keys[82] && cTimer==0){
+    resetCookies();
+  }
 
   // control
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
@@ -1741,6 +1749,9 @@ if(levelCreator){
     clearLevel();
     level=1;
     createMenuTanks=true;
+    infoTime=0;
+    wave=0;
+    createWave=false;
   }
 
   // information about the waves

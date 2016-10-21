@@ -1,12 +1,6 @@
  ////single player only
 to do:
 
+polishing and fixing
 
-
-
-upgrades, achievements and cash as cookie
-
-counting web visits
-
-polishing
-
+string to int problems?
