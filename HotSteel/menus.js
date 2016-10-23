@@ -5,9 +5,10 @@ function menus(){
       cTimer--;
     }
 
+/*
   if(level==0){ // level 0 // first screen
     ctx = myGameArea.context;
-    ctx.drawImage(wall, 0, 0);
+    ctx.drawImage(garage, 0, 0);
     ctx.font = "bold 50px Courier New";
     ctx.fillStyle = "black";
     ctx.fillText("Press enter",140,130);
@@ -16,7 +17,7 @@ function menus(){
       level=1;
     }
   } // end of level 0 // first screen
-
+*/
 
 
   if(level==1){ // level 1 // menu
@@ -32,62 +33,62 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.drawImage(menu, 0, 0);
-    ctx.drawImage(logo, 110, 130, 452*1, 86*0.8);
+    ctx.drawImage(logo, 100, 130, 698*0.7, 112*0.7);
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
-    ctx.fillText("Cash : "+totalPoints,730,100);
+    ctx.fillText("Cash : "+totalPoints,760,100);
 
     ctx.font = "bold 30px Courier New";
 
     if(cButton==0){
       ctx.fillStyle = "red";
-      ctx.fillText("Play",660,190);
+      ctx.fillText("Play",690,190);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Play",660,190);
+      ctx.fillText("Play",690,190);
     }
 
     if(cButton==1){
       ctx.fillStyle = "red";
-      ctx.fillText("Upgrades",660,270);
+      ctx.fillText("Upgrades",690,270);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Upgrades",660,270);
+      ctx.fillText("Upgrades",690,270);
     }
 
     if(cButton==2){
       ctx.fillStyle = "red";
-      ctx.fillText("Manual",660,350);
+      ctx.fillText("Manual",690,350);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Manual",660,350);
+      ctx.fillText("Manual",690,350);
     }
 
     if(sound){
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound on",660,430);
+        ctx.fillText("Sound on",690,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound on",660,430);
+        ctx.fillText("Sound on",690,430);
       }
     }else{
       if(cButton==3){
         ctx.fillStyle = "red";
-        ctx.fillText("Sound off",660,430);
+        ctx.fillText("Sound off",690,430);
       }else{
         ctx.fillStyle = "white";
-        ctx.fillText("Sound off",660,430);
+        ctx.fillText("Sound off",690,430);
       }
     }
 
     if(cButton==4){
       ctx.fillStyle = "red";
-      ctx.fillText("Author",660,510);
+      ctx.fillText("Author",690,510);
     }else{
       ctx.fillStyle = "white";
-      ctx.fillText("Author",660,510);
+      ctx.fillText("Author",690,510);
     }
 
     if(myGameArea.keys && myGameArea.keys[38] && cTimer==0){
