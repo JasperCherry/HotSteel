@@ -33,7 +33,7 @@ function menus(){
 
     ctx = myGameArea.context;
     ctx.drawImage(menu, 0, 0);
-    ctx.drawImage(logo, 100, 130, 698*0.7, 112*0.7);
+    ctx.drawImage(logo, 90, 130, 698*0.7, 112*0.7);
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
@@ -1446,8 +1446,8 @@ function menus(){
     ctx.fillText("R - artillery call",70,540);
 
     ctx.fillText("SABOT can penetrate multiple tanks",540,380);
-    ctx.fillText("Smoke cover suspends enemy fire",540,420);
-    ctx.fillText("but also and your aiming sights",580,460);
+    ctx.fillText("Smoke cover suspends enemy fire",570,420);
+    ctx.fillText("but also your aiming sights",620,460);
     ctx.fillText("Flamethrower can set up enemies on fire",480,500);
     ctx.fillText("but is replacing body machinegun",570,540);
 
@@ -1749,8 +1749,9 @@ if(levelCreator){
 
   if(endLevel==0){
     clearLevel();
-    level=1;
-    createMenuTanks=true;
+    cButton=0;
+    level=2;
+    clearLevel();
     infoTime=0;
     wave=0;
     createWave=false;
