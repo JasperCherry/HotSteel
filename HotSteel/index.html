@@ -24,15 +24,8 @@ canvas {
 <img src="tanks/gerb2.png" id="gerb2" style="display: none;">
 <img src="tanks/gera3.png" id="gera3" style="display: none;">
 <img src="tanks/gerb3.png" id="gerb3" style="display: none;">
-
-<img src="tanks/srusa.png" id="srusa" style="display: none;">
-<img src="tanks/srusb.png" id="srusb" style="display: none;">
-<img src="tanks/sgera.png" id="sgera" style="display: none;">
-<img src="tanks/sgerb.png" id="sgerb" style="display: none;">
-<img src="tanks/sgera2.png" id="sgera2" style="display: none;">
-<img src="tanks/sgerb2.png" id="sgerb2" style="display: none;">
-<img src="tanks/sgera3.png" id="sgera3" style="display: none;">
-<img src="tanks/sgerb3.png" id="sgerb3" style="display: none;">
+<img src="tanks/gera4.png" id="gera4" style="display: none;">
+<img src="tanks/gerb4.png" id="gerb4" style="display: none;">
 
 <img src="wrecks/rusaw.png" id="rusaw" style="display: none;">
 <img src="wrecks/rusbw.png" id="rusbw" style="display: none;">
@@ -42,16 +35,8 @@ canvas {
 <img src="wrecks/gerbw2.png" id="gerbw2" style="display: none;">
 <img src="wrecks/geraw3.png" id="geraw3" style="display: none;">
 <img src="wrecks/gerbw3.png" id="gerbw3" style="display: none;">
-
-<img src="wrecks/srusaw.png" id="srusaw" style="display: none;">
-<img src="wrecks/srusbw.png" id="srusbw" style="display: none;">
-<img src="wrecks/sgeraw.png" id="sgeraw" style="display: none;">
-<img src="wrecks/sgerbw.png" id="sgerbw" style="display: none;">
-<img src="wrecks/sgeraw2.png" id="sgeraw2" style="display: none;">
-<img src="wrecks/sgerbw2.png" id="sgerbw2" style="display: none;">
-<img src="wrecks/sgeraw3.png" id="sgeraw3" style="display: none;">
-<img src="wrecks/sgerbw3.png" id="sgerbw3" style="display: none;">
-
+<img src="wrecks/geraw4.png" id="geraw4" style="display: none;">
+<img src="wrecks/gerbw4.png" id="gerbw4" style="display: none;">
 
 <img src="bullets/mgb.png" id="mgb" style="display: none;">
 <img src="bullets/b.png" id="b" style="display: none;">
@@ -399,6 +384,7 @@ var explosionsDead = new Array();
 var smoke = new Array();
 var tracks = new Array();
 var obstacles = new Array();
+var pieces = new Array();
 
 // area that tanks fight at
 var fieldMapX=1000;
@@ -418,7 +404,7 @@ var lTanks = ["Iron", "Butcher", "Turtle", "Beettle", "Knight", "Warcry", "Ram",
 
 // general game variables
 var gameMap=map1;
-var terrain=0;  // 0 - grass, 1 - sand   // ai tanks camo
+var terrain=0;  // 0 - dark, 1 - light
 var points=0;
 var gameKills=0;
 var level=1;
@@ -442,12 +428,12 @@ var gunSpeedG=300; // 300,250,200,150,100
 var mgSpeedG=10; // 10,8,6,5,4
 var sightsG=1;  // 1,2,3
 var numBulletG = 12; // 12, 24, 36, 48, 60
-var numBullet2G = 0; // 8, 16, 24, 32, 40
+var numBullet2G = 0; // 10, 20, 30, 40, 50
 var numFlamesG = 0; // 200, 400, 600, 800, 1000
 var numMgBulletsG = 150; // 150, 300, 450, 600, 750
-var numSmokeG = 0; // 1,2,3,4,5
+var numSmokeG = 0; // 2,4,6,8,10
 var numMinesG = 0; // 6, 12, 18, 24, 30
-var hpG = 80; // 80, 120, 180, 240, 300
+var hpG = 100; // 100, 180, 260, 340, 420
 var accelerationG=0.06; // constant
 var vMaxG=0.8; // 0.8, 1, 1.2, 1.4, 1.6
 var secondMgG=false; // or false if not mounted

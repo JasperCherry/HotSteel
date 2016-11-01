@@ -17,13 +17,8 @@ function PTank(x,y) {
   this.imgP=pointer2;
   }
 
-  if(terrain==0){
-    this.imgB=rusa;
-    this.imgT=rusb;
-  }else if(terrain==1){
-    this.imgB=srusa;
-    this.imgT=srusb;
-  }
+  this.imgB=rusa;
+  this.imgT=rusb;
 
   // upgrades
   this.numArt=artCalls;
@@ -482,7 +477,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.drawImage(this.imgP, -64*0.25, -120, 128*0.25, 128*0.25);
+      ctx.drawImage(this.imgP, -64*0.25, -150, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
       if(!bonus){
@@ -495,11 +490,11 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.translate(0, -104);
+      ctx.translate(0, -134);
       ctx.rotate(-90 * Math.PI / 180);
       ctx.beginPath();
       ctx.lineWidth=2;
-      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.arc(0, 0, 18, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
       ctx.stroke();
       ctx.closePath();
       ctx.restore();
@@ -513,7 +508,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.drawImage(this.imgP, -64*0.25, -270, 128*0.25, 128*0.25);
+      ctx.drawImage(this.imgP, -64*0.25, -300, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
       if(!bonus){
@@ -526,11 +521,11 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.translate(0, -254);
+      ctx.translate(0, -284);
       ctx.rotate(-90 * Math.PI / 180);
       ctx.beginPath();
       ctx.lineWidth=2;
-      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.arc(0, 0, 18, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
       ctx.stroke();
       ctx.closePath();
       ctx.restore();
@@ -544,7 +539,7 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.drawImage(this.imgP, -64*0.25, -420, 128*0.25, 128*0.25);
+      ctx.drawImage(this.imgP, -64*0.25, -450, 128*0.25, 128*0.25);
       ctx.restore();
       // drawing the loading time
       if(!bonus){
@@ -557,11 +552,11 @@ this.reloadTimeM=this.mgSpeed;
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angleT);
-      ctx.translate(0, -404);
+      ctx.translate(0, -434);
       ctx.rotate(-90 * Math.PI / 180);
       ctx.beginPath();
       ctx.lineWidth=2;
-      ctx.arc(0, 0, 15, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
+      ctx.arc(0, 0, 18, 0, ((2*Math.PI)*(this.gunSpeed-this.reloadTime))/this.gunSpeed);
       ctx.stroke();
       ctx.closePath();
       ctx.restore();

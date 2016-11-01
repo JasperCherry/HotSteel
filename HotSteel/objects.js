@@ -35,12 +35,15 @@ function DeadBody(x, y, angle1, angle2, img1, img2, tower, id) {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angleTower);
-        // tower of grey tank with long barrel should be in different position
-        if(this.img2==gerbw2||this.img2==sgerbw2){
+        // tower of grey tanks with long barrel should be in different position
+        if(this.img2==gerbw2){
           ctx.translate(0, -3);
           ctx.drawImage(this.img2, -20, -30);
-        }else if(this.img2==gerbw3||this.img2==sgerbw3){
+        }else if(this.img2==gerbw3){
           ctx.translate(0, -14);
+          ctx.drawImage(this.img2, -20, -30);
+        }else if(this.img2==gerbw4){
+          ctx.translate(0, -16);
           ctx.drawImage(this.img2, -20, -30);
         }else{
           ctx.drawImage(this.img2, -20, -30);
@@ -77,16 +80,16 @@ function Bullet(x, y, angle, type) {
     this.update = function() {
 
         this.liveTime--;
-        if(this.liveTime<99){
+        if(this.liveTime<98){
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.beginPath();
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -35, -30);
         /*
         ctx.fillStyle = "red";
+        ctx.beginPath();
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
@@ -132,11 +135,11 @@ function Bullet2(x, y, angle, type) {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.beginPath();
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -35, -30);
         /*
         ctx.fillStyle = "red";
+        ctx.beginPath();
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
@@ -182,11 +185,11 @@ function Bullet3(x, y, angle, type) {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.beginPath();
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -35, -30);
         /*
         ctx.fillStyle = "red";
+        ctx.beginPath();
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
@@ -601,6 +604,7 @@ function clearLevel() {
   smoke = new Array();
   tracks = new Array();
   obstacles = new Array();
+  pieces = new Array();
 
   bulletsP = new Array();
   mgBulletsP = new Array();
@@ -613,5 +617,84 @@ function clearLevel() {
   totalPoints+=points;
   points=0;
   gameKills=0;
+
+}
+
+function Piece(x, y) {
+
+    this.x = x;
+    this.y = y;
+    this.pause = 100;
+    this.time = 110
+    this.angle = ((Math.round(Math.random() * (360)) - 0) * Math.PI / 180);
+    this.speed=(Math.random()*2)+3;
+    this.size=2;
+
+    this.r=255;
+    this.g=0;
+    this.gControl=256;
+    this.b=0;
+    this.a=1;
+    this.a2=0;
+
+    this.hide=false;
+
+        this.update = function() {
+
+          this.g=Math.floor(Math.random()*this.gControl);
+          // first ball
+          if(this.a2<0.99&&!this.hide){
+          ctx = myGameArea.context;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.fillStyle = "rgba("+this.r+", "+this.g+", "+this.b+", "+this.a+")";
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, 2*Math.PI);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+          }
+          // covering first ball with second ball
+          if(this.speed==0){
+            if(this.a2<1&&!this.hide){
+              this.a2+=0.05;
+            }
+            ctx = myGameArea.context;
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.fillStyle = "rgba(0, 0, 0, "+this.a2+")";
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size, 0, 2*Math.PI);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          if(this.a2>0.99&&this.pause>0){
+            this.pause--;
+          }
+
+          if(this.pause==0){
+            this.hide=true;
+            this.time--;
+            if(this.a2-0.01>0){
+              this.a2=this.a2-0.01;
+            }else{
+              this.a2=0.00;
+            }
+
+          }
+
+          // speed
+          if((this.speed-0.1)>0){
+            this.speed-=0.1;
+          }else{
+            this.speed=0;
+          }
+          // vector movement
+          this.x += this.speed * Math.sin(this.angle);
+          this.y -= this.speed * Math.cos(this.angle);
+
+        }
 
 }

@@ -24,6 +24,39 @@ function menus(){
     setCookies();
     levelCreator=true;
     endLevel=150;
+
+    // preload the sounds
+    if(createMenuTanks){
+    var s1=new Audio('sounds/art1.mp3');
+    s1.load();
+    var s2=new Audio('sounds/blast.mp3');
+    s2.load();
+    var s3=new Audio('sounds/exmd.mp3');
+    s3.load();
+    var s4=new Audio('sounds/flame.mp3');
+    s4.load();
+    var s5=new Audio('sounds/gun.mp3');
+    s5.load();
+    var s6=new Audio('sounds/gunReload.mp3');
+    s6.load();
+    var s7=new Audio('sounds/menuTanks.mp3');
+    s7.load();
+    var s8=new Audio('sounds/mg.mp3');
+    s8.load();
+    var s9=new Audio('sounds/move.mp3');
+    s9.load();
+    var s10=new Audio('sounds/moveT.mp3');
+    s10.load();
+    var s11=new Audio('sounds/radio1.mp3');
+    s11.load();
+    var s12=new Audio('sounds/radio2.mp3');
+    s12.load();
+    var s13=new Audio('sounds/radio3.mp3');
+    s13.load();
+    var s14=new Audio('sounds/smoke.mp3');
+    s14.load();
+    }
+
     // playing sound of the tanks in the menu
     if(sound){
       menuTanks.play();
@@ -160,8 +193,6 @@ function menus(){
       aiTanks[2] = new AiTank3(900,800);
       aiTanks[2].dumb=true;
 
-
-
       createMenuTanks=false;
     }
 
@@ -238,7 +269,7 @@ function menus(){
 
     ctx.font = "bold 30px Courier New";
     ctx.fillStyle = "white";
-    ctx.fillText("Press enter to upgrade",350,620);
+    ctx.fillText("Press enter to upgrade",460,620);
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
@@ -246,7 +277,7 @@ function menus(){
 
     ctx.font = "bold 20px Courier New";
     ctx.fillStyle = "white";
-    ctx.fillText("Press R to reset game",20,630);
+    ctx.fillText("Press R to reset achievements",20,630);
 
     ctx.fillStyle = "white";
     ctx.font = "bold 30px Courier New";
@@ -271,41 +302,41 @@ function menus(){
       ctx.arc(750, 230, 35, 0, (2*Math.PI));
       ctx.stroke();
       ctx.closePath();
-      if(hpG==80){
+      if(hpG==100){
         upgradePrice=200;
         ctx.fillText("1/5",350,140);
       }
-      if(hpG==120){
+      if(hpG==180){
         upgradePrice=300;
         ctx.fillText("2/5",350,140);
       }
-      if(hpG==180){
+      if(hpG==260){
         upgradePrice=400;
         ctx.fillText("3/5",350,140);
       }
-      if(hpG==240){
+      if(hpG==340){
         upgradePrice=500;
         ctx.fillText("4/5",350,140);
       }
-      if(hpG==300){
+      if(hpG==420){
         upgradePrice="Max";
         ctx.fillText("5/5",350,140);
       }
     }else{
       ctx.fillStyle = "white";
-      if(hpG==80){
+      if(hpG==100){
         ctx.fillText("1/5",350,140);
       }
-      if(hpG==120){
+      if(hpG==180){
         ctx.fillText("2/5",350,140);
       }
-      if(hpG==180){
+      if(hpG==260){
         ctx.fillText("3/5",350,140);
       }
-      if(hpG==240){
+      if(hpG==340){
         ctx.fillText("4/5",350,140);
       }
-      if(hpG==300){
+      if(hpG==420){
         ctx.fillText("5/5",350,140);
       }
     }
@@ -512,23 +543,23 @@ function menus(){
         ctx.fillText("0/5",350,400);
         upgradePrice=100;
       }
-      if(numBullet2G==8){
+      if(numBullet2G==10){
         ctx.fillText("1/5",350,400);
         upgradePrice=200;
       }
-      if(numBullet2G==16){
+      if(numBullet2G==20){
         ctx.fillText("2/5",350,400);
         upgradePrice=300;
       }
-      if(numBullet2G==24){
+      if(numBullet2G==30){
         ctx.fillText("3/5",350,400);
         upgradePrice=400;
       }
-      if(numBullet2G==32){
+      if(numBullet2G==40){
         ctx.fillText("4/5",350,400);
         upgradePrice=500;
       }
-      if(numBullet2G==40){
+      if(numBullet2G==50){
         ctx.fillText("5/5",350,400);
         upgradePrice="Max";
       }
@@ -537,19 +568,19 @@ function menus(){
       if(numBullet2G==0){
         ctx.fillText("0/5",350,400);
       }
-      if(numBullet2G==8){
+      if(numBullet2G==10){
         ctx.fillText("1/5",350,400);
       }
-      if(numBullet2G==16){
+      if(numBullet2G==20){
         ctx.fillText("2/5",350,400);
       }
-      if(numBullet2G==24){
+      if(numBullet2G==30){
         ctx.fillText("3/5",350,400);
       }
-      if(numBullet2G==32){
+      if(numBullet2G==40){
         ctx.fillText("4/5",350,400);
       }
-      if(numBullet2G==40){
+      if(numBullet2G==50){
         ctx.fillText("5/5",350,400);
       }
     }
@@ -655,23 +686,23 @@ function menus(){
         ctx.fillText("0/5",350,520);
         upgradePrice=100;
       }
-      if(numSmokeG==1){
+      if(numSmokeG==2){
         ctx.fillText("1/5",350,520);
         upgradePrice=200;
       }
-      if(numSmokeG==2){
+      if(numSmokeG==4){
         ctx.fillText("2/5",350,520);
         upgradePrice=300;
       }
-      if(numSmokeG==3){
+      if(numSmokeG==6){
         ctx.fillText("3/5",350,520);
         upgradePrice=400;
       }
-      if(numSmokeG==4){
+      if(numSmokeG==8){
         ctx.fillText("4/5",350,520);
         upgradePrice=500;
       }
-      if(numSmokeG==5){
+      if(numSmokeG==10){
         ctx.fillText("5/5",350,520);
         upgradePrice="Max";
       }
@@ -680,19 +711,19 @@ function menus(){
       if(numSmokeG==0){
         ctx.fillText("0/5",350,520);
       }
-      if(numSmokeG==1){
+      if(numSmokeG==2){
         ctx.fillText("1/5",350,520);
       }
-      if(numSmokeG==2){
+      if(numSmokeG==4){
         ctx.fillText("2/5",350,520);
       }
-      if(numSmokeG==3){
+      if(numSmokeG==6){
         ctx.fillText("3/5",350,520);
       }
-      if(numSmokeG==4){
+      if(numSmokeG==8){
         ctx.fillText("4/5",350,520);
       }
-      if(numSmokeG==5){
+      if(numSmokeG==10){
         ctx.fillText("5/5",350,520);
       }
     }
@@ -1061,20 +1092,20 @@ function menus(){
   // armor
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==0){
     cTimer=20;
-    if(hpG==80&&totalPoints>=200){
-      hpG=120;
+    if(hpG==100&&totalPoints>=200){
+      hpG=180;
       totalPoints-=200;
     }else
-    if(hpG==120&&totalPoints>=300){
-      hpG=180;
+    if(hpG==180&&totalPoints>=300){
+      hpG=260;
       totalPoints-=300;
     }else
-    if(hpG==180&&totalPoints>=400){
-      hpG=240;
+    if(hpG==260&&totalPoints>=400){
+      hpG=340;
       totalPoints-=400;
     }else
-    if(hpG==240&&totalPoints>=500){
-      hpG=300;
+    if(hpG==340&&totalPoints>=500){
+      hpG=420;
       totalPoints-=500;
     }
   }
@@ -1162,23 +1193,23 @@ function menus(){
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==5){
     cTimer=20;
     if(numBullet2G==0&&totalPoints>=100){
-      numBullet2G=8;
+      numBullet2G=10;
       totalPoints-=100;
     }else
-    if(numBullet2G==8&&totalPoints>=200){
-      numBullet2G=16;
+    if(numBullet2G==10&&totalPoints>=200){
+      numBullet2G=20;
       totalPoints-=200;
     }else
-    if(numBullet2G==16&&totalPoints>=300){
-      numBullet2G=24;
+    if(numBullet2G==20&&totalPoints>=300){
+      numBullet2G=30;
       totalPoints-=300;
     }else
-    if(numBullet2G==24&&totalPoints>=400){
-      numBullet2G=32;
+    if(numBullet2G==30&&totalPoints>=400){
+      numBullet2G=40;
       totalPoints-=400;
     }else
-    if(numBullet2G==32&&totalPoints>=500){
-      numBullet2G=40;
+    if(numBullet2G==40&&totalPoints>=500){
+      numBullet2G=50;
       totalPoints-=500;
     }
   }
@@ -1230,23 +1261,23 @@ function menus(){
   if(myGameArea.keys && myGameArea.keys[13] && cTimer==0 && cButton==8){
     cTimer=20;
     if(numSmokeG==0&&totalPoints>=100){
-      numSmokeG=1;
+      numSmokeG=2;
       totalPoints-=100;
     }else
-    if(numSmokeG==1&&totalPoints>=200){
-      numSmokeG=2;
+    if(numSmokeG==2&&totalPoints>=200){
+      numSmokeG=4;
       totalPoints-=200;
     }else
-    if(numSmokeG==2&&totalPoints>=300){
-      numSmokeG=3;
+    if(numSmokeG==4&&totalPoints>=300){
+      numSmokeG=6;
       totalPoints-=300;
     }else
-    if(numSmokeG==3&&totalPoints>=400){
-      numSmokeG=4;
+    if(numSmokeG==6&&totalPoints>=400){
+      numSmokeG=8;
       totalPoints-=400;
     }else
-    if(numSmokeG==4&&totalPoints>=500){
-      numSmokeG=5;
+    if(numSmokeG==8&&totalPoints>=500){
+      numSmokeG=10;
       totalPoints-=500;
     }
   }
@@ -1561,6 +1592,9 @@ if(levelCreator){
     levelCreator=false;
 }
 
+
+
+
 // waves of tanks
 
   if(aiTanks.length==0){
@@ -1592,53 +1626,44 @@ if(levelCreator){
       //aiTanks[0] = new AiTank(700,-400);
       //aiTanks[1] = new AiTank(1300,300);
       //aiTanks[3] = new AiTank(700,900);
-      aiTanks[1] = new AiTank2(300,800);
+      aiTanks[1] = new AiTank(300,800);
       aiTanks[2] = new AiTank(-200,300);
     }
     if(wave==4){
       infoTime=200;
       //aiTanks[0] = new AiTank2(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[0] = new AiTank2(1300,300);
+      aiTanks[0] = new AiTank(1300,300);
       aiTanks[1] = new AiTank2(700,900);
       //aiTanks[4] = new AiTank(300,800);
-      aiTanks[2] = new AiTank2(-200,300);
-    }
-    if(wave==4){
-      infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
-      aiTanks[2] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      //aiTanks[4] = new AiTank(300,800);
-      aiTanks[3] = new AiTank2(-200,300);
+      //aiTanks[2] = new AiTank2(-200,300);
     }
     if(wave==5){
+      infoTime=200;
+      aiTanks[0] = new AiTank2(300,-200);
+      //aiTanks[1] = new AiTank2(700,-400);
+      //aiTanks[2] = new AiTank(1300,300);
+      //aiTanks[3] = new AiTank(700,900);
+      //aiTanks[4] = new AiTank(300,800);
+      aiTanks[1] = new AiTank2(-200,300);
+    }
+    if(wave==6){
       infoTime=200;
       aiTanks[0] = new AiTank(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
       aiTanks[1] = new AiTank2(1300,300);
       //aiTanks[3] = new AiTank(700,900);
-      aiTanks[2] = new AiTank3(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
+      aiTanks[2] = new AiTank2(300,800);
+      aiTanks[3] = new AiTank(-200,300);
     }
-    if(wave==6){
+    if(wave==7){
       infoTime=200;
       //aiTanks[0] = new AiTank(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
       aiTanks[0] = new AiTank3(1300,300);
-      aiTanks[1] = new AiTank3(700,900);
+      //aiTanks[1] = new AiTank3(700,900);
       //aiTanks[4] = new AiTank(300,800);
       //aiTanks[5] = new AiTank(-200,300);
-    }
-    if(wave==7){
-      infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank(700,-400);
-      aiTanks[2] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[3] = new AiTank(300,800);
-      aiTanks[4] = new AiTank(-200,300);
     }
     if(wave==8){
       infoTime=200;
@@ -1646,46 +1671,37 @@ if(levelCreator){
       aiTanks[1] = new AiTank2(700,-400);
       aiTanks[2] = new AiTank2(1300,300);
       //aiTanks[3] = new AiTank(700,900);
-      aiTanks[3] = new AiTan3(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
+      aiTanks[3] = new AiTank(300,800);
+      aiTanks[4] = new AiTank(-200,300);
     }
     if(wave==9){
       infoTime=200;
       aiTanks[0] = new AiTank(300,-200);
       aiTanks[1] = new AiTank3(700,-400);
       aiTanks[2] = new AiTank(1300,300);
-      aiTanks[3] = new AiTank(700,900);
-      aiTanks[4] = new AiTank(300,800);
-      aiTanks[5] = new AiTank3(-200,300);
-    }
-    if(wave==10){
-      infoTime=200;
-      aiTanks[0] = new AiTank3(300,-200);
-      aiTanks[1] = new AiTank(700,-400);
-      aiTanks[2] = new AiTank2(1300,300);
-      aiTanks[3] = new AiTank(700,900);
-      //aiTanks[4] = new AiTank(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
-    }
-    if(wave==11){
-      infoTime=200;
-      aiTanks[0] = new AiTank2(300,-200);
-      aiTanks[1] = new AiTank(700,-400);
-      aiTanks[2] = new AiTank2(1300,300);
-      aiTanks[3] = new AiTank2(700,900);
-      aiTanks[4] = new AiTank(300,800);
-      aiTanks[5] = new AiTank(-200,300);
-    }
-    if(wave==12){
-      infoTime=200;
-      aiTanks[0] = new AiTank3(300,-200);
-      aiTanks[1] = new AiTank(700,-400);
-      aiTanks[2] = new AiTank3(1300,300);
       //aiTanks[3] = new AiTank(700,900);
       aiTanks[3] = new AiTank3(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
-    if(wave==13){
+    if(wave==10){
+      infoTime=200;
+      aiTanks[0] = new AiTank(300,-200);
+      aiTanks[1] = new AiTank3(700,-400);
+      aiTanks[2] = new AiTank(1300,300);
+      aiTanks[3] = new AiTank2(700,900);
+      aiTanks[4] = new AiTank2(300,800);
+      aiTanks[5] = new AiTank3(-200,300);
+    }
+    if(wave==11){
+      infoTime=200;
+      aiTanks[0] = new AiTank3(300,-200);
+      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[2] = new AiTank2(1300,300);
+      aiTanks[3] = new AiTank3(700,900);
+      //aiTanks[4] = new AiTank(300,800);
+      //aiTanks[5] = new AiTank(-200,300);
+    }
+    if(wave==12){
       infoTime=200;
       aiTanks[0] = new AiTank2(300,-200);
       aiTanks[1] = new AiTank2(700,-400);
@@ -1694,25 +1710,43 @@ if(levelCreator){
       aiTanks[4] = new AiTank2(300,800);
       aiTanks[5] = new AiTank2(-200,300);
     }
-    if(wave==14){
+    if(wave==13){
       infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
+      aiTanks[0] = new AiTank4(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[1] = new AiTank2(1300,300);
+      aiTanks[1] = new AiTank(1300,300);
       //aiTanks[3] = new AiTank(700,900);
       aiTanks[2] = new AiTank(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
+    if(wave==14){
+      infoTime=200;
+      aiTanks[0] = new AiTank(300,-200);
+      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[2] = new AiTank3(1300,300);
+      aiTanks[3] = new AiTank4(700,900);
+      aiTanks[4] = new AiTank2(300,800);
+      aiTanks[5] = new AiTank(-200,300);
+    }
     if(wave==15){
       infoTime=200;
       aiTanks[0] = new AiTank3(300,-200);
-      aiTanks[1] = new AiTank3(700,-400);
-      aiTanks[2] = new AiTank3(1300,300);
-      aiTanks[3] = new AiTank3(700,900);
+      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[2] = new AiTank2(1300,300);
+      aiTanks[3] = new AiTank2(700,900);
       aiTanks[4] = new AiTank3(300,800);
-      aiTanks[5] = new AiTank3(-200,300);
+      aiTanks[5] = new AiTank4(-200,300);
     }
     if(wave==16){
+      infoTime=200;
+      aiTanks[0] = new AiTank4(300,-200);
+      aiTanks[1] = new AiTank4(700,-400);
+      aiTanks[2] = new AiTank3(1300,300);
+      aiTanks[3] = new AiTank4(700,900);
+      aiTanks[4] = new AiTank4(300,800);
+      aiTanks[5] = new AiTank3(-200,300);
+    }
+    if(wave==17){
       infoTime=200;
       aiTanks[0] = new AiTank2(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
@@ -1721,17 +1755,19 @@ if(levelCreator){
       aiTanks[1] = new AiTank2(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
-    if(wave>16){
+    if(wave>17){
       infoTime=200;
       aiTanks[0] = new AiTank(300,-200);
       aiTanks[1] = new AiTank2(700,-400);
       aiTanks[2] = new AiTank3(1300,300);
-      aiTanks[3] = new AiTank3(700,900);
-      aiTanks[4] = new AiTank2(300,800);
-      aiTanks[5] = new AiTank(-200,300);
+      aiTanks[3] = new AiTank2(700,900);
+      aiTanks[4] = new AiTank(300,800);
+      aiTanks[5] = new AiTank4(-200,300);
+
     }
   }// end of creating waves
 
+  // 6 positions
   //aiTanks[0] = new AiTank(300,-200);
   //aiTanks[1] = new AiTank(700,-400);
   //aiTanks[2] = new AiTank(1300,300);
@@ -1767,7 +1803,7 @@ if(levelCreator){
     }else{
       ctx.fillStyle = "black";
     }
-    ctx.fillText("Destroy 15 waves of enemies",180,150);
+    ctx.fillText("Destroy 16 waves of enemies",180,150);
   }
 
   if(infoTime>199&&infoTime<300){

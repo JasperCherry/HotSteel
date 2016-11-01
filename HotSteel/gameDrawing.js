@@ -35,6 +35,14 @@ function gameDrawing() {
     }
   }
 
+  // pieces
+  for(var i = 0; i < pieces.length; i++) {
+    pieces[i].update();
+    if(pieces[i].time==0){
+      pieces.splice(i,1);
+    }
+  }
+
   // drawing killed tanks
   for(var i = 0; i < kills.length; i++) {
     kills[i].update();

@@ -20,6 +20,9 @@ function bulletsControl() {
            if(bulletsP[i].type==1){
              // heat rounds
              explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+             for(var q=0; q<10; q++){
+               pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+             }
              bulletsP.splice(i,1);
              aiTanks[t].hp=aiTanks[t].hp-50;
            }else if(bulletsP[i].type==2){
@@ -35,6 +38,9 @@ function bulletsControl() {
                bulletsP[i].hits.push(aiTanks[t].id);
               aiTanks[t].hp=aiTanks[t].hp-50;
                explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+               for(var q=0; q<10; q++){
+                 pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+               }
              }
           }
           // losing tower , 25% possible when 50 or less hp after shot
@@ -52,6 +58,10 @@ function bulletsControl() {
       for(var i = 0; i < mgBulletsP.length; i++) {
        if(mgBulletsP[i].x>0-50&&mgBulletsP[i].x<fieldMapX+50&&mgBulletsP[i].y>0-50&&mgBulletsP[i].y<fieldMapY+50){
         if(Math.abs(mgBulletsP[i].x-aiTanks[t].x)<15 && Math.abs(mgBulletsP[i].y-aiTanks[t].y)<15){
+          pieces.push(new Piece(mgBulletsP[i].x, mgBulletsP[i].y));
+          mgBulletsP.splice(i,1);
+          aiTanks[t].hp=aiTanks[t].hp-2;
+          /*
           mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
           mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
           mgBulletsP[i].rico++;
@@ -59,6 +69,7 @@ function bulletsControl() {
             aiTanks[t].hp=aiTanks[t].hp-2;
             mgBulletsP[i].active=false;
           }
+          */
         }
        }
       }
@@ -92,6 +103,9 @@ function bulletsControl() {
        if(bulletsP[i].type==1){
          // heat rounds
          explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+         for(var q=0; q<10; q++){
+           pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+         }
          bulletsP.splice(i,1);
          kills[j].hp=kills[j].hp-50;
        }else if(bulletsP[i].type==2){
@@ -114,6 +128,9 @@ function bulletsControl() {
            bulletsP[i].hitsDead.push(kills[j].id);
            kills[j].hp=kills[j].hp-50;
            explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+           for(var q=0; q<10; q++){
+             pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+           }
          }
       }
     }
@@ -124,6 +141,10 @@ function bulletsControl() {
   for(var j = 0; j < kills.length; j++) {
    for(var i = 0; i < mgBulletsP.length; i++) {
     if(Math.abs(mgBulletsP[i].x-kills[j].x)<15 && Math.abs(mgBulletsP[i].y-kills[j].y)<15){
+      pieces.push(new Piece(mgBulletsP[i].x, mgBulletsP[i].y));
+      mgBulletsP.splice(i,1);
+      kills[j].hp=kills[j].hp-5;
+      /*
        mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
        mgBulletsP[i].rico++;
@@ -131,6 +152,7 @@ function bulletsControl() {
          kills[j].hp=kills[j].hp-5;
          mgBulletsP[i].active=false;
        }
+       */
     }
    }
   }
@@ -156,6 +178,9 @@ function bulletsControl() {
        bulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
        explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
+       for(var q=0; q<10; q++){
+         pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+       }
        bulletsP.splice(i,1);
      }
    }
@@ -170,12 +195,16 @@ function bulletsControl() {
        mgBulletsP[i].y>obstacles[j].y &&
        mgBulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
+       pieces.push(new Piece(mgBulletsP[i].x, mgBulletsP[i].y));
+       mgBulletsP.splice(i,1);
+       /*
        mgBulletsP[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsP[i].liveTime=(Math.round(Math.random() * (5))+5);
        mgBulletsP[i].rico++;
        if(mgBulletsP[i].active){
          mgBulletsP[i].active=false;
        }
+       */
      }
    }
   }
@@ -208,10 +237,16 @@ function bulletsControl() {
         pTank.hp=pTank.hp-15;
       }
       if(bulletsAi[i].type=="two"){
-        pTank.hp=pTank.hp-40;
+        pTank.hp=pTank.hp-25;
       }
       if(bulletsAi[i].type=="three"){
-        pTank.hp=pTank.hp-60;
+        pTank.hp=pTank.hp-40;
+      }
+      if(bulletsAi[i].type=="four"){
+        pTank.hp=pTank.hp-100;
+      }
+      for(var q=0; q<10; q++){
+        pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
       }
       bulletsAi.splice(i,1);
     }
@@ -221,6 +256,10 @@ function bulletsControl() {
   // detection if ai hits player
   for(var i = 0; i < mgBulletsAi.length; i++) {
     if(Math.abs(mgBulletsAi[i].x-pTank.x)<15 && Math.abs(mgBulletsAi[i].y-pTank.y)<15){
+      pieces.push(new Piece(mgBulletsAi[i].x, mgBulletsAi[i].y));
+      mgBulletsAi.splice(i,1);
+      pTank.hp=pTank.hp-2;
+      /*
       mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
       mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
       mgBulletsAi[i].rico++;
@@ -228,6 +267,7 @@ function bulletsControl() {
         pTank.hp=pTank.hp-2;
         mgBulletsAi[i].active=false;
       }
+      */
     }
   }
 
@@ -237,6 +277,9 @@ function bulletsControl() {
    for(var i = 0; i < bulletsAi.length; i++) {
     if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
+       for(var q=0; q<10; q++){
+         pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
+       }
        bulletsAi.splice(i,1);
        kills[j].hp=kills[j].hp-50;
     }
@@ -248,6 +291,10 @@ function bulletsControl() {
   for(var j = 0; j < kills.length; j++) {
    for(var i = 0; i < mgBulletsAi.length; i++) {
     if(Math.abs(mgBulletsAi[i].x-kills[j].x)<15 && Math.abs(mgBulletsAi[i].y-kills[j].y)<15){
+      pieces.push(new Piece(mgBulletsAi[i].x, mgBulletsAi[i].y));
+      mgBulletsAi.splice(i,1);
+      kills[j].hp=kills[j].hp-5;
+      /*
       mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
       mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
       mgBulletsAi[i].rico++;
@@ -255,6 +302,7 @@ function bulletsControl() {
         kills[j].hp=kills[j].hp-5;
         mgBulletsAi[i].active=false;
       }
+      */
     }
    }
   }
@@ -271,6 +319,9 @@ function bulletsControl() {
        bulletsAi[i].y<obstacles[j].y+obstacles[j].height
      ){
        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
+       for(var q=0; q<10; q++){
+         pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
+       }
        bulletsAi.splice(i,1);
      }
    }
@@ -285,12 +336,16 @@ function bulletsControl() {
        mgBulletsAi[i].y>obstacles[j].y &&
        mgBulletsAi[i].y<obstacles[j].y+obstacles[j].height
      ){
+       pieces.push(new Piece(mgBulletsAi[i].x, mgBulletsAi[i].y));
+       mgBulletsAi.splice(i,1);
+       /*
        mgBulletsAi[i].angle+=(180 - (Math.round(Math.random() * (60)) - 30) * Math.PI / 180);
        mgBulletsAi[i].liveTime=(Math.round(Math.random() * (5))+5);
        mgBulletsAi[i].rico++;
        if(mgBulletsAi[i].active){
          mgBulletsAi[i].active=false;
        }
+       */
      }
    }
   }
@@ -303,11 +358,7 @@ function bulletsControl() {
   // player kill detection
   if(pTank.hp<=0&&pTank.alive){
      /*
-     if(terrain==0){
-       kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, rusaw, rusbw, pTank.towerLoose, pTank.id));
-     }else if(terrain==1){
-       kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, srusaw, srusbw, pTank.towerLoose, pTank.id));
-     }
+     kills.push(new DeadBody(pTank.x, pTank.y, pTank.angleB, pTank.angleB, rusaw, rusbw, pTank.towerLoose, pTank.id));
      */
      pTank.hp=0;
      pTank.flame.pause();
@@ -317,39 +368,33 @@ function bulletsControl() {
      // pTank = new PTank(100,300,rusa,rusb);
    }
 
+   if(pTank.hp<0){
+     pTank.hp=0;
+   }
+
   // ai kill detection
   for(var t = 0; t < aiTanks.length; t++) {
 
   if(aiTanks[t].hp<=0){
 
      if(aiTanks[t].type=='one'){
-       if(terrain==0){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         geraw, gerbw, aiTanks[t].towerLoose, aiTanks[t].id));
-       }else if(terrain==1){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         sgeraw, sgerbw, aiTanks[t].towerLoose, aiTanks[t].id));
-       }
-       points+=60;
+       kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+       geraw, gerbw, aiTanks[t].towerLoose, aiTanks[t].id));
+       points+=40;
      }
      if(aiTanks[t].type=='two'){
-       if(terrain==0){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         geraw2, gerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
-       }else if(terrain==1){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         sgeraw2, sgerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
-       }
-       points+=90;
+       kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+       geraw2, gerbw2, aiTanks[t].towerLoose, aiTanks[t].id));
+       points+=60;
      }
      if(aiTanks[t].type=='three'){
-       if(terrain==0){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         geraw3, gerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
-       }else if(terrain==1){
-         kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
-         sgeraw3, sgerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
-       }
+       kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+       geraw3, gerbw3, aiTanks[t].towerLoose, aiTanks[t].id));
+       points+=120;
+     }
+     if(aiTanks[t].type=='four'){
+       kills.push(new DeadBody(aiTanks[t].x, aiTanks[t].y, aiTanks[t].angleB, aiTanks[t].angleT,
+       geraw4, gerbw4, aiTanks[t].towerLoose, aiTanks[t].id));
        points+=180;
      }
      gameKills++;
