@@ -423,7 +423,7 @@ var createMenuTanks=true;
 
 
 // player upgrades / COOKIES
-var totalPoints=1000000;
+var totalPoints=0;
 var gunSpeedG=300; // 300,250,200,150,100
 var mgSpeedG=10; // 10,8,6,5,4
 var sightsG=1;  // 1,2,3
@@ -642,8 +642,8 @@ function checkCookies() {
       numSmokeG=0;
       CookieJS.set({name:'numMinesG',value:0,expires: 30});
       numMinesG=0;
-      CookieJS.set({name:'hpG',value:80,expires: 30});
-      hpG=80;
+      CookieJS.set({name:'hpG',value:100,expires: 30});
+      hpG=100;
       CookieJS.set({name:'accelerationG',value:0.06,expires: 30});
       accelerationG=0.06;
       CookieJS.set({name:'vMaxG',value:0.8,expires: 30});

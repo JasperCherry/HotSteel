@@ -25,38 +25,6 @@ function menus(){
     levelCreator=true;
     endLevel=150;
 
-    // preload the sounds
-    if(createMenuTanks){
-    var s1=new Audio('sounds/art1.mp3');
-    s1.load();
-    var s2=new Audio('sounds/blast.mp3');
-    s2.load();
-    var s3=new Audio('sounds/exmd.mp3');
-    s3.load();
-    var s4=new Audio('sounds/flame.mp3');
-    s4.load();
-    var s5=new Audio('sounds/gun.mp3');
-    s5.load();
-    var s6=new Audio('sounds/gunReload.mp3');
-    s6.load();
-    var s7=new Audio('sounds/menuTanks.mp3');
-    s7.load();
-    var s8=new Audio('sounds/mg.mp3');
-    s8.load();
-    var s9=new Audio('sounds/move.mp3');
-    s9.load();
-    var s10=new Audio('sounds/moveT.mp3');
-    s10.load();
-    var s11=new Audio('sounds/radio1.mp3');
-    s11.load();
-    var s12=new Audio('sounds/radio2.mp3');
-    s12.load();
-    var s13=new Audio('sounds/radio3.mp3');
-    s13.load();
-    var s14=new Audio('sounds/smoke.mp3');
-    s14.load();
-    }
-
     // playing sound of the tanks in the menu
     if(sound){
       menuTanks.play();
@@ -179,9 +147,6 @@ function menus(){
       clearLevel();
       menuTanks.load();
     }
-
-
-
 
     //// tanks going around
     if(createMenuTanks){
