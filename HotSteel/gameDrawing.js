@@ -7,6 +7,37 @@ function gameDrawing() {
   var ctx = myGameArea.context;
   ctx.drawImage(gameMap, 0, 0);
 
+  if(level==3){
+    gameMap=manual;
+
+    ctx.font = "bold 20px Courier New";
+    ctx.fillStyle = "white";
+
+    ctx.fillText("Press esc to return",400,30);
+
+    ctx.fillText("Use arrows to move and turn your tank",70,100);
+
+    ctx.fillText("A and D to turn your turent",100,140);
+
+    ctx.fillText("Hit SPACE to fire cannon",650,100);
+
+    ctx.fillText("Press 1 and 2 to switch ammo type",550,140);
+
+    ctx.fillText("W - body machinegun / flamethrower",70,380);
+    ctx.fillText("S - turent machinegun",70,420);
+    ctx.fillText("E - smoke cover",70,460);
+    ctx.fillText("F - mines",70,500);
+    ctx.fillText("R - artillery call",70,540);
+
+    ctx.fillText("SABOT can penetrate multiple tanks",540,380);
+    ctx.fillText("Smoke cover suspends enemy fire",570,420);
+    ctx.fillText("but also your aiming sights",620,460);
+    ctx.fillText("Flamethrower can set up enemies on fire",480,500);
+    ctx.fillText("but is replacing body machinegun",570,540);
+  }
+
+
+
 
   // tracks
   for(var i = 0; i < tracks.length; i++) {
@@ -148,6 +179,9 @@ function gameDrawing() {
         }
       }
       explosionsDead.push(new ExplosionDead(kills[i].x, kills[i].y));
+      for(var q=0; q<60; q++){
+        pieces.push(new Piece(kills[i].x, kills[i].y));
+      }
       kills.splice(i,1);
     }
   }

@@ -315,6 +315,9 @@ this.reloadTimeM=this.mgSpeed;
         if(Math.abs(mines[i].x-pTank.x)<15 && Math.abs(mines[i].y-pTank.y)<15){
           pTank.hp=pTank.hp-100;
           explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
+          for(var q=0; q<20; q++){
+            pieces.push(new Piece(mines[i].x, mines[i].y));
+          }
           mines.splice(i,1);
         }
       }

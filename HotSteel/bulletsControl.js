@@ -20,7 +20,7 @@ function bulletsControl() {
            if(bulletsP[i].type==1){
              // heat rounds
              explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-             for(var q=0; q<10; q++){
+             for(var q=0; q<20; q++){
                pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
              }
              bulletsP.splice(i,1);
@@ -38,7 +38,7 @@ function bulletsControl() {
                bulletsP[i].hits.push(aiTanks[t].id);
               aiTanks[t].hp=aiTanks[t].hp-50;
                explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-               for(var q=0; q<10; q++){
+               for(var q=0; q<20; q++){
                  pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
                }
              }
@@ -47,6 +47,9 @@ function bulletsControl() {
           if( Math.floor(Math.random() * 4)==0 && (aiTanks[t].hp<=50) && !aiTanks[t].towerLoose ){
             aiTanks[t].towerLoose=true;
             explosionsH.push(new ExplosionH(aiTanks[t].x, aiTanks[t].y));
+            for(var q=0; q<20; q++){
+              pieces.push(new Piece(aiTanks[t].x, aiTanks[t].y));
+            }
           }
         }
        }
@@ -103,7 +106,7 @@ function bulletsControl() {
        if(bulletsP[i].type==1){
          // heat rounds
          explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-         for(var q=0; q<10; q++){
+         for(var q=0; q<20; q++){
            pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
          }
          bulletsP.splice(i,1);
@@ -128,7 +131,7 @@ function bulletsControl() {
            bulletsP[i].hitsDead.push(kills[j].id);
            kills[j].hp=kills[j].hp-50;
            explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-           for(var q=0; q<10; q++){
+           for(var q=0; q<20; q++){
              pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
            }
          }
@@ -178,7 +181,7 @@ function bulletsControl() {
        bulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
        explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-       for(var q=0; q<10; q++){
+       for(var q=0; q<20; q++){
          pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
        }
        bulletsP.splice(i,1);
@@ -245,7 +248,7 @@ function bulletsControl() {
       if(bulletsAi[i].type=="four"){
         pTank.hp=pTank.hp-100;
       }
-      for(var q=0; q<10; q++){
+      for(var q=0; q<20; q++){
         pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
       }
       bulletsAi.splice(i,1);
@@ -277,7 +280,7 @@ function bulletsControl() {
    for(var i = 0; i < bulletsAi.length; i++) {
     if(Math.abs(bulletsAi[i].x-kills[j].x)<15 && Math.abs(bulletsAi[i].y-kills[j].y)<15){
        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-       for(var q=0; q<10; q++){
+       for(var q=0; q<20; q++){
          pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
        }
        bulletsAi.splice(i,1);
@@ -319,7 +322,7 @@ function bulletsControl() {
        bulletsAi[i].y<obstacles[j].y+obstacles[j].height
      ){
        explosionsH.push(new ExplosionH(bulletsAi[i].x, bulletsAi[i].y));
-       for(var q=0; q<10; q++){
+       for(var q=0; q<20; q++){
          pieces.push(new Piece(bulletsAi[i].x, bulletsAi[i].y));
        }
        bulletsAi.splice(i,1);
@@ -403,7 +406,7 @@ function bulletsControl() {
 
   }
 
-  // artilery calling
+  // artillery calling
   if(pTank.artBusy==true){
 
     if(pTank.artSpeed<20){
@@ -451,6 +454,9 @@ function bulletsControl() {
       }
       // hit effect
       explosionsA.push(new ExplosionA(artX,artY));
+      for(var q=0; q<20; q++){
+        pieces.push(new Piece(artX, artY));
+      }
       pTank.artSpeed=0;
       pTank.artShots++;
     }

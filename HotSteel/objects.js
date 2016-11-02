@@ -624,10 +624,10 @@ function Piece(x, y) {
 
     this.x = x;
     this.y = y;
-    this.pause = 100;
+    this.pause = 400;
     this.time = 110
     this.angle = ((Math.round(Math.random() * (360)) - 0) * Math.PI / 180);
-    this.speed=(Math.random()*2)+3;
+    this.speed=(Math.random()*8)+6;
     this.size=2;
 
     this.r=255;
@@ -687,7 +687,7 @@ function Piece(x, y) {
 
           // speed
           if((this.speed-0.1)>0){
-            this.speed-=0.1;
+            this.speed-=0.5;
           }else{
             this.speed=0;
           }

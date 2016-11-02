@@ -180,6 +180,9 @@ function AiTank(x,y) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
         explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
+        for(var q=0; q<20; q++){
+          pieces.push(new Piece(mines[i].x, mines[i].y));
+        }
         mines.splice(i,1);
       }
     }
@@ -534,6 +537,9 @@ function AiTank2(x,y) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
         explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
+        for(var q=0; q<20; q++){
+          pieces.push(new Piece(mines[i].x, mines[i].y));
+        }
         mines.splice(i,1);
       }
     }
@@ -892,6 +898,9 @@ function AiTank3(x,y) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
         explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
+        for(var q=0; q<20; q++){
+          pieces.push(new Piece(mines[i].x, mines[i].y));
+        }
         mines.splice(i,1);
       }
     }
@@ -1249,6 +1258,9 @@ function AiTank4(x,y) {
       if(Math.abs(mines[i].x-this.x)<15 && Math.abs(mines[i].y-this.y)<15){
         this.hp=this.hp-100;
         explosionsM.push(new ExplosionM(mines[i].x, mines[i].y));
+        for(var q=0; q<20; q++){
+          pieces.push(new Piece(mines[i].x, mines[i].y));
+        }
         mines.splice(i,1);
       }
     }

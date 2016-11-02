@@ -1419,70 +1419,7 @@ function menus(){
 
   if(level==3){ // level 3 // manual
     var ctx = myGameArea.context;
-
-    ctx.drawImage(manual, 0, 0);
-
-    ctx.font = "bold 20px Courier New";
-    ctx.fillStyle = "white";
-
-    ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(200, 180);
-    ctx.drawImage(rusa, -20, -30);
-    ctx.drawImage(rusb, -20, -30);
-    ctx.restore();
-
-    ctx.fillText("Press esc to return",400,620);
-
-    ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(400, 180);
-    ctx.rotate(70*Math.PI/180);
-    ctx.drawImage(rusa, -20, -30);
-    ctx.drawImage(rusb, -20, -30);
-    ctx.restore();
-
-    ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(600, 180);
-    ctx.rotate(160*Math.PI/180);
-    ctx.drawImage(rusa, -20, -30);
-    ctx.rotate(70*Math.PI/180);
-    ctx.drawImage(rusb, -20, -30);
-    ctx.restore();
-
-    ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(800, 180);
-    ctx.rotate(210*Math.PI/180);
-    ctx.drawImage(rusa, -20, -30);
-    ctx.rotate(90*Math.PI/180);
-    ctx.drawImage(rusb, -20, -30);
-    ctx.restore();
-
-
-
-    ctx.fillText("Use arrows to move and turn your tank",70,100);
-
-    ctx.fillText("A and D to turn your turent",100,260);
-
-    ctx.fillText("Hit SPACE to fire cannon",650,100);
-
-    ctx.fillText("Press 1 and 2 to switch ammo type",550,260);
-
-    ctx.fillText("W - body machinegun / flamethrower",70,380);
-    ctx.fillText("S - turent machinegun",70,420);
-    ctx.fillText("E - smoke cover",70,460);
-    ctx.fillText("F - mines",70,500);
-    ctx.fillText("R - artillery call",70,540);
-
-    ctx.fillText("SABOT can penetrate multiple tanks",540,380);
-    ctx.fillText("Smoke cover suspends enemy fire",570,420);
-    ctx.fillText("but also your aiming sights",620,460);
-    ctx.fillText("Flamethrower can set up enemies on fire",480,500);
-    ctx.fillText("but is replacing body machinegun",570,540);
-
-
+    gameDrawing();
     // exit with esc
     if(myGameArea.keys && myGameArea.keys[27] && cTimer==0){
       cTimer=20;
@@ -1490,7 +1427,6 @@ function menus(){
       level=1;
       createMenuTanks=true;
     }
-
   }// end of level 3 // manual
 
   if(level==4){ // level 4 // author and references
@@ -1613,156 +1549,147 @@ if(levelCreator){
     }
     if(wave==2){
       infoTime=200;
-      //aiTanks[0] = new AiTank(300,-200);
-      aiTanks[0] = new AiTank(700,-400);
-      aiTanks[1] = new AiTank(1300,300);
+      aiTanks[0] = new AiTank(300,-200);
+      //aiTanks[1] = new AiTank(700,-400);
+      //aiTanks[2] = new AiTank(1300,300);
       //aiTanks[3] = new AiTank(700,900);
-      //aiTanks[2] = new AiTank2(300,800);
+      aiTanks[1] = new AiTank(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
     if(wave==3){
       infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      //aiTanks[0] = new AiTank(700,-400);
-      //aiTanks[1] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[1] = new AiTank(300,800);
-      aiTanks[2] = new AiTank(-200,300);
-    }
-    if(wave==4){
-      infoTime=200;
-      //aiTanks[0] = new AiTank2(300,-200);
+      //aiTanks[0] = new AiTank(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[0] = new AiTank(1300,300);
-      aiTanks[1] = new AiTank2(700,900);
-      //aiTanks[4] = new AiTank(300,800);
-      //aiTanks[2] = new AiTank2(-200,300);
-    }
-    if(wave==5){
-      infoTime=200;
-      aiTanks[0] = new AiTank2(300,-200);
-      //aiTanks[1] = new AiTank2(700,-400);
       //aiTanks[2] = new AiTank(1300,300);
       //aiTanks[3] = new AiTank(700,900);
       //aiTanks[4] = new AiTank(300,800);
-      aiTanks[1] = new AiTank2(-200,300);
+      aiTanks[0] = new AiTank2(-200,300);
     }
-    if(wave==6){
+    if(wave==4){
       infoTime=200;
       aiTanks[0] = new AiTank(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[1] = new AiTank2(1300,300);
+      aiTanks[1] = new AiTank(1300,300);
       //aiTanks[3] = new AiTank(700,900);
       aiTanks[2] = new AiTank2(300,800);
       aiTanks[3] = new AiTank(-200,300);
     }
-    if(wave==7){
+    if(wave==5){
       infoTime=200;
       //aiTanks[0] = new AiTank(300,-200);
+      aiTanks[0] = new AiTank2(700,-400);
+      //aiTanks[2] = new AiTank(1300,300);
+      aiTanks[1] = new AiTank2(700,900);
+      //aiTanks[4] = new AiTank(300,800);
+      aiTanks[2] = new AiTank2(-200,300);
+    }
+    if(wave==6){
+      infoTime=200;
+      aiTanks[0] = new AiTank(300,-200);
+      aiTanks[1] = new AiTank(700,-400);
+      aiTanks[2] = new AiTank2(1300,300);
+      aiTanks[3] = new AiTank2(700,900);
+      aiTanks[4] = new AiTank2(300,800);
+      aiTanks[5] = new AiTank(-200,300);
+    }
+    if(wave==7){
+      infoTime=200;
+      aiTanks[0] = new AiTank3(300,-200);
       //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[0] = new AiTank3(1300,300);
-      //aiTanks[1] = new AiTank3(700,900);
+      //aiTanks[2] = new AiTank(1300,300);
+      //aiTanks[3] = new AiTank(700,900);
       //aiTanks[4] = new AiTank(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
     if(wave==8){
       infoTime=200;
-      aiTanks[0] = new AiTank2(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[0] = new AiTank(300,-200);
+      aiTanks[1] = new AiTank(700,-400);
       aiTanks[2] = new AiTank2(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[3] = new AiTank(300,800);
-      aiTanks[4] = new AiTank(-200,300);
+      aiTanks[3] = new AiTank(700,900);
+      aiTanks[4] = new AiTank3(300,800);
+      aiTanks[5] = new AiTank(-200,300);
     }
     if(wave==9){
       infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank3(700,-400);
-      aiTanks[2] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[3] = new AiTank3(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
+      //aiTanks[0] = new AiTank(300,-200);
+      aiTanks[0] = new AiTank3(700,-400);
+      aiTanks[1] = new AiTank2(1300,300);
+      aiTanks[2] = new AiTank2(700,900);
+      aiTanks[3] = new AiTank2(300,800);
+      aiTanks[4] = new AiTank2(-200,300);
     }
     if(wave==10){
-      infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank3(700,-400);
-      aiTanks[2] = new AiTank(1300,300);
-      aiTanks[3] = new AiTank2(700,900);
-      aiTanks[4] = new AiTank2(300,800);
-      aiTanks[5] = new AiTank3(-200,300);
-    }
-    if(wave==11){
       infoTime=200;
       aiTanks[0] = new AiTank3(300,-200);
       aiTanks[1] = new AiTank2(700,-400);
       aiTanks[2] = new AiTank2(1300,300);
       aiTanks[3] = new AiTank3(700,900);
-      //aiTanks[4] = new AiTank(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
+      aiTanks[4] = new AiTank2(300,800);
+      aiTanks[5] = new AiTank3(-200,300);
+    }
+    if(wave==11){
+      infoTime=200;
+      //aiTanks[0] = new AiTank(300,-200);
+      aiTanks[0] = new AiTank2(700,-400);
+      //aiTanks[2] = new AiTank(1300,300);
+      aiTanks[1] = new AiTank2(700,900);
+      aiTanks[2] = new AiTank2(300,800);
+      aiTanks[3] = new AiTank4(-200,300);
     }
     if(wave==12){
       infoTime=200;
-      aiTanks[0] = new AiTank2(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
-      aiTanks[2] = new AiTank2(1300,300);
-      aiTanks[3] = new AiTank2(700,900);
-      aiTanks[4] = new AiTank2(300,800);
-      aiTanks[5] = new AiTank2(-200,300);
+      aiTanks[0] = new AiTank3(300,-200);
+      aiTanks[1] = new AiTank3(700,-400);
+      aiTanks[2] = new AiTank4(1300,300);
+      aiTanks[3] = new AiTank4(700,900);
+      //aiTanks[4] = new AiTank(300,800);
+      //aiTanks[5] = new AiTank(-200,300);
     }
     if(wave==13){
       infoTime=200;
       aiTanks[0] = new AiTank4(300,-200);
-      //aiTanks[1] = new AiTank(700,-400);
-      aiTanks[1] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[2] = new AiTank(300,800);
-      //aiTanks[5] = new AiTank(-200,300);
+      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[2] = new AiTank3(1300,300);
+      aiTanks[3] = new AiTank2(700,900);
+      aiTanks[4] = new AiTank3(300,800);
+      aiTanks[5] = new AiTank3(-200,300);
     }
     if(wave==14){
       infoTime=200;
-      aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
+      aiTanks[0] = new AiTank3(300,-200);
+      aiTanks[1] = new AiTank4(700,-400);
       aiTanks[2] = new AiTank3(1300,300);
-      aiTanks[3] = new AiTank4(700,900);
-      aiTanks[4] = new AiTank2(300,800);
-      aiTanks[5] = new AiTank(-200,300);
+      aiTanks[3] = new AiTank3(700,900);
+      aiTanks[4] = new AiTank4(300,800);
+      aiTanks[5] = new AiTank3(-200,300);
     }
     if(wave==15){
       infoTime=200;
-      aiTanks[0] = new AiTank3(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
-      aiTanks[2] = new AiTank2(1300,300);
-      aiTanks[3] = new AiTank2(700,900);
-      aiTanks[4] = new AiTank3(300,800);
+      aiTanks[0] = new AiTank4(300,-200);
+      aiTanks[1] = new AiTank4(700,-400);
+      aiTanks[2] = new AiTank4(1300,300);
+      aiTanks[3] = new AiTank4(700,900);
+      aiTanks[4] = new AiTank4(300,800);
       aiTanks[5] = new AiTank4(-200,300);
     }
     if(wave==16){
       infoTime=200;
-      aiTanks[0] = new AiTank4(300,-200);
-      aiTanks[1] = new AiTank4(700,-400);
-      aiTanks[2] = new AiTank3(1300,300);
-      aiTanks[3] = new AiTank4(700,900);
-      aiTanks[4] = new AiTank4(300,800);
-      aiTanks[5] = new AiTank3(-200,300);
-    }
-    if(wave==17){
-      infoTime=200;
-      aiTanks[0] = new AiTank2(300,-200);
-      //aiTanks[1] = new AiTank(700,-400);
+      //aiTanks[0] = new AiTank(300,-200);
+      aiTanks[0] = new AiTank2(700,-400);
       //aiTanks[2] = new AiTank(1300,300);
-      //aiTanks[3] = new AiTank(700,900);
-      aiTanks[1] = new AiTank2(300,800);
+      aiTanks[1] = new AiTank2(700,900);
+      //aiTanks[4] = new AiTank(300,800);
       //aiTanks[5] = new AiTank(-200,300);
     }
-    if(wave>17){
+    if(wave>16){
       infoTime=200;
       aiTanks[0] = new AiTank(300,-200);
-      aiTanks[1] = new AiTank2(700,-400);
-      aiTanks[2] = new AiTank3(1300,300);
+      aiTanks[1] = new AiTank3(700,-400);
+      aiTanks[2] = new AiTank2(1300,300);
       aiTanks[3] = new AiTank2(700,900);
-      aiTanks[4] = new AiTank(300,800);
-      aiTanks[5] = new AiTank4(-200,300);
+      aiTanks[4] = new AiTank4(300,800);
+      aiTanks[5] = new AiTank2(-200,300);
 
     }
   }// end of creating waves
@@ -1803,7 +1730,7 @@ if(levelCreator){
     }else{
       ctx.fillStyle = "black";
     }
-    ctx.fillText("Destroy 16 waves of enemies",180,150);
+    ctx.fillText("Destroy 15 waves of enemies",180,150);
   }
 
   if(infoTime>199&&infoTime<300){
@@ -1817,10 +1744,10 @@ if(levelCreator){
     }
     ctx.fillText("Wave "+wave,430,150);
     if(wave==16){
-    ctx.fillText("Congratulations!",320,200);
-    ctx.fillText("Bonus weapon unlocked!",240,250);
-    bonus=true;
-    pTank.gunSpeed=7;
+      ctx.fillText("Congratulations!",320,200);
+      ctx.fillText("Bonus weapon unlocked!",240,250);
+      bonus=true;
+      pTank.gunSpeed=7;
     }
   }
 
