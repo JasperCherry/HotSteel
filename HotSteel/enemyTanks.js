@@ -40,6 +40,7 @@ function AiTank(x,y) {
   this.imgB=gera;
   this.imgT=gerb;
 
+  this.changeTarget=0;
 
   this.vMax=1.4;
   this.acceleration=0.1;
@@ -70,10 +71,29 @@ function AiTank(x,y) {
       this.fireHurtDelay++;
     }
 
+    // change target after 10 sec
+    if(this.changeTarget<500){
+      this.changeTarget++;
+    }else{
+      this.aiX="none";
+      this.aiY="none";
+      this.changeTarget=0;
+    }
+
+    // change target after 10 sec
+    if(this.changeTarget<500){
+      this.changeTarget++;
+    }else{
+      this.aiX="none";
+      this.aiY="none";
+      this.changeTarget=0;
+    }
+
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
       this.aiX="none";
       this.aiY="none";
+      this.changeTarget=0;
     }
 
     // touching dead tanks by ai tank
@@ -397,7 +417,7 @@ function AiTank2(x,y) {
   this.imgB=gera2;
   this.imgT=gerb2;
 
-
+  this.changeTarget=0;
 
   this.vMax=1.1;
   this.acceleration=0.06;
@@ -428,10 +448,20 @@ function AiTank2(x,y) {
       this.fireHurtDelay++;
     }
 
+    // change target after 10 sec
+    if(this.changeTarget<500){
+      this.changeTarget++;
+    }else{
+      this.aiX="none";
+      this.aiY="none";
+      this.changeTarget=0;
+    }
+
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
       this.aiX="none";
       this.aiY="none";
+      this.changeTarget=0;
     }
 
     // touching dead tanks by ai tank
@@ -759,6 +789,7 @@ function AiTank3(x,y) {
   this.imgB=gera3;
   this.imgT=gerb3;
 
+  this.changeTarget=0;
 
   this.vMax=1.0;
   this.acceleration=0.03;
@@ -789,10 +820,20 @@ function AiTank3(x,y) {
       this.fireHurtDelay++;
     }
 
+    // change target after 10 sec
+    if(this.changeTarget<500){
+      this.changeTarget++;
+    }else{
+      this.aiX="none";
+      this.aiY="none";
+      this.changeTarget=0;
+    }
+
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
       this.aiX="none";
       this.aiY="none";
+      this.changeTarget=0;
     }
 
     // touching dead tanks by ai tank
@@ -1119,6 +1160,7 @@ function AiTank4(x,y) {
   this.imgB=gera4;
   this.imgT=gerb4;
 
+  this.changeTarget=0;
 
   this.vMax=0.6;
   this.acceleration=0.03;
@@ -1149,10 +1191,20 @@ function AiTank4(x,y) {
       this.fireHurtDelay++;
     }
 
+    // change target after 10 sec
+    if(this.changeTarget<500){
+      this.changeTarget++;
+    }else{
+      this.aiX="none";
+      this.aiY="none";
+      this.changeTarget=0;
+    }
+
     // if destination was reached
     if(Math.abs(this.aiX-this.x)<15&&Math.abs(this.aiY-this.y)<15){
       this.aiX="none";
       this.aiY="none";
+      this.changeTarget=0;
     }
 
     // touching dead tanks by ai tank
