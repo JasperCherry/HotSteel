@@ -87,13 +87,13 @@ function Bullet(x, y, angle, type) {
         ctx.rotate(this.angle);
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -35, -30);
-
+        /*
         ctx.fillStyle = "red";
         ctx.beginPath();
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
-
+        */
         ctx.restore();
         }
     }
