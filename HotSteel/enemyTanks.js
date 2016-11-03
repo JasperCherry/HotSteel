@@ -1086,7 +1086,7 @@ function AiTank4(x,y) {
   tankId++;
 
   this.type="four";
-  this.name=lTanks[Math.floor(Math.random()*lTanks.length)];
+  this.name=xlTanks[Math.floor(Math.random()*lTanks.length)];
   this.dumb=false;
   this.towerLoose=false;
 

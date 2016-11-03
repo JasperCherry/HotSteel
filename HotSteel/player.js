@@ -53,6 +53,7 @@ function PTank(x,y) {
   this.moveAngleB = 0;
   this.angleT = 0;
   this.moveAngleT = 0;
+  this.turrentMoving=false;
 
   this.previousX=this.x;
   this.previousY=this.y;
@@ -104,6 +105,7 @@ function PTank(x,y) {
       // start position zeroing
       this.moveAngleB = 0;
       this.moveAngleT = 0;
+      this.turrentMoving=false;
 
 
       // body rotation, turrent static
@@ -119,23 +121,29 @@ function PTank(x,y) {
       // turrent rotation
       if (myGameArea.keys && myGameArea.keys[65]){
         this.moveAngleT = -1;
+        this.turrentMoving=true;
       }
       if (myGameArea.keys && myGameArea.keys[68]){
         this.moveAngleT = 1;
+        this.turrentMoving=true;
       }
 
       // turrent + body rotation
       if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[37]){
         this.moveAngleT = -1-this.vMax;
+        this.turrentMoving=true;
       }
       if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[39]){
         this.moveAngleT = 1+this.vMax;
+        this.turrentMoving=true;
       }
       if (myGameArea.keys && myGameArea.keys[65] && myGameArea.keys[39]){
         this.moveAngleT = -1+this.vMax;
+        this.turrentMoving=true;
       }
       if (myGameArea.keys && myGameArea.keys[68] && myGameArea.keys[37]){
         this.moveAngleT = 1-this.vMax;
+        this.turrentMoving=true;
       }
 
 
@@ -180,15 +188,7 @@ function PTank(x,y) {
         }
 
       // turrent
-      if(this.moveAngleT==1&&this.moveAngleB==0||
-        this.moveAngleT==1+this.vMax||
-        this.moveAngleT==-1&&this.moveAngleB==0||
-        this.moveAngleT==-1-this.vMax||
-        this.moveAngleT==1-this.vMax||
-        this.moveAngleT==-1+this.vMax||
-        myGameArea.keys&&myGameArea.keys[65]&&this.moveAngleB==1||
-        myGameArea.keys&&myGameArea.keys[68]&&this.moveAngleB==-1
-      ){
+      if(this.turrentMoving){
         if(sound){
           this.moveT.play();
         }
