@@ -25,8 +25,8 @@ function bulletsControl() {
              }
              bulletsP.splice(i,1);
              aiTanks[t].hp=aiTanks[t].hp-50;
-           }else if(bulletsP[i].type==2){
-             // sabot rounds
+           }else if(bulletsP[i].type==2||bulletsP[i].type==3){
+             // sabot rounds and blaster
              var inArray=false;
              for(var x=0; x<bulletsP[i].hits.length; x++){
                if(aiTanks[t].id==bulletsP[i].hits[x]){
@@ -38,8 +38,10 @@ function bulletsControl() {
                bulletsP[i].hits.push(aiTanks[t].id);
               aiTanks[t].hp=aiTanks[t].hp-50;
                explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-               for(var q=0; q<20; q++){
-                 pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+               if(bulletsP[i].type==2){
+                 for(var q=0; q<20; q++){
+                   pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+                 }
                }
              }
           }
@@ -85,7 +87,6 @@ function bulletsControl() {
         if(Math.abs(flames[i].x-aiTanks[t].x)<15 && Math.abs(flames[i].y-aiTanks[t].y)<15){
           flames.splice(i,1);
           aiTanks[t].fireProtect--;
-          aiTanks[t].hp--;
           if(aiTanks[t].fireProtect<=0){
             aiTanks[t].onFire=true;
           }
@@ -111,8 +112,8 @@ function bulletsControl() {
          }
          bulletsP.splice(i,1);
          kills[j].hp=kills[j].hp-50;
-       }else if(bulletsP[i].type==2){
-         // sabot rounds
+       }else if(bulletsP[i].type==2||bulletsP[i].type==3){
+         // sabot rounds and blaster
          var inArray=false;
          // checks alive tanks as well to avoid dobule hit on alive and dead tank
          for(var x=0; x<bulletsP[i].hits.length; x++){
@@ -131,8 +132,10 @@ function bulletsControl() {
            bulletsP[i].hitsDead.push(kills[j].id);
            kills[j].hp=kills[j].hp-50;
            explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-           for(var q=0; q<20; q++){
-             pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+           if(bulletsP[i].type==2){
+             for(var q=0; q<20; q++){
+               pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+             }
            }
          }
       }
@@ -181,8 +184,10 @@ function bulletsControl() {
        bulletsP[i].y<obstacles[j].y+obstacles[j].height
      ){
        explosionsH.push(new ExplosionH(bulletsP[i].x, bulletsP[i].y));
-       for(var q=0; q<20; q++){
-         pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+       if(bulletsP[i].type==1||bulletsP[i].type==2){
+         for(var q=0; q<20; q++){
+           pieces.push(new Piece(bulletsP[i].x, bulletsP[i].y));
+         }
        }
        bulletsP.splice(i,1);
      }

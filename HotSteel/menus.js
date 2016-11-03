@@ -1525,9 +1525,6 @@ if(levelCreator){
     levelCreator=false;
 }
 
-
-
-
 // waves of tanks
 
   if(aiTanks.length==0){

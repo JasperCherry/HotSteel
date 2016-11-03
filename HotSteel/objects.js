@@ -80,20 +80,20 @@ function Bullet(x, y, angle, type) {
     this.update = function() {
 
         this.liveTime--;
-        if(this.liveTime<98){
+        if(this.liveTime<99){
         ctx = myGameArea.context;
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.translate(0, 0);
         ctx.drawImage(this.img, -35, -30);
-        /*
+
         ctx.fillStyle = "red";
         ctx.beginPath();
         ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
         ctx.closePath();
         ctx.fill();
-        */
+
         ctx.restore();
         }
     }
@@ -161,7 +161,7 @@ function Bullet3(x, y, angle, type) {
     this.hits=new Array();
     this.hitsDead=new Array();
 
-    this.type=2;
+    this.type=3;
     this.liveTime=100;
     this.radius = 2;
     this.speed = 20;
@@ -624,7 +624,7 @@ function Piece(x, y) {
 
     this.x = x;
     this.y = y;
-    this.pause = 400;
+    this.pause = 50;
     this.time = 110
     this.angle = ((Math.round(Math.random() * (360)) - 0) * Math.PI / 180);
     this.speed=(Math.random()*8)+6;
