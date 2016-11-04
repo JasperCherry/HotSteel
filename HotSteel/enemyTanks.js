@@ -304,6 +304,7 @@ function AiTank(x,y) {
     }
 
     if(this.dumb){
+      this.changeTarget=0;
       this.shotReady=false;
       this.mgShotReady=false;
       this.moveAngleT=0;
@@ -671,6 +672,7 @@ function AiTank2(x,y) {
     }
 
     if(this.dumb){
+      this.changeTarget=0;
       this.shotReady=false;
       this.mgShotReady=false;
       this.moveAngleT=0;
@@ -1043,6 +1045,7 @@ function AiTank3(x,y) {
     }
 
     if(this.dumb){
+      this.changeTarget=0;
       this.shotReady=false;
       this.mgShotReady=false;
       this.moveAngleT=0;
