@@ -1,5 +1,8 @@
 function gameDrawing() {
 
+  setTimeout(function(){
+    // do nothing
+  }, 0);
 
   ///////////////////////////////////// drawing objects
 
