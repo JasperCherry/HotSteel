@@ -352,7 +352,7 @@ this.reloadTimeM=this.mgSpeed;
         }
       }
       //reloading
-      if(this.numBullet>0||this.numBullet2>0){
+      if(this.numBullet>0||this.numBullet2>0||bonus){
         if(this.reloadTime>0){
           this.reloadTime--;
         }
