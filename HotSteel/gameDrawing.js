@@ -20,14 +20,14 @@ function gameDrawing() {
 
     ctx.fillText("Use arrows to move and turn your tank",70,100);
 
-    ctx.fillText("A and D to turn your turent",100,140);
+    ctx.fillText("A and D to turn your turret",100,140);
 
     ctx.fillText("Hit SPACE to fire cannon",650,100);
 
     ctx.fillText("Press 1 and 2 to switch ammo type",550,140);
 
     ctx.fillText("W - body machinegun / flamethrower",70,380);
-    ctx.fillText("S - turent machinegun",70,420);
+    ctx.fillText("S - turret machinegun",70,420);
     ctx.fillText("E - smoke cover",70,460);
     ctx.fillText("F - mines",70,500);
     ctx.fillText("R - artillery call",70,540);
